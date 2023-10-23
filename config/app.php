@@ -55,10 +55,10 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/army/aship/'),
+    'url' => env('APP_URL', 'http://localhost/projects/careme/'),
 
-    'asset_url' => env('ASSET_URL', 'http://localhost/army/aship/public/'),
-    'mix_url' => env('MIX_ASSET_URL', 'http://localhost/army/aship/public/'),
+    'asset_url' => env('ASSET_URL', 'http://localhost/projects/careme/public/'),
+    'mix_url' => env('MIX_ASSET_URL', 'http://localhost/projects/careme/public/'),
 
     /*
     |--------------------------------------------------------------------------
