@@ -38,11 +38,11 @@ Route::group(['middleware' => ['auth']], function() {
     // Route::get('/users/suspendusers/',[UserController::class,'suspendusers'])->name('users.suspendusers');
     Route::get('/users/activate/{id}',[UserController::class,'activate'])->name('users.activate');
     Route::get('/users/resetpass/{id}',[UserController::class,'resetpass'])->name('users.resetpass');
-    Route::resource('users', UserController::class);    
+    Route::resource('users', UserController::class);
 
     Route::get('/province/inactive/{id}',[ProvinceController::class,'inactive'])->name('province.inactive');
     Route::get('/province/activate/{id}',[ProvinceController::class,'activate'])->name('province.activate');
-    Route::resource('province', ProvinceController::class);    
+    Route::resource('province', ProvinceController::class);
 
     Route::get('/district/inactive/{id}',[DistrictController::class,'inactive'])->name('district.inactive');
     Route::get('/district/activate/{id}',[DistrictController::class,'activate'])->name('district.activate');
@@ -56,12 +56,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/hospital/activate/{id}',[HospitalController::class,'activate'])->name('hospitals.activate');
     Route::resource('hospitals', HospitalController::class);
 
-    Route::post('/searchdetails',[HomeController::class,'searchdetail'])->name('searchdetail');
-
-    Route::get('/logindetails',[LoginDetailController::class,'index'])->name('logindetails.index');
-
-    Route::get('/searchdetails',[SearchDetailController::class,'index'])->name('searchdetails.index');
-    
     Route::prefix('hospital/{hospital}')->group(function (){
         Route::resource('userhospitals',UserHospitalController::class);
     });

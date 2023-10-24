@@ -26,11 +26,9 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
-        'last_login_ip',
-        'suspend',
+        'fname',
+        'lname',
         'phone',
-        'attempts',
-        'backlist',
     ];
 
     /**
