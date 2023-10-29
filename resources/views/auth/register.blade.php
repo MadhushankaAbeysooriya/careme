@@ -79,6 +79,23 @@
                             @enderror
                         </div>
 
+                        <div class="input-group mb-3">
+                            <select class="form-control @error('gender') is-invalid @enderror"
+                                name="gender" value="{{ old('gender') }}" id="gender" required>
+                                <option value="">Please Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                            <div class="input-group-append">
+                                <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                            </div>
+                            @error('gender')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         {{-- <div class="input-group mb-3">
                             <input type="username" name="username" value="{{ old('username') }}"
                                 class="form-control @error('username') is-invalid @enderror" placeholder="Username">

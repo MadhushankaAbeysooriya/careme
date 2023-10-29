@@ -37,7 +37,7 @@ Route::post('/token', function (Request $request) {
     $user = User::where('deviceId', $request->device_name)->first();
 
     if (! $user) {
-        return response()->json(['error' => 'Device not found'], 404);
+        return response()->json(['message' => 'Device not found'], 404);
     }
 
     $token = $user->createToken($request->device_name)->plainTextToken;

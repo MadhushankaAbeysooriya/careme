@@ -56,7 +56,20 @@ class RegisterController extends Controller
             'fname' => ['required','max:255'],
             'lname' => ['required','max:255'],
             'phone' => ['required','unique:users','max:10'],
-            //'username' => ['required','unique:users','max:255'],
+            'gender' => ['required'],
+        ], [
+            'name.required' => 'The name field is required.',
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'fname.required' => 'The first name field is required.',
+            'lname.required' => 'The last name field is required.',
+            'phone.required' => 'The phone field is required.',
+            'phone.max' => 'The phone field must not be more than 10 characters.',
+            'phone.unique' => 'The phone number is already taken.',
+            'gender.required' => 'The gender field is required.',
         ]);
     }
 
@@ -75,7 +88,7 @@ class RegisterController extends Controller
             'fname' => $data['fname'],
             'lname' => $data['lname'],
             'phone' => $data['phone'],
-            //'username' => $data['username'],
+            'gender' => $data['gender'],
         ]);
     }
 }
