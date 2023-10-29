@@ -9,10 +9,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\ProvinceController;
-use App\Http\Controllers\DSDivisionController;
-use App\Http\Controllers\LoginDetailController;
-use App\Http\Controllers\SearchDetailController;
-use App\Http\Controllers\UserHospitalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,17 +44,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/district/activate/{id}',[DistrictController::class,'activate'])->name('district.activate');
     Route::resource('district', DistrictController::class);
 
-    Route::get('/dsdivision/inactive/{id}',[DSDivisionController::class,'inactive'])->name('dsdivision.inactive');
-    Route::get('/dsdivision/activate/{id}',[DSDivisionController::class,'activate'])->name('dsdivision.activate');
-    Route::resource('dsdivision', DSDivisionController::class);
+    // Route::get('/dsdivision/inactive/{id}',[DSDivisionController::class,'inactive'])->name('dsdivision.inactive');
+    // Route::get('/dsdivision/activate/{id}',[DSDivisionController::class,'activate'])->name('dsdivision.activate');
+    // Route::resource('dsdivision', DSDivisionController::class);
 
     Route::get('/hospital/inactive/{id}',[HospitalController::class,'inactive'])->name('hospitals.inactive');
     Route::get('/hospital/activate/{id}',[HospitalController::class,'activate'])->name('hospitals.activate');
     Route::resource('hospitals', HospitalController::class);
 
-    Route::prefix('hospital/{hospital}')->group(function (){
-        Route::resource('userhospitals',UserHospitalController::class);
-    });
+    // Route::prefix('hospital/{hospital}')->group(function (){
+    //     Route::resource('userhospitals',UserHospitalController::class);
+    // });
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');
