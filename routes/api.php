@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,10 @@ Route::post('/token', function (Request $request) {
                             'first_name' => $user->fname,
                             'last_name' => $user->lname,
                             'gender' => $user->gender,
-                                'api_token' => $token]);
+                            'api_token' => $token]);
 });
+
+Route::post('/register',[RegisterController::class,'register']);
+
 
 
