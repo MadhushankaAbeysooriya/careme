@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('filepath');
+            $table->tinyInteger('status')->default(1);//active->1, in-active->0
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

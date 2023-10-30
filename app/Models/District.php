@@ -12,12 +12,9 @@ class District extends Model
 
     protected $table = 'district';
     protected $fillable = [
-        'id',
         'name',
         'status',
         'province_id',
-        'created_at',
-        'updated_at'
     ];
 
     public function province()

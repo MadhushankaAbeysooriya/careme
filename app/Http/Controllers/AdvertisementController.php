@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
 use Illuminate\Http\Request;
+use App\Models\Advertisement;
+use App\Http\Requests\StoreAdvertisementRequest;
 
 class AdvertisementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(AdvertisementDataTable $dataTable)
     {
-        //
+        return $dataTable->render('advertisements.index');
     }
 
     /**
@@ -20,15 +21,16 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        //
+        return view('advertisements.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAdvertisementRequest $request)
     {
-        //
+        Advertisement::create($request->all());
+        return redirect()->route('advertisements.index')->with('success', 'Advertisement Created');
     }
 
     /**
