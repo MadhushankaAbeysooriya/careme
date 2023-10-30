@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateDSDivisionRequest extends FormRequest
+class UpdateGNDivisionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,10 @@ class UpdateDSDivisionRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('ds_division', 'name')
+                Rule::unique('gndivisions', 'name')
                     ->where(function ($query) {
                         return $query->where('district_id', $this->district_id)
-                            ->where('id', '<>', $this->dsdivision->id);
+                            ->where('id', '<>', $this->gndivision->id);
                     }),
             ],
             'district_id' => 'required',

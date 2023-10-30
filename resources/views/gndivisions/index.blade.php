@@ -8,13 +8,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>DS Division</h1>
+              <h1>GN Division</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item ">Master Data</li>
-                <li class="breadcrumb-item ">DS Division Management</li>
+                <li class="breadcrumb-item ">GN Division Management</li>
                 <li class="breadcrumb-item active">All</li>
               </ol>
             </div>
@@ -26,7 +26,7 @@
 
             <h3 class="card-title">
                 <i class="fas fa-user-circle"></i>
-                All District
+                All GN Divisions
             </h3>
 
             <div class="card-tools">

@@ -6,13 +6,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>DS Division</h1>
+                <h1>GN Division</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item ">Master Data</li>
-                  <li class="breadcrumb-item ">DS Division Management</li>
+                  <li class="breadcrumb-item ">GN Division Management</li>
                   <li class="breadcrumb-item active">Create</li>
                 </ol>
             </div>
@@ -25,13 +25,13 @@
                 <div class="col-md-12">
                     <div class="card card-teal">
                         <div class="card-header">
-                            <h3 class="card-title">Create New DS Division</h3>
+                            <h3 class="card-title">Create New GN Division</h3>
                             {{-- <div class="card-tools">
                                 <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
                             </div> --}}
                         </div>
 
-                        <form role="form" method="POST" action="{{route('dsdivision.store')}}"
+                        <form role="form" method="POST" action="{{route('gndivisions.store')}}"
                               enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
@@ -40,7 +40,7 @@
                                     <label for="district_id" class="col-sm-2 col-form-label">District</label>
                                     <div class="col-sm-6">
                                         <select class="form-control @error('district_id') is-invalid @enderror"
-                                            name="district_id" value="{{ old('district_id') }}" id="province_id" required>
+                                            name="district_id" value="{{ old('district_id') }}" id="district_id" required>
                                             <option value="">Please Select</option>
                                             @foreach ($district as $item)
                                                 <option value="{{ $item->id }}">
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">DS Division</label>
+                                    <label for="name" class="col-sm-2 col-form-label">GN Division</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control @error('name')
                                         is-invalid @enderror" name="name" value="{{ old('name') }}" id="name" autocomplete="off">

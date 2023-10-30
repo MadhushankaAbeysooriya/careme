@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ds_division', function (Blueprint $table) {
+        Schema::create('gndivisions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->tinyInteger('status')->default(1);//active->1, in-active->0

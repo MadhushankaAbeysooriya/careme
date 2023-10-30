@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\DSDivision;
+use App\Models\GNDivision;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class DSDivisionDataTable extends DataTable
+class GNDivisionDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,14 +23,14 @@ class DSDivisionDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
         ->addIndexColumn()
-        ->addColumn('status', function($dsdivision){
-            return ($dsdivision->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+        ->addColumn('status', function($gndivision){
+            return ($gndivision->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
             '<h5><span class="badge badge-warning">Inactive</span></h5>';
         })
-        ->addColumn('action', function ($dsdivision) {
-            $id = $dsdivision->id;
+        ->addColumn('action', function ($gndivision) {
+            $id = $gndivision->id;
             $btn = '';
-                $btn .= '<a href="'.route('dsdivision.edit',$id).'"
+                $btn .= '<a href="'.route('gndivisions.edit',$id).'"
                 class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                 <i class="fa fa-pen-alt"></i> </a> ';
 
@@ -38,15 +38,15 @@ class DSDivisionDataTable extends DataTable
                 // class="btn btn-sm btn-secondary" data-toggle="tooltip" title="View">
                 // <i class="fa fa-eye"></i> </a> ';
 
-                if($dsdivision->status==1)
+                if($gndivision->status==1)
                 {
-                    $btn .='<a href="'.route('dsdivision.inactive',$id).'"
+                    $btn .='<a href="'.route('gndivisions.inactive',$id).'"
                     class="btn btn-xs btn-danger" data-toggle="tooltip"
                     title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
-                }elseif($dsdivision->status==0)
+                }elseif($gndivision->status==0)
                 {
-                    $btn .='<a href="'.route('dsdivision.activate',$id).'"
+                    $btn .='<a href="'.route('gndivisions.activate',$id).'"
                     class="btn btn-xs btn-danger" data-toggle="tooltip"
                     title="Activate"><i class="fa fa-unlock"></i> </a> ';
                 }
@@ -59,7 +59,7 @@ class DSDivisionDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(DSDivision $model): QueryBuilder
+    public function query(GNDivision $model): QueryBuilder
     {
         return $model->with('district')->newQuery();
     }
@@ -70,7 +70,7 @@ class DSDivisionDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('dsdivision-table')
+                    ->setTableId('gndivision-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -110,6 +110,6 @@ class DSDivisionDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'DSDivision_' . date('YmdHis');
+        return 'GNDivision_' . date('YmdHis');
     }
 }

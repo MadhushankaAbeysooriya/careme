@@ -6,13 +6,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>DS Division</h1>
+                    <h1>GN Division</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item ">Master Data</li>
-                        <li class="breadcrumb-item ">DS Division Management</li>
+                        <li class="breadcrumb-item ">GN Division Management</li>
                         <li class="breadcrumb-item active">Update</li>
                     </ol>
                 </div>
@@ -25,13 +25,13 @@
         <div class="col-md-12">
             <div class="card card-teal">
                 <div class="card-header">
-                    <h3 class="card-title">Update DS Division</h3>
+                    <h3 class="card-title">Update GN Division</h3>
                     {{-- <div class="card-tools">
                         <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
                     </div> --}}
                 </div>
 
-                <form role="form" action="{{ route('dsdivision.update',$dsdivision->id) }}" method="post"
+                <form role="form" action="{{ route('gndivisions.update',$gndivision->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -44,7 +44,7 @@
                                 <select class="form-control @error('district_id') is-invalid @enderror"
                                     name="district_id" value="{{ old('district_id') }}" id="district_id" required>
                                     @foreach ($district as $item)
-                                    <option value="{{ $item->id }}" {{$dsdivision->district_id == $item->id ?
+                                    <option value="{{ $item->id }}" {{$gndivision->district_id == $item->id ?
                                         'selected':''}}>
                                         {{ $item->name }}
                                     </option>
@@ -62,7 +62,7 @@
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control @error('name')
-                                is-invalid @enderror" name="name" value="{{ $dsdivision->name }}" id="name"
+                                is-invalid @enderror" name="name" value="{{ $gndivision->name }}" id="name"
                                     autocomplete="off">
                                 <span class="text-danger">@error('name') {{ $message }} @enderror</span>
                             </div>

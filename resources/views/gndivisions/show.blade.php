@@ -7,13 +7,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>DS Division</h1>
+                <h1>GN Division</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item ">Master Data</li>
-                  <li class="breadcrumb-item ">DS Division Management</li>
+                  <li class="breadcrumb-item ">GN Division Management</li>
                   <li class="breadcrumb-item active">View</li>
                 </ol>
             </div>
@@ -26,9 +26,9 @@
         <div class="col-md-12">
             <div class="card card-teal">
                 <div class="card-header">
-                    <h3 class="card-title">View DS Division</h3>
+                    <h3 class="card-title">View GN Division</h3>
                     <div class="card-tools">
-                        <a class="btn btn-primary" href="{{ route('dsdivision.index') }}"> Back</a>
+                        <a class="btn btn-primary" href="{{ route('gndivisions.index') }}"> Back</a>
                     </div>
                 </div>
 
@@ -36,10 +36,10 @@
 
                     <div class="form-group row">
                         <label class="col-sm-2">
-                            <strong>Force:</strong>
+                            <strong>District:</strong>
                         </label>
                         <div class="col-sm-10">
-                            {{ $dsdivision->force->name }}
+                            {{ $gndivision->force->name }}
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                             <strong>Name:</strong>
                         </label>
                         <div class="col-sm-10">
-                            {{ $dsdivision->name }}
+                            {{ $gndivision->name }}
                         </div>
                     </div>
 
