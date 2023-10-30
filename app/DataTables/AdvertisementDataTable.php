@@ -22,8 +22,30 @@ class AdvertisementDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'advertisement.action')
-            ->setRowId('id');
+            ->addIndexColumn()
+            ->addColumn('status', function($advertisement){
+                return ($advertisement->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+                '<h5><span class="badge badge-warning">Inactive</span></h5>';
+            })
+            ->addColumn('action', function ($advertisement) {
+                $id = $advertisement->id;
+                $btn = '';
+
+                if($advertisement->status==1)
+                {
+                    $btn .='<a href="'.route('advertisements.inactive',$id).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Suspend"><i class="fa fa-trash"></i> </a> ';
+                }elseif($advertisement->status==0)
+                {
+                    $btn .='<a href="'.route('advertisements.activate',$id).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Activate"><i class="fa fa-unlock"></i> </a> ';
+                }
+
+                return $btn;
+            })
+            ->rawColumns(['action','status']);
     }
 
     /**
@@ -47,12 +69,12 @@ class AdvertisementDataTable extends DataTable
                     ->orderBy(1)
                     ->selectStyleSingle()
                     ->buttons([
+                        Button::make('add'),
                         Button::make('excel'),
                         Button::make('csv'),
                         Button::make('pdf'),
                         Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
+                        Button::make('reset')
                     ]);
     }
 
@@ -62,15 +84,14 @@ class AdvertisementDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('DT_RowIndex')->title('#')->searchable(false)->orderColumn(false)->width(40),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(60)
+                  ->width(100)
                   ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('name')->data('name')->title('Name'),
+            Column::computed('status'),
         ];
     }
 

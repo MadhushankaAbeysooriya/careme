@@ -42,16 +42,16 @@
                             <label for="district_id" class="col-sm-2 col-form-label">District</label>
                             <div class="col-sm-6">
                                 <select class="form-control @error('district_id') is-invalid @enderror"
-                                    name="district_id" value="{{ old('district_id') }}" id="district_id" required>
-                                    @foreach ($district as $item)
-                                    <option value="{{ $item->id }}" {{$gndivision->district_id == $item->id ?
+                                    name="dsdivision_id" value="{{ old('dsdivision_id') }}" id="dsdivision_id" required>
+                                    @foreach ($dsdivisions as $item)
+                                    <option value="{{ $item->id }}" {{$gndivision->dsdivision_id == $item->id ?
                                         'selected':''}}>
                                         {{ $item->name }}
                                     </option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger">
-                                    @error('district_id')
+                                    @error('dsdivision_id')
                                     {{ $message }}
                                     @enderror
                                 </span>

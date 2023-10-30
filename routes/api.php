@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 
 /*
@@ -51,6 +52,8 @@ Route::post('/token', function (Request $request) {
 });
 
 Route::post('/register',[RegisterController::class,'register']);
+
+Route::middleware('auth:sanctum')->get('/advertisements', [AdvertisementController::class, 'index']);
 
 
 

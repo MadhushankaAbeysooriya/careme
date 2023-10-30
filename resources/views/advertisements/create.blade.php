@@ -45,6 +45,16 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row ">
+                                    <label for="filepath" class="col-sm-2 col-form-label">Select Image<sup class="text-red">*</sup></label>
+                                    <div class="col-sm-6">
+                                        <input type="file" class="form-control @error('filepath') is-invalid @enderror"
+                                        name="filepath" value="{{ old('filepath') }}" required accept=".jpeg,.png,.jpg">
+                                        <span class="text-danger">@error('filepath') {{ $message }}
+                                        @enderror</span>
+                                    </div>
+                                </div>
+
                             </div>
 
                                 <div class="card-footer">

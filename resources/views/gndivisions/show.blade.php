@@ -36,10 +36,10 @@
 
                     <div class="form-group row">
                         <label class="col-sm-2">
-                            <strong>District:</strong>
+                            <strong>DSDivision:</strong>
                         </label>
                         <div class="col-sm-10">
-                            {{ $gndivision->force->name }}
+                            {{ $gndivision->dsdivision->name }}
                         </div>
                     </div>
 
@@ -51,10 +51,6 @@
                             {{ $gndivision->name }}
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </div>

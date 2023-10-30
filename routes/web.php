@@ -11,6 +11,7 @@ use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DSDivisionController;
 use App\Http\Controllers\GNDivisionController;
+use App\Http\Controllers\AdvertisementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/hospital/inactive/{id}',[HospitalController::class,'inactive'])->name('hospitals.inactive');
     Route::get('/hospital/activate/{id}',[HospitalController::class,'activate'])->name('hospitals.activate');
     Route::resource('hospitals', HospitalController::class);
+
+    Route::get('/advertisement/inactive/{id}',[AdvertisementController::class,'inactive'])->name('advertisements.inactive');
+    Route::get('/advertisement/activate/{id}',[AdvertisementController::class,'activate'])->name('advertisements.activate');
+    Route::resource('advertisements', AdvertisementController::class);
 
     // Route::prefix('hospital/{hospital}')->group(function (){
     //     Route::resource('userhospitals',UserHospitalController::class);

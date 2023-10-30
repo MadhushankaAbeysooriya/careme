@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\DSDivision;
 use App\Models\GNDivision;
 use Illuminate\Http\Request;
 use App\DataTables\GNDivisionDataTable;
@@ -24,8 +25,8 @@ class GNDivisionController extends Controller
      */
     public function create()
     {
-        $district = District::where('status',1)->get();
-        return view('gndivisions.create',compact('district'));
+        $dsdivision = DSDivision::where('status',1)->get();
+        return view('gndivisions.create',compact('dsdivisions'));
     }
 
     /**
@@ -52,11 +53,11 @@ class GNDivisionController extends Controller
      */
     public function edit(string $id)
     {
-        $district = District::where('status',1)->get();
+        $dsdivisions = DSDivision::where('status',1)->get();
 
         $gndivision = GNDivision::find($id);
 
-        return view('gndivisions.edit',compact('gndivision','district'));
+        return view('gndivisions.edit',compact('gndivision','dsdivisions'));
     }
 
     /**

@@ -37,19 +37,19 @@
                             <div class="card-body">
 
                                 <div class="form-group row">
-                                    <label for="district_id" class="col-sm-2 col-form-label">District</label>
+                                    <label for="dsdivision_id" class="col-sm-2 col-form-label">District</label>
                                     <div class="col-sm-6">
-                                        <select class="form-control @error('district_id') is-invalid @enderror"
-                                            name="district_id" value="{{ old('district_id') }}" id="district_id" required>
+                                        <select class="form-control @error('dsdivision_id') is-invalid @enderror"
+                                            name="dsdivision_id" value="{{ old('dsdivision_id') }}" id="dsdivision_id" required>
                                             <option value="">Please Select</option>
-                                            @foreach ($district as $item)
+                                            @foreach ($dsdivisions as $item)
                                                 <option value="{{ $item->id }}">
                                                     {{ $item->name }}
                                                 </option>
                                             @endforeach
                                         </select>
                                         <span class="text-danger">
-                                            @error('district_id')
+                                            @error('dsdivision_id')
                                                 {{ $message }}
                                             @enderror
                                         </span>

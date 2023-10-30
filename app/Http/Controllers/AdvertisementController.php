@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
+use App\DataTables\AdvertisementDataTable;
 use App\Http\Requests\StoreAdvertisementRequest;
 
 class AdvertisementController extends Controller
@@ -63,5 +64,17 @@ class AdvertisementController extends Controller
     public function destroy(Advertisement $advertisement)
     {
         //
+    }
+
+    public function inactive($id)
+    {
+        Advertisement::where('id', $id)->update(['status' => '0']);
+        return redirect()->route('advertisements.index')->with('success', 'Advertisement De-Activated');
+    }
+
+    public function activate($id)
+    {
+        Advertisement::where('id', $id)->update(['status' => '1']);
+        return redirect()->route('advertisements.index')->with('success', 'Advertisement Activated');
     }
 }
