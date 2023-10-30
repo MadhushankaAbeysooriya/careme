@@ -22,7 +22,7 @@ class StoreDSDivisionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:ds_division',
+            'name' => 'required|unique:dsdivisions',
             'district_id' => 'required',
         ];
     }

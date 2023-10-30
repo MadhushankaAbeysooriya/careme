@@ -28,7 +28,7 @@
                 <div class="card-header">
                     <h3 class="card-title">View DS Division</h3>
                     <div class="card-tools">
-                        <a class="btn btn-primary" href="{{ route('dsdivision.index') }}"> Back</a>
+                        <a class="btn btn-primary" href="{{ route('dsdivisions.index') }}"> Back</a>
                     </div>
                 </div>
 

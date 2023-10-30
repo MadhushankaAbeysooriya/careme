@@ -2,17 +2,17 @@
 
 namespace App\DataTables;
 
-use App\Models\GNDivision;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\DSDivision;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class GNDivisionDataTable extends DataTable
+class DSDivisionDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,30 +23,26 @@ class GNDivisionDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
         ->addIndexColumn()
-        ->addColumn('status', function($gndivision){
-            return ($gndivision->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+        ->addColumn('status', function($dsdivision){
+            return ($dsdivision->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
             '<h5><span class="badge badge-warning">Inactive</span></h5>';
         })
-        ->addColumn('action', function ($gndivision) {
-            $id = $gndivision->id;
+        ->addColumn('action', function ($dsdivision) {
+            $id = $dsdivision->id;
             $btn = '';
-                $btn .= '<a href="'.route('gndivisions.edit',$id).'"
+                $btn .= '<a href="'.route('dsdivisions.edit',$id).'"
                 class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                 <i class="fa fa-pen-alt"></i> </a> ';
 
-                // $btn .= '<a href="'.route('forces.show',$id).'"
-                // class="btn btn-sm btn-secondary" data-toggle="tooltip" title="View">
-                // <i class="fa fa-eye"></i> </a> ';
-
-                if($gndivision->status==1)
+                if($dsdivision->status==1)
                 {
-                    $btn .='<a href="'.route('gndivisions.inactive',$id).'"
+                    $btn .='<a href="'.route('dsdivisions.inactive',$id).'"
                     class="btn btn-xs btn-danger" data-toggle="tooltip"
                     title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
-                }elseif($gndivision->status==0)
+                }elseif($dsdivision->status==0)
                 {
-                    $btn .='<a href="'.route('gndivisions.activate',$id).'"
+                    $btn .='<a href="'.route('dsdivisions.activate',$id).'"
                     class="btn btn-xs btn-danger" data-toggle="tooltip"
                     title="Activate"><i class="fa fa-unlock"></i> </a> ';
                 }
@@ -59,9 +55,9 @@ class GNDivisionDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(GNDivision $model): QueryBuilder
+    public function query(DSDivision $model): QueryBuilder
     {
-        return $model->with('dsdivision')->newQuery();
+        return $model->with('district')->newQuery();
     }
 
     /**
@@ -70,7 +66,7 @@ class GNDivisionDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('gndivision-table')
+                    ->setTableId('dsdivision-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -100,7 +96,7 @@ class GNDivisionDataTable extends DataTable
                   ->width(100)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
-            Column::make('dsdivision.name')->data('dsdivision.name')->title('DSDivision'),
+            Column::make('district.name')->data('district.name')->title('District'),
             Column::computed('status'),
         ];
     }
@@ -110,6 +106,6 @@ class GNDivisionDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'GNDivision_' . date('YmdHis');
+        return 'DSDivision_' . date('YmdHis');
     }
 }

@@ -31,7 +31,7 @@
                             </div> --}}
                         </div>
 
-                        <form role="form" method="POST" action="{{route('dsdivision.store')}}"
+                        <form role="form" method="POST" action="{{route('dsdivisions.store')}}"
                               enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">

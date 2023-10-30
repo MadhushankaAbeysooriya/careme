@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->tinyInteger('status')->default(1);//active->1, in-active->0
             $table->unsignedBigInteger('province_id');
-            $table->foreign('province_id')->references('id')->on('province')->onDelete('cascade');
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@
 
             <h3 class="card-title">
                 <i class="fas fa-user-circle"></i>
-                All District
+                All DS Division
             </h3>
 
             <div class="card-tools">

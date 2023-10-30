@@ -31,7 +31,7 @@
                     </div> --}}
                 </div>
 
-                <form role="form" action="{{ route('dsdivision.update',$dsdivision->id) }}" method="post"
+                <form role="form" action="{{ route('dsdivisions.update',$dsdivision->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

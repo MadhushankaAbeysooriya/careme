@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\DSDivisionController;
 use App\Http\Controllers\GNDivisionController;
 
 /*
@@ -48,6 +49,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/gndivision/inactive/{id}',[GNDivisionController::class,'inactive'])->name('gndivisions.inactive');
     Route::get('/gndivision/activate/{id}',[GNDivisionController::class,'activate'])->name('gndivisions.activate');
     Route::resource('gndivisions', GNDivisionController::class);
+
+    Route::get('/dsdivision/inactive/{id}',[DSDivisionController::class,'inactive'])->name('dsdivisions.inactive');
+    Route::get('/dsdivision/activate/{id}',[DSDivisionController::class,'activate'])->name('dsdivisions.activate');
+    Route::resource('dsdivisions', DSDivisionController::class);
 
     Route::get('/hospital/inactive/{id}',[HospitalController::class,'inactive'])->name('hospitals.inactive');
     Route::get('/hospital/activate/{id}',[HospitalController::class,'activate'])->name('hospitals.activate');

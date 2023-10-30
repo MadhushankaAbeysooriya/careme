@@ -16,7 +16,7 @@ class DSDivisionController extends Controller
      */
     public function index(DSDivisionDataTable $dataTable)
     {
-        return $dataTable->render('dsdivision.index');
+        return $dataTable->render('dsdivisions.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class DSDivisionController extends Controller
     public function create()
     {
         $district = District::where('status',1)->get();
-        return view('dsdivision.create',compact('district'));
+        return view('dsdivisions.create',compact('district'));
     }
 
     /**
@@ -34,7 +34,7 @@ class DSDivisionController extends Controller
     public function store(StoreDSDivisionRequest $request)
     {
         DSDivision::create($request->all());
-        return redirect()->route('dsdivision.index')->with('success','DS Division Created');
+        return redirect()->route('dsdivisions.index')->with('success','DS Division Created');
     }
 
     /**
@@ -44,7 +44,7 @@ class DSDivisionController extends Controller
     {
         $dsdivision = DSDivision::find($id);
 
-        return view('dsdivision.show',compact('dsdivision'));
+        return view('dsdivisions.show',compact('dsdivision'));
     }
 
     /**
@@ -56,7 +56,7 @@ class DSDivisionController extends Controller
 
         $dsdivision = DSDivision::find($id);
 
-        return view('dsdivision.edit',compact('dsdivision','district'));
+        return view('dsdivisions.edit',compact('dsdivision','district'));
     }
 
     /**
@@ -65,7 +65,7 @@ class DSDivisionController extends Controller
     public function update(UpdateDSDivisionRequest $request, DSDivision $dsdivision)
     {
         $dsdivision->update($request->toArray());
-        return redirect()->route('dsdivision.index')->with('message', 'DS Division Updated');
+        return redirect()->route('dsdivisions.index')->with('message', 'DS Division Updated');
     }
 
     /**
@@ -79,12 +79,12 @@ class DSDivisionController extends Controller
     public function inactive($id)
     {
         DSDivision::where('id', $id)->update(['status' => '0']);
-        return redirect()->route('district.index')->with('success', 'District De-Activated');
+        return redirect()->route('dsdivisions.index')->with('success', 'District De-Activated');
     }
 
     public function activate($id)
     {
         DSDivision::where('id', $id)->update(['status' => '1']);
-        return redirect()->route('district.index')->with('success', 'District Activated');
+        return redirect()->route('dsdivisions.index')->with('success', 'District Activated');
     }
 }

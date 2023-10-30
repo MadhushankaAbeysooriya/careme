@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DSDivision;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GNDivision extends Model
 {
@@ -13,11 +14,11 @@ class GNDivision extends Model
     protected $fillable = [
         'name',
         'status',
-        'district_id',
+        'dsdivision_id',
     ];
 
-    public function district()
+    public function dsdivision()
     {
-        return $this->belongsTo(District::class, 'district_id', 'id');
+        return $this->belongsTo(DSDivision::class, 'dsdivision_id', 'id');
     }
 }

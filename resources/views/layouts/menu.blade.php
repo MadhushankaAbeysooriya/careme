@@ -8,7 +8,7 @@
 
 
 
-<li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*','hospitals*')?'menu-open':'' }}">
+<li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*','dsdivisions*','hospitals*')?'menu-open':'' }}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-cogs text-blue"></i>
         <p>
@@ -33,6 +33,16 @@
             {{ request()->routeIs('district*')?'active':'' }}">
                 <i class="far fa-circle nav-icon text-blue"></i>
                 <p>District</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('dsdivisions.index')}}" class="nav-link
+            {{ request()->routeIs('dsdivisions*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>DS Division</p>
             </a>
         </li>
     </ul>

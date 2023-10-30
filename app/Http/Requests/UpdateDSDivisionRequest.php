@@ -25,7 +25,7 @@ class UpdateDSDivisionRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('ds_division', 'name')
+                Rule::unique('dsdivisions', 'name')
                     ->where(function ($query) {
                         return $query->where('district_id', $this->district_id)
                             ->where('id', '<>', $this->dsdivision->id);

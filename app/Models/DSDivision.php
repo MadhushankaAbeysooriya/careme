@@ -9,7 +9,7 @@ class DSDivision extends Model
 {
     use HasFactory;
 
-    protected $table = 'ds_division';
+    protected $table = 'dsdivisions';
     protected $fillable = [
         'id',
         'name',
