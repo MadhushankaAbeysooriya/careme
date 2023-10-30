@@ -22,7 +22,7 @@ class UpdateProvinceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:province,name,'.$this->province->id,
+            'name' => 'required|unique:provinces,name,'.$this->province->id,
         ];
     }
 

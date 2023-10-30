@@ -22,7 +22,7 @@ class StoreProvinceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:province',
+            'name' => 'required|unique:provinces',
         ];
     }
 

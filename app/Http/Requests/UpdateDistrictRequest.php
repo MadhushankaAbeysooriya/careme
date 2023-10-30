@@ -25,7 +25,7 @@ class UpdateDistrictRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('district', 'name')
+                Rule::unique('districts', 'name')
                     ->where(function ($query) {
                         return $query->where('province_id', $this->province_id)
                             ->where('id', '<>', $this->district->id);

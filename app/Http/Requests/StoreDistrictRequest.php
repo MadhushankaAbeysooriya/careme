@@ -22,7 +22,7 @@ class StoreDistrictRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:district',
+            'name' => 'required|unique:districts',
             'province_id' => 'required',
         ];
     }
