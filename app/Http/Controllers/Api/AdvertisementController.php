@@ -15,7 +15,11 @@ class AdvertisementController extends Controller
             // Retrieve all image paths from the 'advertisements' table
             $imagePaths = Advertisement::pluck('filepath')->toArray();
 
-            return response()->json(['image_paths' => $imagePaths]);
+            $fullPaths = array_map(function($path) {
+                return asset($path);
+            }, $imagePaths);
+
+            return response()->json(['image_paths' => $fullPaths]);
         }else{
              // If the token is not validated, send a message
              return response()->json(['message' => 'Not validated'], 401);
