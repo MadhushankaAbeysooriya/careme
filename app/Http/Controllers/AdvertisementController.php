@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
 use App\DataTables\AdvertisementDataTable;
 use App\Http\Requests\StoreAdvertisementRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class AdvertisementController extends Controller
 {
@@ -30,8 +33,48 @@ class AdvertisementController extends Controller
      */
     public function store(StoreAdvertisementRequest $request)
     {
-        Advertisement::create($request->all());
-        return redirect()->route('advertisements.index')->with('success', 'Advertisement Created');
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            // Attempt to create a new Person record
+            $advertisement = Advertisement::create($request->all());            
+
+            if ($request->hasFile('filepath')) {
+                // Define the destination path for personal photos
+                $destinationPersonal = public_path('/upload/advertisements/'.$advertisement->id.'/');
+
+                // Ensure the destination directory exists, create it if not
+                if (!File::isDirectory($destinationPersonal)) {
+                    File::makeDirectory($destinationPersonal, 0777, true, true);
+                }
+
+                // Generate a unique filename for the uploaded filepath
+                $extPersonal = $request->file('filepath')->extension();
+                $filePersonal = $advertisement->id.'.'.$extPersonal;
+
+                // Move the uploaded file to the destination
+                $request->file('filepath')->move($destinationPersonal, $filePersonal);
+
+                // Update the person record with the filepath
+                $advertisement->update([
+                    'filepath' => '/upload/advertisements/'.$advertisement->id.'/'.$filePersonal,
+                    'user_id' => auth()->user()->id, // Use auth() helper
+                    //'person_status_id' => $person_status->id,
+                ]);
+            }
+
+            // Commit the database transaction
+            DB::commit();
+
+            return redirect()->route('advertisements.index')->with('success', 'Advertisement Created');
+        } catch (Exception $e) {
+            // If an exception occurs, rollback the database transaction
+            DB::rollback();
+
+            // Handle any exceptions that occur during the process
+            return redirect()->route('advertisements.index')->with('error', 'An error occurred while creating the person.');
+        }        
     }
 
     /**
