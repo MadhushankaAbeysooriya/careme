@@ -11,6 +11,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Crypt;
 
 class UserDataTable extends DataTable
 {
@@ -27,31 +28,50 @@ class UserDataTable extends DataTable
                 return ($status->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })
+            ->addColumn('validated', function($validated){
+                return ($validated->validated==1)?'<h5><span class="badge badge-primary">Validated</span></h5>':
+                '<h5><span class="badge badge-warning">Not-Validate</span></h5>';
+            })
             ->addColumn('action', function ($user) {
                 $btn = '';
-                    $btn .= '<a href="'.route('users.edit',$user->id).'"
+                $encryptedId = Crypt::encrypt($user->id);
+
+                    $btn .= '<a href="'.route('users.edit',$encryptedId).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
-                    $btn .= '<a href="'.route('users.show',$user->id).'"
+                    $btn .= '<a href="'.route('users.show',$encryptedId).'"
                     class="btn btn-xs btn-secondary" data-toggle="tooltip" title="View">
                     <i class="fa fa-eye"></i> </a> ';
 
-                    $btn .= '<a href="'.route('users.resetpass',$user->id).'"
+                    $btn .= '<a href="'.route('users.resetpass',$encryptedId).'"
                     class="btn btn-xs btn-warning" data-toggle="tooltip" title="reset Password">
                     <i class="fa fa-redo"></i> </a> ';
 
                     if($user->status==1)
                     {
-                        $btn .='<a href="'.route('users.inactive',$user->id).'"
+                        $btn .='<a href="'.route('users.inactive',$encryptedId).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
                     }elseif($user->status==0)
                     {
-                        $btn .='<a href="'.route('users.activate',$user->id).'"
+                        $btn .='<a href="'.route('users.activate',$encryptedId).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
+                    }
+
+                    if($user->validated==0)
+                    {
+                        $btn .='<a href="'.route('users.validated',$encryptedId).'"
+                        class="btn btn-xs btn-success" data-toggle="tooltip"
+                        title="Validated"><i class="fa fa-check"></i> </a> ';
+
+                    }elseif($user->validated==1)
+                    {
+                        $btn .='<a href="'.route('users.notvalidated',$encryptedId).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Non-Validate"><i class="fa fa-times"></i> </a> ';
                     }
 
            return $btn;
@@ -69,7 +89,7 @@ class UserDataTable extends DataTable
 
                 return $badges;
             })
-            ->rawColumns(['action','roles','status']);
+            ->rawColumns(['action','roles','status','validated']);
     }
 
     /**
@@ -118,6 +138,7 @@ class UserDataTable extends DataTable
             Column::make('email')->data('email')->title('Email'),
             Column::computed('roles'),
             Column::computed('status'),
+            Column::computed('validated'),
         ];
     }
 

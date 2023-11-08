@@ -33,8 +33,9 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('roles', RoleController::class);
 
+    Route::get('/users/notvalidated/{id}',[UserController::class,'notvalidated'])->name('users.notvalidated');
+    Route::get('/users/validated/{id}',[UserController::class,'validated'])->name('users.validated');
     Route::get('/users/inactive/{id}',[UserController::class,'inactive'])->name('users.inactive');
-    // Route::get('/users/suspendusers/',[UserController::class,'suspendusers'])->name('users.suspendusers');
     Route::get('/users/activate/{id}',[UserController::class,'activate'])->name('users.activate');
     Route::get('/users/resetpass/{id}',[UserController::class,'resetpass'])->name('users.resetpass');
     Route::resource('users', UserController::class);

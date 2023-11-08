@@ -9,6 +9,7 @@ use App\DataTables\UserDataTable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class UserController extends Controller
 {
@@ -90,11 +91,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
+
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->toArray();        
+        $userRole = $user->roles->pluck('name','name')->toArray();
 
         return view('users.edit',compact('user','roles','userRole'));
     }
@@ -139,25 +142,46 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         User::find($id)->delete();
         return redirect()->route('users.index')
                         ->with('success','User deleted successfully');
     }
 
-    public function inactive($user){
-        User::where('id',$user)->update(['status'=>'0']);
+    public function inactive($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        User::where('id',$id)->update(['status'=>'0']);
          return redirect()->route('users.index')->with( 'success',' account suspended');
     }
 
-    public function activate($user){
-        User::where('id',$user)->update(['status'=>'1']);
+    public function activate($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        User::where('id',$id)->update(['status'=>'1']);
         return redirect()->route('users.index')->with( 'success',' account activated');
     }
 
-    public function resetpass($user){
-        User::where('id',$user)->update(['password' => Hash::make('abc@123')]);
+    public function resetpass($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        User::where('id',$id)->update(['password' => Hash::make('abc@123')]);
         return redirect()->route('users.index')->with( 'success', ' Password Reset as abc@123');
+    }
+
+    public function validated($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        User::where('id',$id)->update(['validated'=>'1']);
+         return redirect()->route('users.index')->with( 'success',' Account Validated');
+    }
+
+    public function notvalidated($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        User::where('id',$id)->update(['validated'=>'0']);
+        return redirect()->route('users.index')->with( 'success',' Account Not-Validated');
     }
 }
