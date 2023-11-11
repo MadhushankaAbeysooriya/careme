@@ -79,8 +79,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
+
         $user = User::find($id);
         return view('users.show',compact('user'));
     }

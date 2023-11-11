@@ -30,19 +30,19 @@ class ShiftDataTable extends DataTable
             ->addColumn('action', function ($ranaviruType) {
                 $id = $ranaviruType->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('province.edit',$id).'"
+                    $btn .= '<a href="'.route('shifts.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
                     if($ranaviruType->status==1)
                     {
-                        $btn .='<a href="'.route('province.inactive',$id).'"
+                        $btn .='<a href="'.route('shifts.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
                     }elseif($ranaviruType->status==0)
                     {
-                        $btn .='<a href="'.route('province.activate',$id).'"
+                        $btn .='<a href="'.route('shifts.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }

@@ -7,13 +7,13 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Province/</h1>
+                <h1>Shift/</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item ">Master Data</li>
-                  <li class="breadcrumb-item ">Province Management</li>
+                  <li class="breadcrumb-item ">Shift Management</li>
                   <li class="breadcrumb-item active">Update</li>
                 </ol>
             </div>
@@ -26,13 +26,13 @@
         <div class="col-md-12">
             <div class="card card-teal">
                 <div class="card-header">
-                    <h3 class="card-title">Update Province</h3>
+                    <h3 class="card-title">Update Shift</h3>
                     {{-- <div class="card-tools">
                         <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
                     </div> --}}
                 </div>
 
-                <form role="form" action="{{ route('province.update',$province->id) }}" method="post"
+                <form role="form" action="{{ route('shifts.update',$shifts->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -43,8 +43,26 @@
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control @error('name')
-                                is-invalid @enderror" name="name" value="{{ $province->name }}" id="name" autocomplete="off">
+                                is-invalid @enderror" name="name" value="{{ $shift->name }}" id="name" autocomplete="off">
                                 <span class="text-danger">@error('name') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="from" class="col-sm-2 col-form-label">From</label>
+                            <div class="col-sm-6">
+                                <input type="time" class="form-control @error('from')
+                                is-invalid @enderror" name="from" value="{{ $shift->from }}" id="from" autocomplete="off">
+                                <span class="text-danger">@error('from') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="to" class="col-sm-2 col-form-label">To</label>
+                            <div class="col-sm-6">
+                                <input type="time" class="form-control @error('to')
+                                is-invalid @enderror" name="to" value="{{ $shift->to }}" id="to" autocomplete="off">
+                                <span class="text-danger">@error('to') {{ $message }} @enderror</span>
                             </div>
                         </div>
 
