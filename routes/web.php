@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/advertisement/inactive/{id}',[AdvertisementController::class,'inactive'])->name('advertisements.inactive');
     Route::get('/advertisement/activate/{id}',[AdvertisementController::class,'activate'])->name('advertisements.activate');
+    Route::get('/advertisement/delete/{id}',[AdvertisementController::class,'delete'])->name('advertisements.delete');
     Route::resource('advertisements', AdvertisementController::class);
 
     // Route::prefix('hospital/{hospital}')->group(function (){

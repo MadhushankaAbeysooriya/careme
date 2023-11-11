@@ -38,7 +38,7 @@ class AdvertisementController extends Controller
             DB::beginTransaction();
 
             // Attempt to create a new Person record
-            $advertisement = Advertisement::create($request->all());            
+            $advertisement = Advertisement::create($request->all());
 
             if ($request->hasFile('filepath')) {
                 // Define the destination path for personal photos
@@ -74,7 +74,7 @@ class AdvertisementController extends Controller
 
             // Handle any exceptions that occur during the process
             return redirect()->route('advertisements.index')->with('error', 'An error occurred while creating the person.');
-        }        
+        }
     }
 
     /**
@@ -119,5 +119,46 @@ class AdvertisementController extends Controller
     {
         Advertisement::where('id', $id)->update(['status' => '1']);
         return redirect()->route('advertisements.index')->with('success', 'Advertisement Activated');
+    }
+
+    public function delete($id)
+    {
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            // Find the Advertisement record by ID
+            $advertisement = Advertisement::findOrFail($id);
+
+            // Get the path to the directory to be deleted
+            $directoryPath = public_path('/upload/advertisements/'.$advertisement->id);
+
+            // // Delete the associated image file
+            // $filePath = public_path($advertisement->filepath);
+            // if (File::exists($filePath)) {
+            //     File::delete($filePath);
+            // }
+
+            // Check if the directory exists and then delete it
+            if (File::isDirectory($directoryPath)) {
+                File::deleteDirectory($directoryPath);
+            }
+
+            // Delete the Advertisement record from the database
+            $advertisement->delete();
+
+
+            // Commit the database transaction
+            DB::commit();
+
+            return redirect()->route('advertisements.index')->with('success', 'Advertisement and associated image deleted successfully');
+        } catch (Exception $e) {
+            // If an exception occurs, rollback the database transaction
+            DB::rollback();
+
+            // Handle any exceptions that occur during the process
+            return redirect()->route('advertisements.index')->with('error', 'An error occurred while deleting the Advertisement and its image.');
+        }
+
     }
 }

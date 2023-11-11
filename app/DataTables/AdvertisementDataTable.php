@@ -31,11 +31,15 @@ class AdvertisementDataTable extends DataTable
                 $id = $advertisement->id;
                 $btn = '';
 
+                $btn .='<a href="'.route('advertisements.delete',$id).'"
+                        class="btn btn-xs btn-danger" data-toggle="tooltip"
+                        title="Permanent Delete"><i class="fa fa-trash"></i> </a> ';
+
                 if($advertisement->status==1)
                 {
                     $btn .='<a href="'.route('advertisements.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
-                        title="Suspend"><i class="fa fa-trash"></i> </a> ';
+                        title="Inactive"><i class="fa fa-trash"></i> </a> ';
                 }elseif($advertisement->status==0)
                 {
                     $btn .='<a href="'.route('advertisements.activate',$id).'"
