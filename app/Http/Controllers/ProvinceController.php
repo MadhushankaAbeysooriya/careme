@@ -38,7 +38,7 @@ class ProvinceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $province = Province::find($id);
 
@@ -48,7 +48,7 @@ class ProvinceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $province = Province::find($id);
 

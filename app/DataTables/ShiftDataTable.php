@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Hospital;
+use App\Models\Shift;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class HospitalDataTable extends DataTable
+class ShiftDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,26 +23,26 @@ class HospitalDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($hospital){
-                return ($hospital->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+            ->addColumn('status', function($ranaviruType){
+                return ($ranaviruType->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })
-            ->addColumn('action', function ($hospital) {
-                $id = $hospital->id;
+            ->addColumn('action', function ($ranaviruType) {
+                $id = $ranaviruType->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('hospitals.edit',$id).'"
+                    $btn .= '<a href="'.route('province.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
-                    if($hospital->status==1)
+                    if($ranaviruType->status==1)
                     {
-                        $btn .='<a href="'.route('hospitals.inactive',$id).'"
+                        $btn .='<a href="'.route('province.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
-                    }elseif($hospital->status==0)
+                    }elseif($ranaviruType->status==0)
                     {
-                        $btn .='<a href="'.route('hospitals.activate',$id).'"
+                        $btn .='<a href="'.route('province.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }
@@ -55,9 +55,9 @@ class HospitalDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Hospital $model): QueryBuilder
+    public function query(Shift $model): QueryBuilder
     {
-        return $model->with('district')->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -66,7 +66,7 @@ class HospitalDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('hospital-table')
+                    ->setTableId('shift-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -95,7 +95,8 @@ class HospitalDataTable extends DataTable
                   ->width(100)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
-            Column::make('district.name')->data('district.name')->title('District'),
+            Column::make('from')->data('from')->title('From'),
+            Column::make('to')->data('to')->title('To'),
             Column::computed('status'),
         ];
     }
@@ -105,6 +106,6 @@ class HospitalDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Hospital_' . date('YmdHis');
+        return 'Shift_' . date('YmdHis');
     }
 }

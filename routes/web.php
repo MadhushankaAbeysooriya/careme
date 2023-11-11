@@ -6,6 +6,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\ProvinceController;
@@ -64,6 +65,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/advertisement/activate/{id}',[AdvertisementController::class,'activate'])->name('advertisements.activate');
     Route::get('/advertisement/delete/{id}',[AdvertisementController::class,'delete'])->name('advertisements.delete');
     Route::resource('advertisements', AdvertisementController::class);
+
+    Route::get('/shifts/inactive/{id}',[ShiftController::class,'inactive'])->name('shifts.inactive');
+    Route::get('/shifts/activate/{id}',[ShiftController::class,'activate'])->name('shifts.activate');
+    Route::resource('shifts', ShiftController::class);
 
     // Route::prefix('hospital/{hospital}')->group(function (){
     //     Route::resource('userhospitals',UserHospitalController::class);

@@ -25,7 +25,7 @@ class UpdateHospitalRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('hospital', 'name')
+                Rule::unique('hospitals', 'name')
                     ->where(function ($query) {
                         return $query->where('district_id', $this->district_id)
                             ->where('id', '<>', $this->hospital->id);
