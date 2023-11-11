@@ -57,6 +57,23 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label for="type" class="col-sm-2 col-form-label">Type</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control @error('type') is-invalid @enderror"
+                                            name="type" value="{{ old('type') }}" id="type" required>
+                                            <option value="">Please Select</option>
+                                            <option value="0">Private</option>
+                                            <option value="1">Government</option>
+                                        </select>
+                                        <span class="text-danger">
+                                            @error('type')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control @error('name')

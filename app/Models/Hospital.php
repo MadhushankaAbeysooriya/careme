@@ -15,6 +15,7 @@ class Hospital extends Model
         'name',
         'status',
         'district_id',
+        'type',
     ];
 
     public function district()

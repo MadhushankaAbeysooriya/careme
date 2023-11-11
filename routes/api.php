@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\ShiftController;
 use App\Http\Controllers\Api\HospitalController;
+use App\Http\Controllers\Api\AvlCareTakerController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 
@@ -60,6 +61,8 @@ Route::middleware('auth:sanctum')->get('/advertisements', [AdvertisementControll
 Route::middleware('auth:sanctum')->get('/shifts', [ShiftController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/hospitals', [HospitalController::class, 'index']);
+
+Route::middleware('auth:sanctum')->post('/store-avlcaretaker', [AvlCareTakerController::class, 'store']);
 
 
 
