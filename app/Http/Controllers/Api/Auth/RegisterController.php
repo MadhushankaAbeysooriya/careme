@@ -53,6 +53,7 @@ class RegisterController extends Controller
             'gender' => 'required',
             'device_name' => 'required',
             'user_type' => 'required',
+            'dob' => 'required'
         ], [
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least 8 characters.',
@@ -65,6 +66,7 @@ class RegisterController extends Controller
             'gender.required' => 'The gender field is required.',
             'device_name.required' => 'The device id field is required.',
             'user_type.required' => 'The user type field is required.',
+            'dob.required' => 'The Date of Birth is required.',
         ]);
 
         if ($validator->fails()) {
@@ -75,13 +77,14 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $request->first_name." ". $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            //'password' => Hash::make($request->password),
             'fname' => $request->first_name,
             'lname' => $request->last_name,
             'phone' => $request->phone,
             'gender' => $request->gender,
             'deviceId' => $request->device_name,
             'user_type' => $request->user_type,
+            'dob' => $request->dob,
             // Add other user fields as needed
         ]);
 
@@ -95,6 +98,7 @@ class RegisterController extends Controller
             'last_name' => $user->lname,
             'user_type' => $user->user_type, // Replace 'user_type' with the actual field name for user type
             'gender' => $user->gender,
+            'dob' => $user->dob,
         ],200);
     }
 }

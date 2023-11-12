@@ -33,6 +33,7 @@ class User extends Authenticatable
         'user_type',
         'gender',
         'deviceId',
+        'dob',
     ];
 
     /**

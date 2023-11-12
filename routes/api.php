@@ -36,22 +36,25 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
 
 Route::post('/token', function (Request $request) {
     $request->validate([
-        'device_name' => 'required',
+        'device_id' => 'required',
     ]);
 
-    $user = User::where('deviceId', $request->device_name)->first();
+    $user = User::where('deviceId', $request->device_id)->first();
 
     if (! $user) {
-        return response()->json(['message' => 'Device not found'], 404);
+        return response()->json(['message' => 'Device not found',
+                                'status'=> '0'], 200);
     }
 
-    $token = $user->createToken($request->device_name)->plainTextToken;
+    $token = $user->createToken($request->device_id)->plainTextToken;
 
     return response()->json(['user_type' => $user->user_type,
                             'first_name' => $user->fname,
                             'last_name' => $user->lname,
                             'gender' => $user->gender,
-                            'api_token' => $token]);
+                            'validation' => $user->validated,
+                            'api_token' => $token,
+                            ]);
 });
 
 Route::post('/register',[RegisterController::class,'register']);
