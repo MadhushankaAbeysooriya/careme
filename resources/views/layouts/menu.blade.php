@@ -115,7 +115,27 @@
             <a href="{{route('users.index')}}" class="nav-link
             {{ request()->routeIs('users.index','users.edit')?'active':'' }}">
                 <i class="far fa-circle nav-icon text-purple"></i>
-                <p>User</p>
+                <p>Admin User</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('users.patient')}}" class="nav-link
+            {{ request()->routeIs('users.patient')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-purple"></i>
+                <p>Patient User</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('users.care_taker')}}" class="nav-link
+            {{ request()->routeIs('users.care_taker')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-purple"></i>
+                <p>Care Taker User</p>
             </a>
         </li>
     </ul>

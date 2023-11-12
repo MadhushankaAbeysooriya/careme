@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use App\DataTables\UserPatientDataTable;
+use App\DataTables\UserCareTakerDataTable;
 
 class UserController extends Controller
 {
@@ -33,6 +35,16 @@ class UserController extends Controller
     public function index(UserDataTable $dataTable)
     {
         return $dataTable->render('users.index');
+    }
+
+    public function indexPatient(UserPatientDataTable $dataTable)
+    {
+        return $dataTable->render('users.index_patient');
+    }
+
+    public function indexCareTaker(UserCareTakerDataTable $dataTable)
+    {
+        return $dataTable->render('users.index_care_taker');
     }
 
     /**
@@ -177,13 +189,13 @@ class UserController extends Controller
     {
         $id = Crypt::decrypt($encryptedId);
         User::where('id',$id)->update(['validated'=>'1']);
-         return redirect()->route('users.index')->with( 'success',' Account Validated');
+         return redirect()->back()->with( 'success',' Account Validated');
     }
 
     public function notvalidated($encryptedId)
     {
         $id = Crypt::decrypt($encryptedId);
         User::where('id',$id)->update(['validated'=>'0']);
-        return redirect()->route('users.index')->with( 'success',' Account Not-Validated');
+        return redirect()->back()->with( 'success',' Account Not-Validated');
     }
 }

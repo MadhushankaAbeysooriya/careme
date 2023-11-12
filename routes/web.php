@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('roles', RoleController::class);
 
+    Route::get('/users/patient',[UserController::class,'indexPatient'])->name('users.patient');
+    Route::get('/users/caretaker',[UserController::class,'indexCareTaker'])->name('users.care_taker');
     Route::get('/users/notvalidated/{id}',[UserController::class,'notvalidated'])->name('users.notvalidated');
     Route::get('/users/validated/{id}',[UserController::class,'validated'])->name('users.validated');
     Route::get('/users/inactive/{id}',[UserController::class,'inactive'])->name('users.inactive');

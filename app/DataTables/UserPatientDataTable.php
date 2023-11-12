@@ -13,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Support\Facades\Crypt;
 
-class UserDataTable extends DataTable
+class UserPatientDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -76,20 +76,7 @@ class UserDataTable extends DataTable
 
            return $btn;
             })
-
-            ->addColumn('roles', function ($user) {
-                $roles = $user->getRoleNames();
-                $badges = '';
-
-                if (!empty($roles)) {
-                    foreach ($roles as $role) {
-                        $badges .= '<label class="badge badge-success">' . $role . '</label>';
-                    }
-                }
-
-                return $badges;
-            })
-            ->rawColumns(['action','roles','status','validated']);
+            ->rawColumns(['action','status','validated']);
     }
 
     /**
@@ -97,7 +84,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery()->where('user_type',0)->orderBy('validated','asc');
+        return $model->newQuery()->where('user_type',1)->orderBy('validated','asc');
     }
 
     /**
@@ -135,8 +122,6 @@ class UserDataTable extends DataTable
                   ->width(115)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
-            Column::make('email')->data('email')->title('Email'),
-            Column::computed('roles'),
             Column::computed('status'),
             Column::computed('validated'),
         ];
