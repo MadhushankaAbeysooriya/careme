@@ -68,7 +68,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => $validator->errors()], 200);
         }
 
         // If validation passes, create the user
@@ -95,6 +95,6 @@ class RegisterController extends Controller
             'last_name' => $user->lname,
             'user_type' => $user->user_type, // Replace 'user_type' with the actual field name for user type
             'gender' => $user->gender,
-        ]);
+        ],200);
     }
 }

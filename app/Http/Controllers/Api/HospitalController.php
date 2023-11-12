@@ -17,14 +17,14 @@ class HospitalController extends Controller
                 //$shifts = Hospital::all();
                 $hospitals = Hospital::select('id', 'name')->get();
 
-                return response()->json(['hospitals' => $hospitals]);
+                return response()->json(['hospitals' => $hospitals],200);
 
             } catch (Exception $e) {
 
                 return response()->json(['error' => 'An error occurred.'], 500);
             }
         }else{
-            return response()->json(['message' => 'Not validated'], 401);
+            return response()->json(['message' => 'Not validated'], 200);
         }
     }
 }

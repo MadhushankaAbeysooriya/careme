@@ -19,10 +19,10 @@ class AdvertisementController extends Controller
                 return asset($path);
             }, $imagePaths);
 
-            return response()->json(['image_paths' => $fullPaths]);
+            return response()->json(['image_paths' => $fullPaths],200);
         }else{
              // If the token is not validated, send a message
-             return response()->json(['message' => 'Not validated'], 401);
+             return response()->json(['message' => 'Not validated'], 200);
         }
     }
 }

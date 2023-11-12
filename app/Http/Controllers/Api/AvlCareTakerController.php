@@ -27,7 +27,7 @@ class AvlCareTakerController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['errors' => $validator->errors()], 200);
         }
 
         $avlcaretaker = AvlCareTaker::create([

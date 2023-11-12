@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Rank;
 use App\Models\Forces;
+use App\Models\Hospital;
 use App\Models\Usertype;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -54,8 +55,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function userhospital()
+
+
+    public function hospitals()
     {
-        return $this->hasOne(UserHospital::class);
+        return $this->belongsToMany(Hospital::class, 'user_hospitals', 'user_id', 'hospital_id');
     }
 }

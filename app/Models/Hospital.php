@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\District;
 use App\Models\UserHospital;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +24,8 @@ class Hospital extends Model
         return $this->belongsTo(District::class, 'district_id', 'id');
     }
 
-    public function userhospital()
+    public function users()
     {
-        return $this->hasMany(UserHospital::class);
+        return $this->belongsToMany(User::class, 'user_hospitals', 'hospital_id', 'user_id');
     }
 }
