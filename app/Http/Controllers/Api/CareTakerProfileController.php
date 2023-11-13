@@ -17,6 +17,7 @@ class CareTakerProfileController extends Controller
         'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         'user_id' => 'required|exists:users,id',
         'hospital_id' => 'required|array',
+        'description' => 'required'
     ], [
         'personal_photo.required' => 'The personal photo field is required.',
         'personal_photo.image' => 'The personal photo must be an image.',
@@ -29,6 +30,7 @@ class CareTakerProfileController extends Controller
         'user_id.exists' => 'Invalid user ID.',
         'hospital_id.required' => 'Hospital ID is required.',
         'hospital_id.array' => 'Hospital ID must be an array.',
+        'description.required' => 'Description is required.',
     ]);
 
     if ($validator->fails()) {
