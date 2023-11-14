@@ -83,6 +83,10 @@ class AvlCareTakerController extends Controller
                     'user_name' => $result->user->name,
                     'user_age' => $age,
                     'user_gender' => $result->user->gender,
+                    'personaPhoto' => optional($result->user->caretakerprofile)->personal_photo
+                                        ? asset($result->user->caretakerprofile->personal_photo)
+                                        : null,
+                    'description' => optional($result->user->caretakerprofile)->description,
                     // Add other fields as needed
                 ];
             });

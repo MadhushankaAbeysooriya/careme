@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\HospitalController;
 use App\Http\Controllers\Api\AvlCareTakerController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\CareTakerProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,8 @@ Route::middleware('auth:sanctum')->get('/hospitals', [HospitalController::class,
 Route::middleware('auth:sanctum')->post('/store-avlcaretaker', [AvlCareTakerController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/search-avlcaretaker', [AvlCareTakerController::class, 'search']);
+
+Route::middleware('auth:sanctum')->post('/store-caretaker-profile', [CareTakerProfileController::class, 'store']);
 
 
 
