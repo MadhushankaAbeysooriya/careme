@@ -17,14 +17,14 @@ class ShiftController extends Controller
                 //$shifts = Shift::all();
                 $shifts = Shift::select('id', 'name')->get();
 
-                return response()->json(['shifts' => $shifts],200);
+                return response()->json(['shifts' => $shifts, 'status' => 1],200);
 
             } catch (Exception $e) {
 
                 return response()->json(['error' => 'An error occurred.'], 500);
             }
         }else{
-            return response()->json(['message' => 'Not validated'], 200);
+            return response()->json(['message' => 'Not validated', 'status' => 0], 200);
         }
     }
 }

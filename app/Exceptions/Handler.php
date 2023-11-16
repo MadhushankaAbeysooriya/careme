@@ -30,9 +30,9 @@ class Handler extends ExceptionHandler
         });
     }
 
-    // //added to get message when unauthenticated
-    // protected function unauthenticated($request, AuthenticationException $exception)
-    // {
-    //     return response()->json(['message' => 'Unauthenticated'], 401);
-    // }
+    //added to get message when unauthenticated
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return response()->json(['message' => 'Unauthenticated'], 401);
+    }
 }

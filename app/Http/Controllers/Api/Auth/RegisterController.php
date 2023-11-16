@@ -70,7 +70,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 200);
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
         }
 
         // If validation passes, create the user
@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'lname' => $request->last_name,
             'phone' => $request->phone,
             'gender' => $request->gender,
-            'deviceId' => $request->device_name,
+            'deviceId' => $request->device_id,
             'user_type' => $request->user_type,
             'dob' => $request->dob,
             // Add other user fields as needed
@@ -99,6 +99,8 @@ class RegisterController extends Controller
             'user_type' => $user->user_type, // Replace 'user_type' with the actual field name for user type
             'gender' => $user->gender,
             'dob' => $user->dob,
+            'status' => 1,
+            'message' => "Success",
         ],200);
     }
 }
