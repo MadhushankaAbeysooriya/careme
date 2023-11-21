@@ -131,5 +131,52 @@ class AvlCareTakerController extends Controller
         ], 200);
     }
 
+    public function searchAvlAuto(Request $request)
+    {
+        try {
+            // Validate the request data
+            $request->validate([
+                'from' => 'required|date',
+                'to' => 'required|date',
+            ]);
+
+            // Get the search criteria from the request
+            $from = $request->input('from');
+            $to = $request->input('to');
+            $shiftId = $request->input('shift_id');
+
+            $results = AvlCareTaker::where(function ($query) use ($from, $to) {
+                $query->where('from', '<=', $from)
+                      ->where('to', '>=', $to);
+            })
+            ->where('shift_id', $shiftId)
+            ->get();
+
+            // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->user->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'user_name' => $result->user->name,
+                    'user_age' => $age,
+                    'user_gender' => $result->user->gender,
+                    'personaPhoto' => optional($result->user->caretakerprofile)->personal_photo
+                                        ? asset($result->user->caretakerprofile->personal_photo)
+                                        : null,
+                    'description' => optional($result->user->caretakerprofile)->description,
+                    // Add other fields as needed
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+        } catch (Exception $e) {
+            // Handle unexpected exceptions or errors
+            if ($e instanceof QueryException) {
+                return response()->json(['error' => 'Database query error.'], 500);
+            }
+
+            return response()->json(['error' => 'Unexpected error.'], 500);
+        }
+    }
 
 }

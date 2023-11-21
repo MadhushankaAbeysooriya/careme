@@ -68,9 +68,13 @@ Route::middleware('auth:sanctum')->get('/hospitals', [HospitalController::class,
 
 Route::middleware('auth:sanctum')->post('/store-avlcaretaker', [AvlCareTakerController::class, 'store']);
 
+Route::middleware('auth:sanctum')->post('/store-avlcaretaker-auto', [AvlCareTakerController::class, 'storeAvlAuto']);
+
 Route::middleware('auth:sanctum')->get('/search-avlcaretaker', [AvlCareTakerController::class, 'search']);
 
 Route::middleware('auth:sanctum')->post('/store-caretaker-profile', [CareTakerProfileController::class, 'store']);
+
+
 
 
 
