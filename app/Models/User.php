@@ -7,6 +7,8 @@ use App\Models\Rank;
 use App\Models\Forces;
 use App\Models\Hospital;
 use App\Models\Usertype;
+use App\Models\UserHospital;
+use App\Models\CareTakerProfile;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -57,9 +59,14 @@ class User extends Authenticatable
     ];
 
 
-
     public function hospitals()
     {
-        return $this->belongsToMany(Hospital::class, 'user_hospitals', 'user_id', 'hospital_id');
+        return $this->belongsToMany(Hospital::class, 'user_hospitals')
+            ->using(UserHospital::class); // Using the custom pivot model
+    }
+
+    public function caretakerprofile()
+    {
+        return $this->hasOne(CareTakerProfile::class);
     }
 }

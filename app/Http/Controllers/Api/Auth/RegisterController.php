@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -20,8 +21,6 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'fname' => ['required','max:255'],
             'lname' => ['required','max:255'],
             'phone' => ['required','unique:users','max:10'],
@@ -46,25 +45,21 @@ class RegisterController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'password' => 'required|string|min:8|confirmed',
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'phone' => 'required|unique:users|max:10',
             'gender' => 'required',
-            'device_name' => 'required',
+            'device_id' => 'required',
             'user_type' => 'required',
             'dob' => 'required'
         ], [
-            'password.required' => 'The password field is required.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password.confirmed' => 'The password confirmation does not match.',
             'first_name.required' => 'The first name field is required.',
             'last_name.required' => 'The last name field is required.',
             'phone.required' => 'The phone field is required.',
             'phone.max' => 'The phone field must not be more than 10 characters.',
             'phone.unique' => 'The phone number is already taken.',
             'gender.required' => 'The gender field is required.',
-            'device_name.required' => 'The device id field is required.',
+            'device_id.required' => 'The device id field is required.',
             'user_type.required' => 'The user type field is required.',
             'dob.required' => 'The Date of Birth is required.',
         ]);
@@ -84,12 +79,13 @@ class RegisterController extends Controller
             'gender' => $request->gender,
             'deviceId' => $request->device_id,
             'user_type' => $request->user_type,
+            //'dob' => Carbon::parse($request->dob),
             'dob' => $request->dob,
             // Add other user fields as needed
         ]);
 
         // Generate a Sanctum token for the newly registered user
-        $token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken($request->device_id)->plainTextToken;
 
         // Return a response with the token and user details
         return response()->json([
@@ -100,7 +96,11 @@ class RegisterController extends Controller
             'gender' => $user->gender,
             'dob' => $user->dob,
             'status' => 1,
+<<<<<<< HEAD
             'message' => "Success",
+=======
+            'message' => 'Success',
+>>>>>>> b3ede7dceae13318b1522b041a17c9ea43943865
         ],200);
     }
 }

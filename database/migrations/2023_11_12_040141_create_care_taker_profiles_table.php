@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('id_back');
             $table->string('personal_photo');
             $table->string('bank');
+            $table->string('description');
             $table->timestamps();
         });
     }
