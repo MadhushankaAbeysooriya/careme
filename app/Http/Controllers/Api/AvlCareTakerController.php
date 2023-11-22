@@ -131,6 +131,47 @@ class AvlCareTakerController extends Controller
         ], 200);
     }
 
+    public function updateAvlAuto(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ], [
+            'user_id.required' => 'User is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        $toDate = Carbon::now(); // Calculate the to date as 4 days from the from date
+
+        // Find the final record for the given user_id
+        $avlcaretaker = AvlCareTaker::where('user_id', $request->user_id)
+                        ->where('to','>', $toDate)
+                        ->orderBy('created_at', 'desc') // Assuming created_at is the timestamp field indicating when the record was created
+                        ->first();
+
+        if ($avlcaretaker) {
+            // Update the existing record
+            $avlcaretaker->update([
+                'to' => $toDate,
+            ]);
+        }else{
+
+            return response()->json([
+                'message' => 'you are already unavailable',
+                'status' => 1,
+            ], 200);
+
+        }
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => 1,
+        ], 200);
+    }
+
     public function searchAvlAuto(Request $request)
     {
         try {
