@@ -179,19 +179,28 @@ class AvlCareTakerController extends Controller
             $request->validate([
                 'from' => 'required|date',
                 'to' => 'required|date',
+                'hospital_id' => 'required',
             ]);
 
             // Get the search criteria from the request
             $from = $request->input('from');
             $to = $request->input('to');
-            $shiftId = $request->input('shift_id');
+            $hospitalId = $request->input('hospital_id');
+
+            // $results = AvlCareTaker::where(function ($query) use ($from, $to) {
+            //     $query->where('from', '<=', $from)
+            //           ->where('to', '>=', $to);
+            // })
+            // ->get();
 
             $results = AvlCareTaker::where(function ($query) use ($from, $to) {
-                $query->where('from', '<=', $from)
-                      ->where('to', '>=', $to);
-            })
-            ->where('shift_id', $shiftId)
-            ->get();
+                            $query->where('from', '<=', $from)
+                            ->where('to', '>=', $to);
+                        })
+                        ->whereHas('user.hospitals', function ($query) use ($hospitalId) {
+                            $query->where('hospital_id', $hospitalId);
+                        })
+                        ->get();
 
             // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {

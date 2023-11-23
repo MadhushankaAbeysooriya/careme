@@ -74,6 +74,8 @@ Route::middleware('auth:sanctum')->post('/update-avlcaretaker-auto', [AvlCareTak
 
 Route::middleware('auth:sanctum')->get('/search-avlcaretaker', [AvlCareTakerController::class, 'search']);
 
+Route::middleware('auth:sanctum')->get('/search-avlcaretaker-auto', [AvlCareTakerController::class, 'searchAvlAuto']);
+
 Route::middleware('auth:sanctum')->post('/store-caretaker-profile', [CareTakerProfileController::class, 'store']);
 
 
