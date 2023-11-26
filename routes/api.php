@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->get('/search-avlcaretaker-auto', [AvlCareTake
 
 Route::middleware('auth:sanctum')->post('/store-caretaker-profile', [CareTakerProfileController::class, 'store']);
 
+Route::middleware('auth:sanctum')->get('/get-user-info', [CareTakerProfileController::class, 'getUserInfo']);
+
 
 
 

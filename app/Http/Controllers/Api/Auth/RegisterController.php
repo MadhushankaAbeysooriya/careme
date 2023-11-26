@@ -96,11 +96,7 @@ class RegisterController extends Controller
             'gender' => $user->gender,
             'dob' => $user->dob,
             'status' => 1,
-<<<<<<< HEAD
             'message' => "Success",
-=======
-            'message' => 'Success',
->>>>>>> b3ede7dceae13318b1522b041a17c9ea43943865
         ],200);
     }
 }

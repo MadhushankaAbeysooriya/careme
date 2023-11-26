@@ -179,5 +179,45 @@ public function store(Request $request)
     ], 200);
 }
 
+    public function getUserInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ], [
+            'user_id.required' => 'The user id field is required.',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $user = User::where('id', $request->input('user_id'))->first();
+
+            // Check if the user exists
+            if (!$user) {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+
+            // Check if the user has a CareTakerProfile
+            if ($user->caretakerprofile) {
+                $data = [
+                    'id' => $user->id,
+                    'lname' => $user->lname,
+                    'fname' => $user->fname,
+                    'personalphoto' => $user->caretakerprofile->personal_photo,
+                ];
+            } else {
+                $data = [
+                    'id' => $user->id,
+                    'lname' => $user->lname,
+                    'fname' => $user->fname,
+                ];
+            }
+
+            return response()->json($data);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred.'], 500);
+        }
+    }
 }
