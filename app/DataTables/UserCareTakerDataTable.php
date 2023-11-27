@@ -121,6 +121,7 @@ class UserCareTakerDataTable extends DataTable
                   ->width(115)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
+            Column::make('phone')->data('phone')->title('Mobile'),
             Column::computed('status'),
             Column::computed('validated'),
         ];

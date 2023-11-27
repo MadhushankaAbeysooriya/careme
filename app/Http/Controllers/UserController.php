@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -97,7 +98,11 @@ class UserController extends Controller
         $id = Crypt::decrypt($encryptedId);
 
         $user = User::find($id);
-        return view('users.show',compact('user'));
+
+        $dob = Carbon::parse($user->dob);
+        $age = $dob->age;
+
+        return view('users.show',compact('user','age'));
     }
 
     /**

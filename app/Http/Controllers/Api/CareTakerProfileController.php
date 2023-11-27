@@ -169,8 +169,7 @@ public function store(Request $request)
         'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
         'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
         'user_id' => $request->user_id,
-        // 'hospital_id' => $hospitalIdJson,
-        // Add other fields as needed
+        'description' =>$request->description,
     ]);
 
     return response()->json([
@@ -205,6 +204,7 @@ public function store(Request $request)
                     'id' => $user->id,
                     'lname' => $user->lname,
                     'fname' => $user->fname,
+                    'validated' => $user->validated,
                     'personalphoto' => $user->caretakerprofile->personal_photo,
                 ];
             } else {
@@ -212,6 +212,7 @@ public function store(Request $request)
                     'id' => $user->id,
                     'lname' => $user->lname,
                     'fname' => $user->fname,
+                    'validated' => $user->validated,
                 ];
             }
 

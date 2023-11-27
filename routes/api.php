@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\ShiftController;
+use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\HospitalController;
+use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\AvlCareTakerController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -34,6 +36,10 @@ Route::post('/generate-otp', [AuthController::class, 'generateOTP']);
 
 // Verify OTP and generate JWT token
 Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
+
+Route::post('/login',[LoginController::class,'login']);
+
+Route::middleware('auth:sanctum')->get('/check-validated', [LoginController::class, 'checkValidated']);
 
 Route::post('/token', function (Request $request) {
     $request->validate([
@@ -79,6 +85,12 @@ Route::middleware('auth:sanctum')->get('/search-avlcaretaker-auto', [AvlCareTake
 Route::middleware('auth:sanctum')->post('/store-caretaker-profile', [CareTakerProfileController::class, 'store']);
 
 Route::middleware('auth:sanctum')->get('/get-user-info', [CareTakerProfileController::class, 'getUserInfo']);
+
+Route::middleware('auth:sanctum')->post('/store-complain', [ComplainController::class, 'store']);
+
+Route::middleware('auth:sanctum')->get('/get-all-complains', [ComplainController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/get-complains-by-user', [ComplainController::class, 'getByUser']);
 
 
 
