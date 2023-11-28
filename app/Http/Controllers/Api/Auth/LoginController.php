@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -49,8 +51,18 @@ class LoginController extends Controller
                                     'status'=> '0'], 200);
         }
 
+        $avlCareTaker = AvlCareTaker::where('user_id', $request->user_id)
+                        ->where('from', '<=', Carbon::now()) // Assuming 'from' is the start date of availability
+                        ->where('to', '>=', Carbon::now())   // Assuming 'to' is the end date of availability
+                        ->first();
 
-        return response()->json(['validation' => $user->validated]);
+        if ($avlCareTaker) {
+            // User is available
+            return response()->json(['validation' => $user->validated, 'available' => '1'], 200);
+        } else {
+            // User is not available
+            return response()->json(['validation' => $user->validated, 'available' => '0'], 200);
+        }        
 
     }
 }

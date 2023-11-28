@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 
 class AvlCareTakerController extends Controller
