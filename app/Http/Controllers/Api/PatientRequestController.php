@@ -57,7 +57,7 @@ class PatientRequestController extends Controller
             'user_ids.required' => 'User IDs are required.',
             'user_ids.array' => 'User IDs must be an array.',
             'user_ids.*.required' => 'Each user ID is required.',
-            'user_ids.*.exists' => 'Invalid user ID provided.',
+            'user_ids.*.exists' => 'The selected user ID is invalid or does not exist in the users table.',
         ]);
 
         if ($validator->fails()) {

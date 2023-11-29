@@ -309,7 +309,7 @@ public function store(Request $request)
         // Move the uploaded file to the destination
         $request->file('bank')->move($banksDirectory, $fileBank);
 
-        
+
 
         // Create CareTakerProfile record
         CareTakerProfile::create([
@@ -333,27 +333,33 @@ public function store(Request $request)
             'user_id' => 'required',
             'hospital_id' => 'required|array',
             'hospital_id.*' => 'exists:hospitals,id', // Validate each hospital ID exists in the 'hospitals' table
-        ], [            
+        ], [
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'hospital_id.required' => 'Hospital IDs are required.',
             'hospital_id.array' => 'Hospital IDs must be an array.',
             'hospital_id.*.exists' => 'Invalid hospital ID provided.',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
         }
-    
+
         // Handle image uploads and save paths in the database
         $user = User::findOrFail($request->user_id);
-    
+
+        // Sync hospitals
+        // if ($request->hospital_id) {
+        //     $hospitalIds = $request->hospital_id;
+        //     $user->hospitals()->sync($hospitalIds);
+        // }
+
         // Sync hospitals
         if ($request->hospital_id) {
-            $hospitalIds = $request->hospital_id;
+            $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
             $user->hospitals()->sync($hospitalIds);
         }
-    
+
         return response()->json([
             'message' => 'Success',
             'status' => 1,
@@ -383,7 +389,7 @@ public function store(Request $request)
 
         // Sync hospitals
         if ($request->hospital_id) {
-            $hospitalIds = $request->hospital_id;
+            $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
             $user->hospitals()->sync($hospitalIds);
         } else {
             // If no hospital IDs are provided, you may choose to detach all hospitals

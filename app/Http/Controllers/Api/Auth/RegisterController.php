@@ -100,4 +100,47 @@ class RegisterController extends Controller
             'message' => "Success",
         ],200);
     }
+
+    public function update(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'gender' => 'required',
+            'dob' => 'required'
+        ], [
+            'user_id.required' => 'The user id is required.',
+            'first_name.required' => 'The first name field is required.',
+            'last_name.required' => 'The last name field is required.',
+            'gender.required' => 'The gender field is required.',
+            'dob.required' => 'The Date of Birth is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found', 'status' => 0], 200);
+        }
+
+        // If validation passes, create the user
+        $user->update([
+            'name' => $request->first_name." ". $request->last_name,
+            'fname' => $request->first_name,
+            'lname' => $request->last_name,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+        ]);
+
+        // Return a response with the token and user details
+        return response()->json([
+            'message' => 'User updated successfully',
+            'status' => 1,
+        ],200);
+    }
 }

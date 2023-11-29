@@ -69,6 +69,8 @@ Route::post('/token', function (Request $request) {
 
 Route::post('/register',[RegisterController::class,'register']);
 
+Route::middleware('auth:sanctum')->put('/update-user-profile',[RegisterController::class,'update']);
+
 Route::middleware('auth:sanctum')->get('/advertisements', [AdvertisementController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/shifts', [ShiftController::class, 'index']);
