@@ -15,5 +15,6 @@ class PatientRequest extends Model
         'from',
         'to',
         'status',
+        'shift_id',
     ];
 }

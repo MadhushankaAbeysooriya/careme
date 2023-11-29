@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -24,6 +25,11 @@ class LoginController extends Controller
         }
 
         $token = $user->createToken($request->mobile)->plainTextToken;
+
+
+        $user->update([
+            'login_status' => 1,
+        ]);
 
 
         return response()->json([
@@ -62,7 +68,27 @@ class LoginController extends Controller
         } else {
             // User is not available
             return response()->json(['validation' => $user->validated, 'available' => '0'], 200);
-        }        
+        }
 
+    }
+
+    public function logout(Request $request)
+    {
+        $user = Auth::user();
+        //dd($user);
+
+        if ($user) {
+            // Revoke the current user's access token
+            $user->currentAccessToken()->delete();
+
+            // Update the login status to 0 (logged out)
+            $user->update([
+                'login_status' => 0,
+            ]);
+
+            return response()->json(['message' => 'Logout successful', 'status' => '1'], 200);
+        } else {
+            return response()->json(['message' => 'User not authenticated', 'status' => '0'], 401);
+        }
     }
 }
