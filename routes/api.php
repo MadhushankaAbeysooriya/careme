@@ -56,7 +56,9 @@ Route::post('/token', function (Request $request) {
 
     $token = $user->createToken($request->device_id)->plainTextToken;
 
-    return response()->json(['user_type' => $user->user_type,
+    return response()->json([
+                            'user_id' => $user->id,
+                            'user_type' => $user->user_type,
                             'first_name' => $user->fname,
                             'last_name' => $user->lname,
                             'gender' => $user->gender,

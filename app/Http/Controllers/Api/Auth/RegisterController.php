@@ -89,6 +89,7 @@ class RegisterController extends Controller
 
         // Return a response with the token and user details
         return response()->json([
+            'user_id' => $user->id,
             'api_token' => $token,
             'first_name' => $user->fname,
             'last_name' => $user->lname,
