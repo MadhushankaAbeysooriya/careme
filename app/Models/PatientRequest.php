@@ -16,5 +16,6 @@ class PatientRequest extends Model
         'to',
         'status',
         'shift_id',
+        'hospital_id',
     ];
 }
