@@ -80,7 +80,7 @@ class RegisterController extends Controller
             'gender' => $request->gender,
             'deviceId' => $request->device_id,
             'user_type' => $request->user_type,
-            //'dob' => Carbon::parse($request->dob),
+            'login_status' => 1,
             'dob' => $request->dob,
             // Add other user fields as needed
         ]);

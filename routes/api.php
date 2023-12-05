@@ -45,6 +45,8 @@ Route::middleware('auth:sanctum')->post('/logout',[LoginController::class,'logou
 
 Route::middleware('auth:sanctum')->get('/check-validated', [LoginController::class, 'checkValidated']);
 
+Route::post('/check-user', [LoginController::class, 'checkUser']);
+
 Route::post('/token', function (Request $request) {
     $request->validate([
         'device_id' => 'required',
@@ -52,7 +54,7 @@ Route::post('/token', function (Request $request) {
 
     $user = User::where('deviceId', $request->device_id)->where('login_status',1)->first();
 
-    if (! $user) {
+    if (!$user) {
         return response()->json(['message' => 'Device not found in login status',
                                 'status'=> '0'], 200);
     }

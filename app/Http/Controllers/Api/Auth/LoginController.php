@@ -44,6 +44,24 @@ class LoginController extends Controller
 
     }
 
+    public function checkUser(Request $request)
+    {
+        $request->validate([
+            'mobile' => 'required',
+        ]);
+
+        $user = User::where('phone', $request->mobile)->first();
+
+        if (! $user) {
+            return response()->json(['message' => 'Un Authorized User',
+                                    'status'=> '0'], 200);
+        }
+
+        return response()->json(['message' => 'Authorized User',
+        'status'=> '1'], 200);
+
+    }
+
     public function checkValidated(Request $request)
     {
         $request->validate([
