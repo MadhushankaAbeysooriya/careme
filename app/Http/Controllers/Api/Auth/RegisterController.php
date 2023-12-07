@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\PrivacyPolicy;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -79,7 +80,7 @@ class RegisterController extends Controller
             'gender' => $request->gender,
             'deviceId' => $request->device_id,
             'user_type' => $request->user_type,
-            //'dob' => Carbon::parse($request->dob),
+            'login_status' => 1,
             'dob' => $request->dob,
             // Add other user fields as needed
         ]);
@@ -142,5 +143,22 @@ class RegisterController extends Controller
             'message' => 'User updated successfully',
             'status' => 1,
         ],200);
+    }
+
+    public function getprivacypolicy()
+    {
+        if (Auth::check()) {
+            // Retrieve all image paths from the 'advertisements' table
+            $filepath = PrivacyPolicy::pluck('filepath')->toArray();
+
+            $fullPaths = array_map(function($path) {
+                return asset($path);
+            }, $filepath);
+
+            return response()->json(['filepath' => $fullPaths, 'status' => 1, 'message' => 'Success'],200);
+        }else{
+             // If the token is not validated, send a message
+             return response()->json(['message' => 'Not validated','status' => 0], 200);
+        }
     }
 }

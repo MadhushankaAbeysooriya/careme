@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\ShiftController;
+use App\Http\Controllers\Api\AboutUsController;
 use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\HospitalController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -40,21 +41,25 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
 
 Route::post('/login',[LoginController::class,'login']);
 
+Route::middleware('auth:sanctum')->post('/logout',[LoginController::class,'logout']);
+
 Route::middleware('auth:sanctum')->get('/check-validated', [LoginController::class, 'checkValidated']);
+
+Route::post('/check-user', [LoginController::class, 'checkUser']);
 
 Route::post('/token', function (Request $request) {
     $request->validate([
         'device_id' => 'required',
     ]);
 
-    $user = User::where('deviceId', $request->device_id)->first();
+    $user = User::where('deviceId', $request->device_id)->where('login_status',1)->first();
 
-    if (! $user) {
-        return response()->json(['message' => 'Device not found',
+    if (!$user) {
+        return response()->json(['message' => 'Device not found in login status',
                                 'status'=> '0'], 200);
     }
 
-    $token = $user->createToken($request->device_id)->plainTextToken;
+    $token = $user->createToken($user->phone)->plainTextToken;
 
     return response()->json([
                             'user_id' => $user->id,
@@ -64,6 +69,7 @@ Route::post('/token', function (Request $request) {
                             'gender' => $user->gender,
                             'validation' => $user->validated,
                             'api_token' => $token,
+                            'login_status' => $user->login_status,
                             ]);
 });
 
@@ -76,6 +82,8 @@ Route::middleware('auth:sanctum')->get('/advertisements', [AdvertisementControll
 Route::middleware('auth:sanctum')->get('/shifts', [ShiftController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/hospitals', [HospitalController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/hospitals-by-user', [HospitalController::class, 'getHospitalbyUser']);
 
 Route::middleware('auth:sanctum')->post('/store-avlcaretaker', [AvlCareTakerController::class, 'store']);
 
@@ -106,6 +114,10 @@ Route::middleware('auth:sanctum')->get('/get-complains-by-user', [ComplainContro
 Route::middleware('auth:sanctum')->post('/store-one-request', [PatientRequestController::class, 'storeOne']);
 
 Route::middleware('auth:sanctum')->post('/store-many-request', [PatientRequestController::class, 'storeMany']);
+
+Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/privacy-policy', [RegisterController::class, 'getprivacypolicy']);
 
 
 
