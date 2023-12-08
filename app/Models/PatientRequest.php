@@ -18,5 +18,7 @@ class PatientRequest extends Model
         'shift_id',
         'hospital_id',
         'patient_id',
+        'rate',
+        'total_price',
     ];
 }

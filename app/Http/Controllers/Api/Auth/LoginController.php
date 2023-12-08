@@ -8,14 +8,24 @@ use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'mobile' => 'required',
+            'device_id' => 'required',
+
+        ], [
+            'mobile.required' => 'The mobile field is required.',
+            'device_id.required' => 'The device id field is required.',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
 
         $user = User::where('phone', $request->mobile)->first();
 
@@ -29,6 +39,7 @@ class LoginController extends Controller
 
         $user->update([
             'login_status' => 1,
+            'deviceId' => $request->device_id,
         ]);
 
 

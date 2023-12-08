@@ -196,7 +196,7 @@ class AvlCareTakerController extends Controller
 
             $results = AvlCareTaker::where(function ($query) use ($from, $to) {
                             $query->where('from', '<=', $from)
-                            ->where('to', '>=', $to);
+                                ->where('to', '>=', $to);
                         })
                         ->whereHas('user.hospitals', function ($query) use ($hospitalId) {
                             $query->where('hospital_id', $hospitalId);
@@ -215,6 +215,9 @@ class AvlCareTakerController extends Controller
                                         ? asset($result->user->caretakerprofile->personal_photo)
                                         : null,
                     'description' => optional($result->user->caretakerprofile)->description,
+                    'user_id' => $result->user->id,
+                    'rating' => 4.5,
+                    'rate' => 2000,
                     // Add other fields as needed
                 ];
             });
