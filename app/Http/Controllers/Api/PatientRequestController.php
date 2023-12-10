@@ -153,12 +153,34 @@ class PatientRequestController extends Controller
             return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
         }
 
-        $results = PatientRequest::select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
-                    ->where('status',0)
+        $results = PatientRequest::
+        //select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
+                    where('status',0)
                     ->where('user_id',$request->user_id)
                     ->get();
 
-        return response()->json(['data' => $results]);
+        $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->patient->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'job_id' => $result->id,
+                    'patient_first_name' => $result->patient->fname,
+                    'patient_last_name' => $result->patient->lname,
+                    'patient_gender' => $result->patient->gender,
+                    'patient_age' => $age,
+                    'hospital' => $result->hospital->name,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'status' => $result->status,
+                    'total_price' => $result->total_price,
+                    // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
+                    //                     ? asset($result->patient->patientprofile->personal_photo)
+                    //                     : null,
+                    // 'description' => optional($result->patient->patientprofile)->description,
+                ];
+            });
+
+        return response()->json(['data' => $transformedResults]);
 
     }
 
@@ -229,6 +251,244 @@ class PatientRequestController extends Controller
                 $patientRequest->patientrequeststatus()->create([
                     'status' => 2,
                     'date' => Carbon::now(),
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function getApprovedPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_id' => 'required',
+        ], [
+            'patient_id.required' => 'The patient id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('patient_id', $request->patient_id)
+                                ->where('status',1)
+                                ->get();
+            //dd($results);
+
+            // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->caretaker->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'job_id' => $result->id,
+                    'care_taker_id' => $result->user_id,
+                    'care_taker_first_name' => $result->caretaker->fname,
+                    'care_taker_last_name' => $result->caretaker->lname,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    //'care_taker_age' => $age,
+                    //'care_taker_gender' => $result->caretaker->gender,
+                    // 'personaPhoto' => optional($result->caretaker->caretakerprofile)->personal_photo
+                    //                     ? asset($result->caretaker->caretakerprofile->personal_photo)
+                    //                     : null,
+                    // 'description' => optional($result->caretaker->caretakerprofile)->description,
+                    'status' => $result->status,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function getAllPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_id' => 'required',
+        ], [
+            'patient_id.required' => 'The patient id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('patient_id', $request->patient_id)
+                                ->get();
+            //dd($results);
+
+            // Map and transform the results to include only specific fields
+           // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->caretaker->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'job_id' => $result->id,
+                    'care_taker_id' => $result->user_id,
+                    'care_taker_first_name' => $result->caretaker->fname,
+                    'care_taker_last_name' => $result->caretaker->lname,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'status' => $result->status,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function paymentPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required',
+        ], [
+            'job_id.required' => 'The job id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $patientRequest = PatientRequest::findOrFail($request->job_id);
+
+            if($patientRequest)
+            {
+                $patientRequest->update([
+                    'status' => 3, //paymet done
+                ]);
+
+                $patientRequest->patientrequeststatus()->create([
+                    'status' => 3,
+                    'date' => Carbon::now(),
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function getPaymentPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_id' => 'required',
+        ], [
+            'patient_id.required' => 'The patient id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('patient_id', $request->patient_id)
+                        ->whereIn('status', [3,4])
+                        ->get();
+            //dd($results);
+
+            // Map and transform the results to include only specific fields
+           // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->caretaker->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'job_id' => $result->id,
+                    'care_taker_id' => $result->user_id,
+                    'care_taker_first_name' => $result->caretaker->fname,
+                    'care_taker_last_name' => $result->caretaker->lname,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'status' => $result->status,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function makeRating(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'job_id' => 'required',
+            'rating' => 'required|numeric|min:0|max:5',
+        ], [
+            'job_id.required' => 'The job id is required.',
+            'rating.required' => 'The rating is required.',
+            'rating.numeric' => 'The rating must be a numeric value.',
+            'rating.min' => 'The rating must be at least 0.',
+            'rating.max' => 'The rating must not exceed 5.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $patientRequest = PatientRequest::findOrFail($request->job_id);
+
+            if($patientRequest)
+            {
+                $patientRequest->update([
+                    'status' => 4, //paymet done
+                ]);
+
+                $patientRequest->patientrequeststatus()->create([
+                    'status' => 4,
+                    'date' => Carbon::now(),
+                ]);
+
+                $patientRequest->caretaker->ratings()->create([
+                    'rating' => $request->rating,
                 ]);
             }
 

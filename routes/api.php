@@ -121,6 +121,16 @@ Route::middleware('auth:sanctum')->post('/approve-patient-request', [PatientRequ
 
 Route::middleware('auth:sanctum')->post('/reject-patient-request', [PatientRequestController::class, 'rejectPatientRequest']);
 
+Route::middleware('auth:sanctum')->get('/get-approved-patient-request', [PatientRequestController::class, 'getApprovedPatientRequest']);
+
+Route::middleware('auth:sanctum')->get('/get-all-patient-request', [PatientRequestController::class, 'getAllPatientRequest']);
+
+Route::middleware('auth:sanctum')->post('/payment-patient-request', [PatientRequestController::class, 'paymentPatientRequest']);
+
+Route::middleware('auth:sanctum')->get('/get-paid-patient-request', [PatientRequestController::class, 'getPaymentPatientRequest']);
+
+Route::middleware('auth:sanctum')->post('/make-rating', [PatientRequestController::class, 'makeRating']);
+
 Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/privacy-policy', [RegisterController::class, 'getprivacypolicy']);

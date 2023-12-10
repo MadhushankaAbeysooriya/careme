@@ -188,11 +188,7 @@ class AvlCareTakerController extends Controller
             $to = $request->input('to');
             $hospitalId = $request->input('hospital_id');
 
-            // $results = AvlCareTaker::where(function ($query) use ($from, $to) {
-            //     $query->where('from', '<=', $from)
-            //           ->where('to', '>=', $to);
-            // })
-            // ->get();
+
 
             $results = AvlCareTaker::where(function ($query) use ($from, $to) {
                             $query->where('from', '<=', $from)
@@ -201,12 +197,22 @@ class AvlCareTakerController extends Controller
                         ->whereHas('user.hospitals', function ($query) use ($hospitalId) {
                             $query->where('hospital_id', $hospitalId);
                         })
+                        ->with('user.ratings') // Load the user ratings relationship
                         ->get();
+
+
 
             // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {
                 $dob = Carbon::parse($result->user->dob);
                 $age = $dob->diffInYears(Carbon::now());
+
+                // Calculate the average rating
+                $ratings = $result->user->ratings;
+                $totalRatings = $ratings->count();
+                $averageRating = $totalRatings > 0 ? $ratings->sum('rating') / $totalRatings : 0;
+
+
                 return [
                     'user_name' => $result->user->name,
                     'user_age' => $age,
@@ -216,7 +222,7 @@ class AvlCareTakerController extends Controller
                                         : null,
                     'description' => optional($result->user->caretakerprofile)->description,
                     'user_id' => $result->user->id,
-                    'rating' => 4.5,
+                    'rating' => $averageRating,
                     'rate' => 2000,
                     // Add other fields as needed
                 ];

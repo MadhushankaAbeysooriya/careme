@@ -7,6 +7,7 @@ use App\Models\Rank;
 use App\Models\Forces;
 use App\Models\Hospital;
 use App\Models\Usertype;
+use App\Models\UserRating;
 use App\Models\UserHospital;
 use App\Models\CareTakerProfile;
 use Laravel\Sanctum\HasApiTokens;
@@ -69,5 +70,10 @@ class User extends Authenticatable
     public function caretakerprofile()
     {
         return $this->hasOne(CareTakerProfile::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(UserRating::class);
     }
 }
