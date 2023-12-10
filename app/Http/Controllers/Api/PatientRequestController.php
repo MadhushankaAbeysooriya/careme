@@ -505,4 +505,51 @@ class PatientRequestController extends Controller
         }
 
     }
+
+    public function getCareTakerSchedule(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'care_taker_id' => 'required',
+        ], [
+            'care_taker_id.required' => 'The patient id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('user_id', $request->care_taker_id)
+                        ->whereIn('status', [3,4])
+                        ->get();
+
+           // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                $dob = Carbon::parse($result->caretaker->dob);
+                $age = $dob->diffInYears(Carbon::now());
+                return [
+                    'job_id' => $result->id,
+                    'patient_first_name' => $result->patient->fname,
+                    'patient_last_name' => $result->patient->lname,
+                    'patient_gender' => $result->patient->gender,
+                    'patient_age' => $age,
+                    'hospital' => $result->hospital->name,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'status' => $result->status,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
 }

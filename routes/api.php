@@ -129,6 +129,8 @@ Route::middleware('auth:sanctum')->post('/payment-patient-request', [PatientRequ
 
 Route::middleware('auth:sanctum')->get('/get-paid-patient-request', [PatientRequestController::class, 'getPaymentPatientRequest']);
 
+Route::middleware('auth:sanctum')->get('/get-care-taker-schedule', [PatientRequestController::class, 'getCareTakerSchedule']);
+
 Route::middleware('auth:sanctum')->post('/make-rating', [PatientRequestController::class, 'makeRating']);
 
 Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
