@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('patient_request_id');
             $table->foreign('patient_request_id')->references('id')->on('patient_requests')->onDelete('cascade');
             $table->tinyInteger('status')->default(0);
-            $table->date('status_date');
+            $table->date('date');
             $table->timestamps();
         });
     }

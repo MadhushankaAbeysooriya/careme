@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PatientRequest;
 use App\Http\Controllers\Controller;
@@ -153,11 +154,95 @@ class PatientRequestController extends Controller
         }
 
         $results = PatientRequest::select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
-        ->where('user_id',$request->user_id)->get();
+                    ->where('status',0)
+                    ->where('user_id',$request->user_id)
+                    ->get();
 
         return response()->json(['data' => $results]);
 
     }
 
+    public function approvePatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_request_id' => 'required',
+        ], [
+            'patient_request_id.required' => 'The patient request id is required.',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $patientRequest = PatientRequest::findOrFail($request->patient_request_id);
+
+            if($patientRequest)
+            {
+                $patientRequest->update([
+                    'status' => 1,
+                ]);
+
+                $patientRequest->patientrequeststatus()->create([
+                    'status' => 1,
+                    'date' => Carbon::now(),
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function rejectPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_request_id' => 'required',
+        ], [
+            'patient_request_id.required' => 'The patient request id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $patientRequest = PatientRequest::findOrFail($request->patient_request_id);
+
+            if($patientRequest)
+            {
+                $patientRequest->update([
+                    'status' => 2,
+                ]);
+
+                $patientRequest->patientrequeststatus()->create([
+                    'status' => 2,
+                    'date' => Carbon::now(),
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
 }

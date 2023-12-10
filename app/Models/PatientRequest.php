@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\PatientRequestStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PatientRequest extends Model
 {
@@ -21,4 +22,9 @@ class PatientRequest extends Model
         'rate',
         'total_price',
     ];
+
+    public function patientrequeststatus()
+    {
+        return $this->hasMany(PatientRequestStatus::class);
+    }
 }
