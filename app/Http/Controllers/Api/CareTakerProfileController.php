@@ -355,9 +355,17 @@ public function store(Request $request)
         // }
 
         // Sync hospitals
+        // if ($request->hospital_id) {
+        //     $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
+        //     $user->hospitals()->sync($hospitalIds);
+        // }
+
         if ($request->hospital_id) {
             $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
             $user->hospitals()->sync($hospitalIds);
+        } else {
+            // If no hospital IDs are provided, you may choose to detach all hospitals
+            $user->hospitals()->detach();
         }
 
         return response()->json([
