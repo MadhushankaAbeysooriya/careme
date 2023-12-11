@@ -512,7 +512,7 @@ class PatientRequestController extends Controller
         $validator = Validator::make($request->all(), [
             'care_taker_id' => 'required',
         ], [
-            'care_taker_id.required' => 'The patient id is required.',
+            'care_taker_id.required' => 'The care taker id is required.',
         ]);
 
         if ($validator->fails()) {
@@ -538,6 +538,101 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function getPaymentApprovePatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_id' => 'required',
+        ], [
+            'patient_id.required' => 'The patient id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('patient_id', $request->patient_id)
+                        ->where('status', 5)
+                        ->get();
+
+           // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                
+                return [
+                    'job_id' => $result->id,
+                    'care_taker_id' => $result->user_id,
+                    'care_taker_first_name' => $result->caretaker->fname,
+                    'care_taker_last_name' => $result->caretaker->lname,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'hospital' => $result->hospital->name,
+                    'status' => $result->status,
+                    'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
+                    'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
+                    'total_price' => $result->total_price,
+                ];
+            });
+
+            return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function getDepositPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'care_taker_id' => 'required',
+        ], [
+            'care_taker_id.required' => 'The care taker id is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $results = PatientRequest::where('user_id', $request->care_taker_id)
+                        ->where('status', 6)
+                        ->get();
+
+           // Map and transform the results to include only specific fields
+            $transformedResults = $results->map(function ($result) {
+                
+                return [
+                    'job_id' => $result->id,
+                    'patient_first_name' => $result->patient->fname,
+                    'patient_last_name' => $result->patient->lname,
+                    'patient_gender' => $result->patient->gender,
+                    'hospital' => $result->hospital->name,
+                    'starting_date' => $result->from,
+                    'ending_date' => $result->to,
+                    'status' => $result->status,
+                    'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
+                    'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
+                    'deposited_date' => optional($result->patientrequeststatus->where('status', 6)->first())->date,
                     'total_price' => $result->total_price,
                 ];
             });

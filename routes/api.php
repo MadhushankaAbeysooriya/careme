@@ -133,6 +133,10 @@ Route::middleware('auth:sanctum')->get('/get-care-taker-schedule', [PatientReque
 
 Route::middleware('auth:sanctum')->post('/make-rating', [PatientRequestController::class, 'makeRating']);
 
+Route::middleware('auth:sanctum')->get('/get-payment-approve-patient-request', [PatientRequestController::class, 'getPaymentApprovePatientRequest']);
+
+Route::middleware('auth:sanctum')->get('/get-deposit-patient-request', [PatientRequestController::class, 'getDepositPatientRequest']);
+
 Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/privacy-policy', [RegisterController::class, 'getprivacypolicy']);
