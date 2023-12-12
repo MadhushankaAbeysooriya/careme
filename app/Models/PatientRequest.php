@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Hospital;
 use App\Models\PatientRequestStatus;
+use App\Models\PatientRequestPayment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -28,6 +29,11 @@ class PatientRequest extends Model
     public function patientrequeststatus()
     {
         return $this->hasMany(PatientRequestStatus::class);
+    }
+
+    public function patientrequestpayment()
+    {
+        return $this->hasOne(PatientRequestPayment::class);
     }
 
     public function caretaker()

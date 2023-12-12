@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\PatientRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class PatientRequestController extends Controller
 {
@@ -371,8 +372,12 @@ class PatientRequestController extends Controller
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'job_id' => 'required',
+            'filepath' => 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
         ], [
             'job_id.required' => 'The job id is required.',
+            'filepath.required' => 'The file field is required.',
+            'filepath.mimes' => 'The file must be an image (jpeg, png, jpg, gif) or a PDF.',
+            'filepath.max' => 'The file may not be greater than 2048 kilobytes.',
         ]);
 
         if ($validator->fails()) {
@@ -381,6 +386,17 @@ class PatientRequestController extends Controller
 
         try {
             $patientRequest = PatientRequest::findOrFail($request->job_id);
+
+            $filepathDirectory = public_path('/upload/filepath/'.$request->job_id.'/');
+
+            if (!File::isDirectory($filepathDirectory)) {
+                File::makeDirectory($filepathDirectory, 0777, true, true);
+            }
+
+            $extfilepath = $request->file('filepath')->extension();
+            $filefilepath = $request->job_id.'.'.$extfilepath;
+
+            $request->file('filepath')->move($filepathDirectory, $filefilepath);
 
             if($patientRequest)
             {
@@ -391,6 +407,10 @@ class PatientRequestController extends Controller
                 $patientRequest->patientrequeststatus()->create([
                     'status' => 3,
                     'date' => Carbon::now(),
+                ]);
+
+                $patientRequest->patientrequestpayment()->create([
+                    'filepath' => '/upload/filepath/'.$request->job_id.'/'.$filefilepath,
                 ]);
             }
 
