@@ -6,6 +6,36 @@
     </a>
 </li>
 
+<li class="nav-item {{ request()->routeIs('patient_requests.pendingapprove','patient_requests.pendingDeposit')?'menu-open':'' }}">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-briefcase text-green"></i>
+        <p>
+            Job Mgt
+            <i class="right fas fa-angle-left text-green"></i>
+        </p>
+    </a>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('patient_requests.pendingapprove')}}" class="nav-link
+            {{ request()->routeIs('patient_requests.pendingapprove')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-green"></i>
+                <p>Pending Payments</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('patient_requests.pendingDeposit')}}" class="nav-link
+            {{ request()->routeIs('patient_requests.pendingDeposit')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-green"></i>
+                <p>Pending Deposit</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
 
 
 <li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*','dsdivisions*','hospitals*','advertisements*','shifts*')?'menu-open':'' }}">

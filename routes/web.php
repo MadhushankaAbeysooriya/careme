@@ -13,6 +13,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\DSDivisionController;
 use App\Http\Controllers\GNDivisionController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\PatientRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,14 @@ Route::group(['middleware' => ['auth']], function() {
     // Route::prefix('hospital/{hospital}')->group(function (){
     //     Route::resource('userhospitals',UserHospitalController::class);
     // });
+
+    Route::get('/patient-request/pending/approve',[PatientRequestController::class,'index'])->name('patient_requests.pendingapprove');
+
+    Route::get('/patient-request/approve/{id}',[PatientRequestController::class,'approve'])->name('patient_requests.approve');
+
+    Route::get('/patient-request/pending/deposit',[PatientRequestController::class,'pendingDeposit'])->name('patient_requests.pendingDeposit');
+
+    Route::get('/patient-request/deposit/{id}',[PatientRequestController::class,'deposit'])->name('patient_requests.deposit');
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');

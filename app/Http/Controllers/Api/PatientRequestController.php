@@ -387,7 +387,7 @@ class PatientRequestController extends Controller
         try {
             $patientRequest = PatientRequest::findOrFail($request->job_id);
 
-            $filepathDirectory = public_path('/upload/filepath/'.$request->job_id.'/');
+            $filepathDirectory = public_path('/upload/payment/'.$request->job_id.'/');
 
             if (!File::isDirectory($filepathDirectory)) {
                 File::makeDirectory($filepathDirectory, 0777, true, true);
@@ -410,7 +410,7 @@ class PatientRequestController extends Controller
                 ]);
 
                 $patientRequest->patientrequestpayment()->create([
-                    'filepath' => '/upload/filepath/'.$request->job_id.'/'.$filefilepath,
+                    'filepath' => '/upload/payment/'.$request->job_id.'/'.$filefilepath,
                 ]);
             }
 

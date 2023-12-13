@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\HospitalController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\AvlCareTakerController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\PatientRequestController;
@@ -136,6 +137,10 @@ Route::middleware('auth:sanctum')->post('/make-rating', [PatientRequestControlle
 Route::middleware('auth:sanctum')->get('/get-payment-approve-patient-request', [PatientRequestController::class, 'getPaymentApprovePatientRequest']);
 
 Route::middleware('auth:sanctum')->get('/get-deposit-patient-request', [PatientRequestController::class, 'getDepositPatientRequest']);
+
+Route::middleware('auth:sanctum')->get('/get-patient-notification', [NotificationController::class, 'getPatientNotification']);
+
+Route::middleware('auth:sanctum')->get('/get-caretaker-notification', [NotificationController::class, 'getCareTakerNotification']);
 
 Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
 
