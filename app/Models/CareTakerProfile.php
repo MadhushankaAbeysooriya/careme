@@ -18,6 +18,7 @@ class CareTakerProfile extends Model
         'bank',
         'user_id',
         'description',
+        'agreementstatus',
     ];
 
     public function user()

@@ -84,6 +84,7 @@ public function store(Request $request)
         'user_id' => 'required|unique:care_taker_profiles,user_id',
         'hospital_id' => 'required|array',
         // 'description' => 'required'
+        'agreementstatus' => 'required',
     ], [
         'personal_photo.required' => 'The personal photo field is required.',
         'personal_photo.image' => 'The personal photo must be an image.',
@@ -97,6 +98,7 @@ public function store(Request $request)
         'hospital_id.required' => 'Hospital ID is required.',
         'hospital_id.array' => 'Hospital ID must be an array.',
         // 'description.required' => 'Description is required.',
+        'agreementstatus.required' => 'Agreement Status is required.',
     ]);
 
     if ($validator->fails()) {
@@ -171,6 +173,7 @@ public function store(Request $request)
         'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
         'user_id' => $request->user_id,
         'description' =>$request->description,
+        'agreementstatus' => $request->agreementstatus,
     ]);
 
     return response()->json([
@@ -210,6 +213,7 @@ public function store(Request $request)
                     'dob' => $user->dob,
                     'phone' => $user->phone,
                     'personalphoto' => $user->caretakerprofile->personal_photo,
+                    // 'agreementstatus' => $user->caretakerprofile->agreementstatus,
                 ];
             } else {
                 $data = [
@@ -238,7 +242,8 @@ public function store(Request $request)
             'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
-            'description' => 'required'
+            'description' => 'required',
+            'agreementstatus' => 'required',
         ], [
             'personal_photo.required' => 'The personal photo field is required.',
             'personal_photo.image' => 'The personal photo must be an image.',
@@ -250,6 +255,7 @@ public function store(Request $request)
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'description.required' => 'Description is required.',
+            'agreementstatus.required' => 'Agreement Status is required.',
         ]);
 
         if ($validator->fails()) {
@@ -318,7 +324,8 @@ public function store(Request $request)
             'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
             'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
             'user_id' => $request->user_id,
-            'description' =>$request->description,
+            'description' => $request->description,
+            'agreementstatus' => $request->agreementstatus,
         ]);
 
         return response()->json([
