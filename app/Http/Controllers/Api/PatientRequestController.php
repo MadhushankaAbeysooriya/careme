@@ -336,6 +336,7 @@ class PatientRequestController extends Controller
 
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
+                        ->whereIn('status', [0,1,2])
                                 ->get();
             //dd($results);
 
@@ -443,7 +444,7 @@ class PatientRequestController extends Controller
 
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
-                        ->whereIn('status', [3,4,5])
+                        ->whereIn('status', [3,5])
                         ->get();
             //dd($results);
 
@@ -588,7 +589,7 @@ class PatientRequestController extends Controller
 
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
-                        ->where('status', 5)
+                        ->whereIn('status', [3,4,5,6])
                         ->get();
 
            // Map and transform the results to include only specific fields
