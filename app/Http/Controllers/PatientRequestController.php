@@ -8,6 +8,7 @@ use App\Models\PatientRequest;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\PendingDepositDataTable;
 use App\DataTables\PendingPaymentApproveDataTable;
+use Illuminate\Support\Facades\File;
 
 class PatientRequestController extends Controller
 {
@@ -132,26 +133,46 @@ class PatientRequestController extends Controller
         return view('patient_requests.deposit',compact('patientRequest'));
     }
 
-    public function deposit($id)
+    public function deposit(Request $request, $id)
     {
         $patientRequest = PatientRequest::findOrFail($id);
 
-        if($patientRequest)
+        try {
+
+            $filepathDirectory = public_path('/upload/deposit/'.$id.'/');
+
+            if (!File::isDirectory($filepathDirectory)) {
+                File::makeDirectory($filepathDirectory, 0777, true, true);
+            }
+
+            $extfilepath = $request->file('filepath')->extension();
+            $filefilepath = $id.'.'.$extfilepath;
+
+            $request->file('filepath')->move($filepathDirectory, $filefilepath);
+
+            if($patientRequest)
             {
                 $patientRequest->update([
                     'status' => 6, //payment done
                 ]);
 
-                $patientRequestStatus = $patientRequest->patientrequeststatus()->create([
+                $patientRequest->patientrequeststatus()->create([
                     'status' => 6,
                     'date' => Carbon::now(),
                 ]);
 
-                $patientRequestStatus->patientrequestpaymentstatususer()->create([
-                    'user_id' => Auth::user()->id,
+                $patientRequest->patientrequestdeposit()->create([
+                    'user_id'  => Auth::user()->id,
+                    'filepath' => '/upload/payment/'.$id.'/'.$filefilepath,
                 ]);
             }
 
-        return redirect()->route('patient_requests.pendingapprove')->with('success','Approved');
+            return redirect()->route('patient_requests.pendingDeposit')->with('success','Approved');
+
+        } catch (Exception $e) {
+            return redirect()->route('patient_requests.depositView', $id)->with('danger','Something went wrong');
+        }
+
+
     }
 }

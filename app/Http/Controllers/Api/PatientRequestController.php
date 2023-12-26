@@ -16,21 +16,21 @@ class PatientRequestController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'from' => 'required|date',
-            'to' => 'required|date',
+            'from' => 'required|date_format:Y-m-d H:i:s',
+            'to' => 'required|date_format:Y-m-d H:i:s',
             'care_taker_id' => 'required',
-            'shift_id' => 'required',
             'hospital_id' => 'required',
-            'patient_id' => 'required'
+            'patient_id' => 'required',
+            'hrs' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
-            'from.date' => 'The from date field must be a date.',
+            'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'to.required' => 'The to date field is required.',
-            'to.date' => 'The to date field must be a date.',
+            'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'care_taker_id.required' => 'User is required.',
-            'shift_id.required' => 'Shift is required.',
             'hospital_id.required' => 'Hospital is required.',
             'patient_id.required' => 'Hospital is required.',
+            'hrs.required' => 'The hrs feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -42,11 +42,10 @@ class PatientRequestController extends Controller
         PatientRequest::create([
             'from' => $request->from,
             'to' => $request->to,
-            'user_id' => $request->care_taker_id,
-            'shift_id' => $request->shift_id,
+            'care_taker_id' => $request->care_taker_id,
             'hospital_id' => $request->hospital_id,
             'patient_id' => $request->patient_id,
-            'rate' =>  $request->rate,
+            'hrs' =>  $request->hrs,
             'total_price' => $request->total_price,
         ]);
 
@@ -59,29 +58,24 @@ class PatientRequestController extends Controller
     public function storeMany(Request $request)
     {
 
-        //dd($request);
-        // Validate the request data
         $validator = Validator::make($request->all(), [
-            'from' => 'required|date',
-            'to' => 'required|date',
+            'from' => 'required|date_format:Y-m-d H:i:s',
+            'to' => 'required|date_format:Y-m-d H:i:s',
             'care_taker_id' => 'required|array', // Validate that each user_id exists in the 'users' table
-            'shift_id' => 'required',
             'hospital_id' => 'required',
             'patient_id' => 'required',
-            'rate' => 'required',
             'total_price' => 'required',
+            'hrs' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
-            'from.date' => 'The from date field must be a date.',
+            'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'to.required' => 'The to date field is required.',
-            'to.date' => 'The to date field must be a date.',
+            'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'care_taker_id.required' => 'Each user ID is required.',
             'care_taker_id.array' => 'user ID is an array.',
-            //'care_taker_id.exists' => 'The selected user ID is invalid or does not exist in the users table.',
-            'shift_id.required' => 'Shift is required.',
             'hospital_id.required' => 'Hospital is required.',
             'patient_id.required' => 'Hospital is required.',
-            'rate.required' => 'Rate is required.',
+            'hrs.required' => 'The hrs feild is required.',
             'total_price.required' => 'Total Price is required.',
         ]);
 
@@ -95,34 +89,32 @@ class PatientRequestController extends Controller
         //$userIds = $request->input('care_taker_id');
 
         if ($request->care_taker_id) {
-            $userIds = array_map('trim', explode(',', $request->care_taker_id[0]));
+            $careTakerIds = array_map('trim', explode(',', $request->care_taker_id[0]));
         }
 
-        $shiftId = $request->input('shift_id');
         $hospitalId = $request->input('hospital_id');
         $patientId = $request->input('patient_id');
-        $rate = $request->input('rate');
+        $hrs = $request->input('hrs');
         $totalPrice = $request->input('total_price');
 
         $successCount = 0;
         $errorMessages = [];
 
-        foreach ($userIds as $userId) {
+        foreach ($careTakerIds as $careTakerId) {
             try {
-                //dd($userId);
+                //dd($careTakerId);
                 PatientRequest::create([
                     'from' => $from,
                     'to' => $to,
-                    'user_id' => $userId,
-                    'shift_id' => $shiftId,
+                    'care_taker_id' => $careTakerId,
                     'hospital_id' => $hospitalId,
                     'patient_id' => $patientId,
-                    'rate' =>  $rate,
+                    'hrs' =>  $hrs,
                     'total_price' => $totalPrice,
                 ]);
                 $successCount++;
             } catch (Exception $e) {
-                $errorMessages[] = "Failed to create PatientRequest for user ID $userId: " . $e->getMessage();
+                $errorMessages[] = "Failed to create PatientRequest for user ID $careTakerId: " . $e->getMessage();
             }
         }
 
@@ -594,7 +586,7 @@ class PatientRequestController extends Controller
 
            // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {
-                
+
                 return [
                     'job_id' => $result->id,
                     'care_taker_id' => $result->user_id,
@@ -641,7 +633,7 @@ class PatientRequestController extends Controller
 
            // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {
-                
+
                 return [
                     'job_id' => $result->id,
                     'patient_first_name' => $result->patient->fname,

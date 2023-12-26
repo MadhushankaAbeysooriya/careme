@@ -16,17 +16,31 @@ class AvlCareTakerController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
+        // $validator = Validator::make($request->all(), [
+        //     'from' => 'required|date',
+        //     'to' => 'required|date',
+        //     'shift_id' => 'required',
+        //     'user_id' => 'required',
+        // ], [
+        //     'from.required' => 'The from date field is required.',
+        //     'from.date' => 'The from date field must be a date.',
+        //     'to.required' => 'The to date field is required.',
+        //     'to.date' => 'The to date field must be a date.',
+        //     'shift_id.required' => 'Shift is required.',
+        //     'user_id.required' => 'User is required.',
+        // ]);
+
         $validator = Validator::make($request->all(), [
-            'from' => 'required|date',
-            'to' => 'required|date',
-            'shift_id' => 'required',
+            'from' => 'required|date_format:Y-m-d H:i:s',
+            'to' => 'required|date_format:Y-m-d H:i:s',
+            // 'shift_id' => 'required',
             'user_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
-            'from.date' => 'The from date field must be a date.',
+            'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'to.required' => 'The to date field is required.',
-            'to.date' => 'The to date field must be a date.',
-            'shift_id.required' => 'Shift is required.',
+            'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
+            // 'shift_id.required' => 'Shift is required.',
             'user_id.required' => 'User is required.',
         ]);
 
@@ -37,7 +51,7 @@ class AvlCareTakerController extends Controller
         $avlcaretaker = AvlCareTaker::create([
             'from' => $request->from,
             'to' => $request->to,
-            'shift_id' => $request->shift_id,
+            // 'shift_id' => $request->shift_id,
             'user_id' => $request->user_id,
         ]);
 
@@ -51,30 +65,36 @@ class AvlCareTakerController extends Controller
     {
         try {
             // Validate the request data
-            $request->validate([
-                'from' => 'required|date',
-                'to' => 'required|date',
-                'shift_id' => 'required|integer',
+            // $request->validate([
+            //     'from' => 'required|date',
+            //     'to' => 'required|date',
+            //     'shift_id' => 'required|integer',
+            // ]);
+
+            $validator = Validator::make($request->all(), [
+                'from' => 'required|date_format:Y-m-d H:i:s',
+                'to' => 'required|date_format:Y-m-d H:i:s',
+                // 'shift_id' => 'required',
+            ], [
+                'from.required' => 'The from date field is required.',
+                'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
+                'to.required' => 'The to date field is required.',
+                'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
+
             ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+            }
 
             // Get the search criteria from the request
             $from = $request->input('from');
             $to = $request->input('to');
-            $shiftId = $request->input('shift_id');
-
-            // Perform the search using query scopes directly in the controller
-            // $results = AvlCareTaker::where(function ($query) use ($from, $to) {
-            //     $query->whereBetween('from', [$from, $to])
-            //         ->orWhereBetween('to', [$from, $to]);
-            // })
-            // ->where('shift_id', $shiftId)
-            // ->get();
 
             $results = AvlCareTaker::where(function ($query) use ($from, $to) {
                 $query->where('from', '<=', $from)
                       ->where('to', '>=', $to);
             })
-            ->where('shift_id', $shiftId)
             ->get();
 
             // Map and transform the results to include only specific fields
@@ -118,7 +138,7 @@ class AvlCareTakerController extends Controller
         }
 
         $fromDate = Carbon::now(); // Set the from date to the current date
-        $toDate = $fromDate->copy()->addDays(4); // Calculate the to date as 4 days from the from date
+        $toDate = $fromDate->copy()->addDays(3); // Calculate the to date as 4 days from the from date
 
         AvlCareTaker::create([
             'from' => $fromDate,
@@ -177,11 +197,27 @@ class AvlCareTakerController extends Controller
     {
         try {
             // Validate the request data
-            $request->validate([
-                'from' => 'required|date',
-                'to' => 'required|date',
+            // $request->validate([
+            //     'from' => 'required|date',
+            //     'to' => 'required|date',
+            //     'hospital_id' => 'required',
+            // ]);
+
+            $validator = Validator::make($request->all(), [
+                'from' => 'required|date_format:Y-m-d H:i:s',
+                'to' => 'required|date_format:Y-m-d H:i:s',
                 'hospital_id' => 'required',
+            ], [
+                'from.required' => 'The from date field is required.',
+                'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
+                'to.required' => 'The to date field is required.',
+                'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
+                'hospital_id.required' => "The Hospital id feild is required.",
             ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+            }
 
             // Get the search criteria from the request
             $from = $request->input('from');

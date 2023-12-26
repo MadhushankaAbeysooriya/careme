@@ -17,14 +17,13 @@ class PatientRequest extends Model
 
     protected $table = 'patient_requests';
     protected $fillable = [
-        'user_id',
         'from',
         'to',
         'status',
-        'shift_id',
         'hospital_id',
+        'care_taker_id',
         'patient_id',
-        'rate',
+        'hrs',
         'total_price',
     ];
 
@@ -40,7 +39,7 @@ class PatientRequest extends Model
 
     public function caretaker()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'care_taker_id', 'id');
     }
 
     public function patient()
