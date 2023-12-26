@@ -23,14 +23,14 @@ class PendingPaymentApproveDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addIndexColumn()            
+            ->addIndexColumn()
             ->addColumn('action', function ($patient_request) {
                 $id = $patient_request->id;
-                $btn = '';                    
+                $btn = '';
 
                     if($patient_request->status == 3)
                     {
-                        $btn .='<a href="'.route('patient_requests.approve',$id).'"
+                        $btn .='<a href="'.route('patient_requests.approveView',$id).'"
                         class="btn btn-xs btn-success" data-toggle="tooltip"
                         title="Approve"><i class="fa fa-check"></i> </a> ';
                     }

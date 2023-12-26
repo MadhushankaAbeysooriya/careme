@@ -23,14 +23,14 @@ class PendingDepositDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addIndexColumn()            
+            ->addIndexColumn()
             ->addColumn('action', function ($patient_request) {
                 $id = $patient_request->id;
-                $btn = '';                    
+                $btn = '';
 
                     if($patient_request->status == 4)
                     {
-                        $btn .='<a href="'.route('patient_requests.deposit',$id).'"
+                        $btn .='<a href="'.route('patient_requests.depositView',$id).'"
                         class="btn btn-xs btn-success" data-toggle="tooltip"
                         title="deposit"><i class="fa fa-check"></i> </a> ';
                     }

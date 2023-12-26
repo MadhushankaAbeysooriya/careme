@@ -2,20 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\PatientRequest;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\PatientRequestPaymentStatusUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PatientRequestStatus extends Model
+class PatientRequestDeposit extends Model
 {
     use HasFactory;
-
-    protected $table = 'patient_request_statuses';
+    protected $table = 'patient_request_deposits';
     protected $fillable = [
         'patient_request_id',
-        'status',
-        'date',
+        'user_id',
+        'filepath',
     ];
 
     public function patientrequest()
@@ -23,8 +22,8 @@ class PatientRequestStatus extends Model
         return $this->belongsTo(PatientRequest::class, 'patient_request_id', 'id');
     }
 
-    public function patientrequestpaymentstatususer()
+    public function user()
     {
-        return $this->hasOne(PatientRequestPaymentStatusUser::class,'patient_req_stat_id','id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

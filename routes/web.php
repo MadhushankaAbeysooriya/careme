@@ -79,11 +79,15 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('/patient-request/pending/approve',[PatientRequestController::class,'index'])->name('patient_requests.pendingapprove');
 
-    Route::get('/patient-request/approve/{id}',[PatientRequestController::class,'approve'])->name('patient_requests.approve');
+    Route::get('/patient-request/approve/view/{id}',[PatientRequestController::class,'approveView'])->name('patient_requests.approveView');
+
+    Route::post('/patient-request/approve/{id}',[PatientRequestController::class,'approve'])->name('patient_requests.approve');
 
     Route::get('/patient-request/pending/deposit',[PatientRequestController::class,'pendingDeposit'])->name('patient_requests.pendingDeposit');
 
-    Route::get('/patient-request/deposit/{id}',[PatientRequestController::class,'deposit'])->name('patient_requests.deposit');
+    Route::get('/patient-request/deposit/view/{id}',[PatientRequestController::class,'depositView'])->name('patient_requests.depositView');
+
+    Route::post('/patient-request/deposit/{id}',[PatientRequestController::class,'deposit'])->name('patient_requests.deposit');
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');

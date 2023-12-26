@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PatientRequest;
+use Illuminate\Support\Facades\Auth;
 use App\DataTables\PendingDepositDataTable;
 use App\DataTables\PendingPaymentApproveDataTable;
 
@@ -71,6 +72,13 @@ class PatientRequestController extends Controller
         //
     }
 
+    public function approveView($id)
+    {
+        $patientRequest = PatientRequest::findOrFail($id);
+
+        return view('patient_requests.approve_view',compact('patientRequest'));
+    }
+
     public function approve($id)
     {
         $patientRequest = PatientRequest::findOrFail($id);
@@ -78,15 +86,19 @@ class PatientRequestController extends Controller
         if($patientRequest)
             {
                 $patientRequest->update([
-                    'status' => 5, //paymet done
+                    'status' => 5, //payment done
                 ]);
 
-                $patientRequest->patientrequeststatus()->create([
+                $patientRequestStatus = $patientRequest->patientrequeststatus()->create([
                     'status' => 5,
                     'date' => Carbon::now(),
                 ]);
+
+                $patientRequestStatus->patientrequestpaymentstatususer()->create([
+                    'user_id' => Auth::user()->id,
+                ]);
             }
-        
+
         return redirect()->route('patient_requests.pendingapprove')->with('success','Approved');
     }
 
@@ -97,16 +109,27 @@ class PatientRequestController extends Controller
         if($patientRequest)
             {
                 $patientRequest->update([
-                    'status' => 7, //paymet done
+                    'status' => 7, //payment reject
                 ]);
 
-                $patientRequest->patientrequeststatus()->create([
+                $patientRequestStatus = $patientRequest->patientrequeststatus()->create([
                     'status' => 7,
                     'date' => Carbon::now(),
                 ]);
+
+                $patientRequestStatus->patientrequestpaymentstatususer()->create([
+                    'user_id' => Auth::user()->id,
+                ]);
             }
-        
+
         return redirect()->route('patient_requests.pendingapprove')->with('success','Approved');
+    }
+
+    public function depositView($id)
+    {
+        $patientRequest = PatientRequest::findOrFail($id);
+
+        return view('patient_requests.deposit',compact('patientRequest'));
     }
 
     public function deposit($id)
@@ -116,15 +139,19 @@ class PatientRequestController extends Controller
         if($patientRequest)
             {
                 $patientRequest->update([
-                    'status' => 6, //paymet done
+                    'status' => 6, //payment done
                 ]);
 
-                $patientRequest->patientrequeststatus()->create([
+                $patientRequestStatus = $patientRequest->patientrequeststatus()->create([
                     'status' => 6,
                     'date' => Carbon::now(),
                 ]);
+
+                $patientRequestStatus->patientrequestpaymentstatususer()->create([
+                    'user_id' => Auth::user()->id,
+                ]);
             }
-        
+
         return redirect()->route('patient_requests.pendingapprove')->with('success','Approved');
     }
 }
