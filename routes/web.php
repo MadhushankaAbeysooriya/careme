@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/patient-request/deposit/view/{id}',[PatientRequestController::class,'depositView'])->name('patient_requests.depositView');
 
     Route::post('/patient-request/deposit/{id}',[PatientRequestController::class,'deposit'])->name('patient_requests.deposit');
+
+    Route::get('/patient-request/pending/service',[PatientRequestController::class,'pendingService'])->name('patient_requests.pending_service');
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');

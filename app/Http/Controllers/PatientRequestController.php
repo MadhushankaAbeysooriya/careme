@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\PatientRequest;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\PendingDepositDataTable;
-use App\DataTables\PendingPaymentApproveDataTable;
 use Illuminate\Support\Facades\File;
+use App\DataTables\PendingDepositDataTable;
+use App\DataTables\PendingServiceDataTable;
+use App\DataTables\PendingPaymentApproveDataTable;
 
 class PatientRequestController extends Controller
 {
@@ -23,6 +24,11 @@ class PatientRequestController extends Controller
     public function pendingDeposit(PendingDepositDataTable $dataTable)
     {
         return $dataTable->render('patient_requests.index_pending_deposit');
+    }
+
+    public function pendingService(PendingServiceDataTable $dataTable)
+    {
+        return $dataTable->render('patient_requests.index_pending_service');
     }
 
     /**

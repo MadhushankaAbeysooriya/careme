@@ -27,6 +27,16 @@
 
     <ul class="nav nav-treeview">
         <li class="nav-item">
+            <a href="{{route('patient_requests.pending_service')}}" class="nav-link
+            {{ request()->routeIs('patient_requests.pending_service')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-green"></i>
+                <p>Pending Service</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
             <a href="{{route('patient_requests.pendingDeposit')}}" class="nav-link
             {{ request()->routeIs('patient_requests.pendingDeposit')?'active':'' }}">
                 <i class="far fa-circle nav-icon text-green"></i>
