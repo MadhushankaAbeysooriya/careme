@@ -73,7 +73,7 @@ class NotificationController extends Controller
 
         try {
             $results = PatientRequestStatus::whereHas('patientrequest', function ($query) use ($request) {
-                            $query->where('user_id', $request->care_taker_id);
+                            $query->where('care_taker_id', $request->care_taker_id);
                         })
                         ->latest('created_at') // Assuming 'created_at' is the timestamp field in your PatientRequestStatus table
                         ->take(10)

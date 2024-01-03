@@ -149,7 +149,7 @@ class PatientRequestController extends Controller
         $results = PatientRequest::
         //select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
                     where('status',0)
-                    ->where('user_id',$request->user_id)
+                    ->where('care_taker_id',$request->user_id)
                     ->get();
 
         $transformedResults = $results->map(function ($result) {
@@ -533,7 +533,7 @@ class PatientRequestController extends Controller
         }
 
         try {
-            $results = PatientRequest::where('user_id', $request->care_taker_id)
+            $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->whereIn('status', [3,4,5])
                         ->get();
 
@@ -627,7 +627,7 @@ class PatientRequestController extends Controller
         }
 
         try {
-            $results = PatientRequest::where('user_id', $request->care_taker_id)
+            $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->where('status', 6)
                         ->get();
 
