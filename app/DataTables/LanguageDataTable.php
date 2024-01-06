@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Province;
+use App\Models\Language;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ProvinceDataTable extends DataTable
+class LanguageDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -23,26 +23,26 @@ class ProvinceDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('status', function($province){
-                return ($province->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
+            ->addColumn('status', function($language){
+                return ($language->status==1)?'<h5><span class="badge badge-primary">Active</span></h5>':
                 '<h5><span class="badge badge-warning">Inactive</span></h5>';
             })
-            ->addColumn('action', function ($province) {
-                $id = $province->id;
+            ->addColumn('action', function ($language) {
+                $id = $language->id;
                 $btn = '';
-                    $btn .= '<a href="'.route('province.edit',$id).'"
+                    $btn .= '<a href="'.route('languages.edit',$id).'"
                     class="btn btn-xs btn-info" data-toggle="tooltip" title="Edit">
                     <i class="fa fa-pen-alt"></i> </a> ';
 
-                    if($province->status==1)
+                    if($language->status==1)
                     {
-                        $btn .='<a href="'.route('province.inactive',$id).'"
+                        $btn .='<a href="'.route('languages.inactive',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Suspend"><i class="fa fa-trash"></i> </a> ';
 
-                    }elseif($province->status==0)
+                    }elseif($language->status==0)
                     {
-                        $btn .='<a href="'.route('province.activate',$id).'"
+                        $btn .='<a href="'.route('languages.activate',$id).'"
                         class="btn btn-xs btn-danger" data-toggle="tooltip"
                         title="Activate"><i class="fa fa-unlock"></i> </a> ';
                     }
@@ -55,7 +55,7 @@ class ProvinceDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Province $model): QueryBuilder
+    public function query(Language $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -66,7 +66,7 @@ class ProvinceDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('province-table')
+                    ->setTableId('language-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -78,8 +78,7 @@ class ProvinceDataTable extends DataTable
                         Button::make('csv'),
                         Button::make('pdf'),
                         Button::make('print'),
-                        Button::make('reset'),
-                        //Button::make('reload')
+                        Button::make('reset')
                     ]);
     }
 
@@ -105,6 +104,6 @@ class ProvinceDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Province_' . date('YmdHis');
+        return 'Language_' . date('YmdHis');
     }
 }

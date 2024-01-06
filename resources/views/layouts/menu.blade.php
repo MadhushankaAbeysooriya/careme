@@ -48,7 +48,9 @@
 
 
 
-<li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*','dsdivisions*','hospitals*','advertisements*','shifts*')?'menu-open':'' }}">
+<li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*',
+                    'dsdivisions*','hospitals*','advertisements*','shifts*','languages*','payment_methods*',
+                    'relations*')?'menu-open':'' }}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-cogs text-blue"></i>
         <p>
@@ -123,6 +125,36 @@
             {{ request()->routeIs('shifts*')?'active':'' }}">
                 <i class="far fa-circle nav-icon text-blue"></i>
                 <p>Shift</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('languages.index')}}" class="nav-link
+            {{ request()->routeIs('languages*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Language</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('payment_methods.index')}}" class="nav-link
+            {{ request()->routeIs('payment_methods*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Payment Method</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('relations.index')}}" class="nav-link
+            {{ request()->routeIs('relations*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Relation</p>
             </a>
         </li>
     </ul>

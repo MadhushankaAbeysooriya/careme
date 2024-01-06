@@ -9,10 +9,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\HospitalController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\RelationController;
 use App\Http\Controllers\DSDivisionController;
 use App\Http\Controllers\GNDivisionController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PatientRequestController;
 
 /*
@@ -76,6 +79,18 @@ Route::group(['middleware' => ['auth']], function() {
     // Route::prefix('hospital/{hospital}')->group(function (){
     //     Route::resource('userhospitals',UserHospitalController::class);
     // });
+
+    Route::get('/language/inactive/{id}',[LanguageController::class,'inactive'])->name('languages.inactive');
+    Route::get('/language/activate/{id}',[LanguageController::class,'activate'])->name('languages.activate');
+    Route::resource('languages', LanguageController::class);
+
+    Route::get('/payment_method/inactive/{id}',[PaymentMethodController::class,'inactive'])->name('payment_methods.inactive');
+    Route::get('/payment_method/activate/{id}',[PaymentMethodController::class,'activate'])->name('payment_methods.activate');
+    Route::resource('payment_methods', PaymentMethodController::class);
+
+    Route::get('/relation/inactive/{id}',[RelationController::class,'inactive'])->name('relations.inactive');
+    Route::get('/relation/activate/{id}',[RelationController::class,'activate'])->name('relations.activate');
+    Route::resource('relations', RelationController::class);
 
     Route::get('/patient-request/pending/approve',[PatientRequestController::class,'index'])->name('patient_requests.pendingapprove');
 
