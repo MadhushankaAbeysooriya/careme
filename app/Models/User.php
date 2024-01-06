@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Rank;
 use App\Models\Forces;
 use App\Models\Hospital;
+use App\Models\Language;
 use App\Models\Usertype;
 use App\Models\UserRating;
 use App\Models\UserHospital;
@@ -75,5 +76,10 @@ class User extends Authenticatable
     public function ratings()
     {
         return $this->hasMany(UserRating::class);
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class);
     }
 }

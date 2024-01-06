@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('care_taker_profile_languages', function (Blueprint $table) {
+        Schema::create('user_languages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('care_taker_profile_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('language_id');
 
-            $table->foreign('care_taker_profile_id')->references('id')->on('care_taker_profiles')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade');
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('care_taker_profile_languages');
+        Schema::dropIfExists('user_languages');
     }
 };
