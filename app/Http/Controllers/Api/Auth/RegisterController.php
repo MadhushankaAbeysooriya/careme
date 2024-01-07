@@ -136,6 +136,8 @@ class RegisterController extends Controller
         if ($request->language_id) {
             $languageIds = array_map('trim', explode(',', $request->language_id[0]));
             $user->languages()->sync($languageIds);
+        }else {
+            $user->languages()->detach();
         }
 
         // If validation passes, create the user

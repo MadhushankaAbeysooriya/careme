@@ -416,7 +416,7 @@ class CareTakerProfileController extends Controller
         ], 200);
     }
 
-    public function updateHospital(Request $request,)
+    public function updateHospital(Request $request)
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
@@ -444,6 +444,77 @@ class CareTakerProfileController extends Controller
         } else {
             // If no hospital IDs are provided, you may choose to detach all hospitals
             $user->hospitals()->detach();
+        }
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => 1,
+        ], 200);
+    }
+
+    public function storeLanguage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'language_id' => 'required|array',
+            'language_id.*' => 'exists:languages,id', // Validate each language ID exists in the 'languages' table
+        ], [
+            'user_id.required' => 'User is required.',
+            'user_id.unique' => 'Only one profile can have',
+            'language_id.required' => 'language IDs are required.',
+            'language_id.array' => 'language IDs must be an array.',
+            'language_id.*.exists' => 'Invalid language ID provided.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        // Handle image uploads and save paths in the database
+        $user = User::findOrFail($request->user_id);
+
+        if ($request->language_id) {
+            $languageIds = array_map('trim', explode(',', $request->language_id[0]));
+            $user->languages()->sync($languageIds);
+        } else {
+            // If no language IDs are provided, you may choose to detach all languages
+            $user->languages()->detach();
+        }
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => 1,
+        ], 200);
+    }
+
+    public function updateLanguage(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'language_id' => 'required|array',
+            'language_id.*' => 'exists:languages,id',
+        ], [
+            'user_id.required' => 'User is required.',
+            'language_id.required' => 'language IDs are required.',
+            'language_id.array' => 'language IDs must be an array.',
+            'language_id.*.exists' => 'Invalid language ID provided.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        // Handle image uploads and save paths in the database
+        $user = User::findOrFail($request->user_id);
+
+        // Sync languages
+        if ($request->language_id) {
+            $languageIds = array_map('trim', explode(',', $request->language_id[0]));
+            $user->languages()->sync($languageIds);
+        } else {
+            // If no language IDs are provided, you may choose to detach all languages
+            $user->languages()->detach();
         }
 
         return response()->json([

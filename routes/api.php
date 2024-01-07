@@ -157,6 +157,10 @@ Route::middleware('auth:sanctum')->get('/get-language-by-user', [LanguageControl
 
 Route::middleware('auth:sanctum')->get('/get-relations', [RelationController::class, 'index']);
 
+Route::middleware('auth:sanctum')->post('/store-user-language', [CareTakerProfileController::class, 'storeLanguage']);
+
+Route::middleware('auth:sanctum')->put('/update-user-language', [CareTakerProfileController::class, 'updateLanguage']);
+
 
 
 
