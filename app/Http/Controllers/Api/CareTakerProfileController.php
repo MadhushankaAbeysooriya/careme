@@ -73,114 +73,133 @@ class CareTakerProfileController extends Controller
 
 
 
-public function store(Request $request)
-{
-    // Validate the request data
-    $validator = Validator::make($request->all(), [
-        'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'user_id' => 'required|unique:care_taker_profiles,user_id',
-        'hospital_id' => 'required|array',
-        // 'description' => 'required'
-        'agreementstatus' => 'required',
-    ], [
-        'personal_photo.required' => 'The personal photo field is required.',
-        'personal_photo.image' => 'The personal photo must be an image.',
-        'personal_photo.mimes' => 'The personal photo must be a file of type: jpeg, png, jpg, gif.',
-        'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
-        'id_front.required' => 'The ID front field is required.',
-        'id_front.image' => 'The ID front must be an image.',
-        // Add similar messages for other fields
-        'user_id.required' => 'User is required.',
-        'user_id.unique' => 'Only one profile can have',
-        'hospital_id.required' => 'Hospital ID is required.',
-        'hospital_id.array' => 'Hospital ID must be an array.',
-        // 'description.required' => 'Description is required.',
-        'agreementstatus.required' => 'Agreement Status is required.',
-    ]);
+    public function store(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'user_id' => 'required|unique:care_taker_profiles,user_id',
+            'hospital_id' => 'required|array',
+            // 'description' => 'required'
+            'agreementstatus' => 'required',
+            'language_id' => 'required|array',
+            'relation_id' => 'required',
+            'refree_name' => 'required',
+            'refree_contact_number' => 'required',
 
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        ], [
+            'personal_photo.required' => 'The personal photo field is required.',
+            'personal_photo.image' => 'The personal photo must be an image.',
+            'personal_photo.mimes' => 'The personal photo must be a file of type: jpeg, png, jpg, gif.',
+            'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
+            'id_front.required' => 'The ID front field is required.',
+            'id_front.image' => 'The ID front must be an image.',
+            // Add similar messages for other fields
+            'user_id.required' => 'User is required.',
+            'user_id.unique' => 'Only one profile can have',
+            'hospital_id.required' => 'Hospital ID is required.',
+            'hospital_id.array' => 'Hospital ID must be an array.',
+            // 'description.required' => 'Description is required.',
+            'agreementstatus.required' => 'Agreement Status is required.',
+            'language_id.required' => 'Language ID is required.',
+            'language_id.array' => 'Language ID must be an array.',
+            'relation_id.required' => 'Relation of referee is required.',
+            'refree_name.required' => 'Refree Name is required.',
+            'refree_contact_number.required' => 'Referee Contact Number is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        // Handle image uploads and save paths in the database
+        $user = User::findOrFail($request->user_id);
+
+        // Create directories if they don't exist
+        $personalPhotosDirectory = public_path('/upload/personalphotos/'.$request->user_id.'/');
+        $idsDirectory = public_path('/upload/ids/'.$request->user_id.'/');
+        //$banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
+
+
+        if (!File::isDirectory($personalPhotosDirectory)) {
+            File::makeDirectory($personalPhotosDirectory, 0777, true, true);
+        }
+
+        if (!File::isDirectory($idsDirectory)) {
+            File::makeDirectory($idsDirectory, 0777, true, true);
+        }
+
+        // if (!File::isDirectory($banksDirectory)) {
+        //     File::makeDirectory($banksDirectory, 0777, true, true);
+        // }
+
+        // Generate a unique filename for the uploaded filepath
+        $extPersonalPhotos = $request->file('personal_photo')->extension();
+        $filePersonalPhotos = $request->user_id.'.'.$extPersonalPhotos;
+
+        // Move the uploaded file to the destination
+        $request->file('personal_photo')->move($personalPhotosDirectory, $filePersonalPhotos);
+
+
+
+        // Generate a unique filename for the uploaded filepath
+        $extIdFront = $request->file('id_front')->extension();
+        $fileIdFront = $request->user_id.'_front.'.$extIdFront;
+
+        // Move the uploaded file to the destination
+        $request->file('id_front')->move($idsDirectory, $fileIdFront);
+
+
+        // Generate a unique filename for the uploaded filepath
+        $extIdBack = $request->file('id_back')->extension();
+        $fileIdBack = $request->user_id.'_back.'.$extIdBack;
+
+        // Move the uploaded file to the destination
+        $request->file('id_back')->move($idsDirectory, $fileIdBack);
+
+
+        // // Generate a unique filename for the uploaded filepath
+        // $extBank = $request->file('bank')->extension();
+        // $fileBank = $request->user_id.'.'.$extBank;
+
+        // // Move the uploaded file to the destination
+        // $request->file('bank')->move($banksDirectory, $fileBank);
+
+
+        // Sync hospitals
+        if ($request->hospital_id) {
+            $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
+            $user->hospitals()->sync($hospitalIds);
+        }
+
+        // Sync languages
+        if ($request->language_id) {
+            $languageIds = array_map('trim', explode(',', $request->language_id[0]));
+            $user->languages()->sync($languageIds);
+        }
+
+        // Create CareTakerProfile record
+        $caretakerprofile = CareTakerProfile::create([
+            'personal_photo' => '/upload/personalphotos/'.$request->user_id.'/'.$filePersonalPhotos,
+            'id_front' => '/upload/ids/'.$request->user_id.'/'.$fileIdFront,
+            'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
+            //'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
+            'user_id' => $request->user_id,
+            'description' =>$request->description,
+            'agreementstatus' => $request->agreementstatus,
+            'relation_id' => $request->relation_id,
+            'refree_name' => $request->refree_name,
+            'refree_contact_number' => $request->refree_contact_number,
+        ]);
+
+        return response()->json([
+            'message' => 'Success',
+            'status' => 1,
+        ], 200);
     }
-
-    // Handle image uploads and save paths in the database
-    $user = User::findOrFail($request->user_id);
-
-    // Create directories if they don't exist
-    $personalPhotosDirectory = public_path('/upload/personalphotos/'.$request->user_id.'/');
-    $idsDirectory = public_path('/upload/ids/'.$request->user_id.'/');
-    $banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
-
-
-    if (!File::isDirectory($personalPhotosDirectory)) {
-        File::makeDirectory($personalPhotosDirectory, 0777, true, true);
-    }
-
-    if (!File::isDirectory($idsDirectory)) {
-        File::makeDirectory($idsDirectory, 0777, true, true);
-    }
-
-    if (!File::isDirectory($banksDirectory)) {
-        File::makeDirectory($banksDirectory, 0777, true, true);
-    }
-
-    // Generate a unique filename for the uploaded filepath
-    $extPersonalPhotos = $request->file('personal_photo')->extension();
-    $filePersonalPhotos = $request->user_id.'.'.$extPersonalPhotos;
-
-    // Move the uploaded file to the destination
-    $request->file('personal_photo')->move($personalPhotosDirectory, $filePersonalPhotos);
-
-
-
-    // Generate a unique filename for the uploaded filepath
-    $extIdFront = $request->file('id_front')->extension();
-    $fileIdFront = $request->user_id.'_front.'.$extIdFront;
-
-    // Move the uploaded file to the destination
-    $request->file('id_front')->move($idsDirectory, $fileIdFront);
-
-
-    // Generate a unique filename for the uploaded filepath
-    $extIdBack = $request->file('id_back')->extension();
-    $fileIdBack = $request->user_id.'_back.'.$extIdBack;
-
-    // Move the uploaded file to the destination
-    $request->file('id_back')->move($idsDirectory, $fileIdBack);
-
-
-    // Generate a unique filename for the uploaded filepath
-    $extBank = $request->file('bank')->extension();
-    $fileBank = $request->user_id.'.'.$extBank;
-
-    // Move the uploaded file to the destination
-    $request->file('bank')->move($banksDirectory, $fileBank);
-
-
-    // Sync hospitals
-    if ($request->hospital_id) {
-        $hospitalIds = array_map('trim', explode(',', $request->hospital_id[0]));
-        $user->hospitals()->sync($hospitalIds);
-    }
-
-    // Create CareTakerProfile record
-    $caretakerprofile = CareTakerProfile::create([
-        'personal_photo' => '/upload/personalphotos/'.$request->user_id.'/'.$filePersonalPhotos,
-        'id_front' => '/upload/ids/'.$request->user_id.'/'.$fileIdFront,
-        'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
-        'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
-        'user_id' => $request->user_id,
-        'description' =>$request->description,
-        'agreementstatus' => $request->agreementstatus,
-    ]);
-
-    return response()->json([
-        'message' => 'Success',
-        'status' => 1,
-    ], 200);
-}
 
     public function getUserInfo(Request $request)
     {
@@ -240,10 +259,14 @@ public function store(Request $request)
             'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
             'description' => 'required',
             'agreementstatus' => 'required',
+            'language_id' => 'required|array',
+            'relation_id' => 'required',
+            'refree_name' => 'required',
+            'refree_contact_number' => 'required',
         ], [
             'personal_photo.required' => 'The personal photo field is required.',
             'personal_photo.image' => 'The personal photo must be an image.',
@@ -256,6 +279,11 @@ public function store(Request $request)
             'user_id.unique' => 'Only one profile can have',
             'description.required' => 'Description is required.',
             'agreementstatus.required' => 'Agreement Status is required.',
+            'language_id.required' => 'Language ID is required.',
+            'language_id.array' => 'Language ID must be an array.',
+            'relation_id.required' => 'Relation of referee is required.',
+            'refree_name.required' => 'Refree Name is required.',
+            'refree_contact_number.required' => 'Referee Contact Number is required.',
         ]);
 
         if ($validator->fails()) {
@@ -268,7 +296,7 @@ public function store(Request $request)
         // Create directories if they don't exist
         $personalPhotosDirectory = public_path('/upload/personalphotos/'.$request->user_id.'/');
         $idsDirectory = public_path('/upload/ids/'.$request->user_id.'/');
-        $banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
+        // $banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
 
 
         if (!File::isDirectory($personalPhotosDirectory)) {
@@ -279,9 +307,9 @@ public function store(Request $request)
             File::makeDirectory($idsDirectory, 0777, true, true);
         }
 
-        if (!File::isDirectory($banksDirectory)) {
-            File::makeDirectory($banksDirectory, 0777, true, true);
-        }
+        // if (!File::isDirectory($banksDirectory)) {
+        // //     File::makeDirectory($banksDirectory, 0777, true, true);
+        // }
 
         // Generate a unique filename for the uploaded filepath
         $extPersonalPhotos = $request->file('personal_photo')->extension();
@@ -308,24 +336,31 @@ public function store(Request $request)
         $request->file('id_back')->move($idsDirectory, $fileIdBack);
 
 
-        // Generate a unique filename for the uploaded filepath
-        $extBank = $request->file('bank')->extension();
-        $fileBank = $request->user_id.'.'.$extBank;
+        // // Generate a unique filename for the uploaded filepath
+        // $extBank = $request->file('bank')->extension();
+        // $fileBank = $request->user_id.'.'.$extBank;
 
-        // Move the uploaded file to the destination
-        $request->file('bank')->move($banksDirectory, $fileBank);
+        // // Move the uploaded file to the destination
+        // $request->file('bank')->move($banksDirectory, $fileBank);
 
-
+        // Sync languages
+        if ($request->language_id) {
+            $languageIds = array_map('trim', explode(',', $request->language_id[0]));
+            $user->languages()->sync($languageIds);
+        }
 
         // Create CareTakerProfile record
         CareTakerProfile::create([
             'personal_photo' => '/upload/personalphotos/'.$request->user_id.'/'.$filePersonalPhotos,
             'id_front' => '/upload/ids/'.$request->user_id.'/'.$fileIdFront,
             'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
-            'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
+            //'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
             'user_id' => $request->user_id,
             'description' => $request->description,
             'agreementstatus' => $request->agreementstatus,
+            'relation_id' => $request->relation_id,
+            'refree_name' => $request->refree_name,
+            'refree_contact_number' => $request->refree_contact_number,
         ]);
 
         return response()->json([

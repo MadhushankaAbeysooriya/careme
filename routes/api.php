@@ -8,11 +8,14 @@ use App\Http\Controllers\Api\ShiftController;
 use App\Http\Controllers\Api\AboutUsController;
 use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\HospitalController;
+use App\Http\Controllers\Api\LanguageController;
+use App\Http\Controllers\Api\RelationController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\AvlCareTakerController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\PatientRequestController;
 use App\Http\Controllers\Api\CareTakerProfileController;
 
@@ -145,6 +148,14 @@ Route::middleware('auth:sanctum')->get('/get-caretaker-notification', [Notificat
 Route::middleware('auth:sanctum')->get('/about-us', [AboutUsController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/privacy-policy', [RegisterController::class, 'getprivacypolicy']);
+
+Route::middleware('auth:sanctum')->get('/get-payment-method', [PaymentMethodController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/get-languages', [LanguageController::class, 'index']);
+
+Route::middleware('auth:sanctum')->get('/get-language-by-user', [LanguageController::class, 'getLanguagebyUser']);
+
+Route::middleware('auth:sanctum')->get('/get-relations', [RelationController::class, 'index']);
 
 
 

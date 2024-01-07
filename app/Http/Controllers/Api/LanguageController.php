@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Language;
 use App\Models\UserHospital;
+use App\Models\UserLanguage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class LanguageController extends Controller
 
             try {
 
-                $languages = UserHospital::select('id', 'language_id')->where('user_id',$request->user_id)->get();
+                $languages = UserLanguage::select('id', 'language_id')->where('user_id',$request->user_id)->get();
 
                 return response()->json(['languages' => $languages, 'status' => 1],200);
 

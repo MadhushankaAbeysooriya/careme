@@ -110,13 +110,16 @@ class RegisterController extends Controller
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'gender' => 'required',
-            'dob' => 'required'
+            'dob' => 'required',
+            'language_id' => 'required|array',
         ], [
             'user_id.required' => 'The user id is required.',
             'first_name.required' => 'The first name field is required.',
             'last_name.required' => 'The last name field is required.',
             'gender.required' => 'The gender field is required.',
             'dob.required' => 'The Date of Birth is required.',
+            'language_id.required' => 'Language ID is required.',
+            'language_id.array' => 'Language ID must be an array.',
         ]);
 
         if ($validator->fails()) {
@@ -127,6 +130,12 @@ class RegisterController extends Controller
 
         if (!$user) {
             return response()->json(['error' => 'User not found', 'status' => 0], 200);
+        }
+
+        // Sync languages
+        if ($request->language_id) {
+            $languageIds = array_map('trim', explode(',', $request->language_id[0]));
+            $user->languages()->sync($languageIds);
         }
 
         // If validation passes, create the user

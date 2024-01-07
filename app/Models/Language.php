@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\CareTakerProfile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,8 +16,8 @@ class Language extends Model
         'status',
     ];
 
-    public function careTakerProfiles()
+    public function users()
     {
-        return $this->belongsToMany(CareTakerProfile::class);
+        return $this->belongsToMany(User::class,'user_languages');
     }
 }

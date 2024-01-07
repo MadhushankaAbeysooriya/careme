@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Relation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,15 +16,22 @@ class CareTakerProfile extends Model
         'personal_photo',
         'id_front',
         'id_back',
-        'bank',
         'user_id',
         'description',
         'agreementstatus',
+        'relation_id',
+        'refree_name',
+        'refree_contact_number',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id', 'id');
+    }
+
+    public function relation()
+    {
+        return $this->belongsTo(Relation::class, 'relation_id', 'id');
     }
 
 }
