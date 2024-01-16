@@ -233,6 +233,16 @@ class AvlCareTakerController extends Controller
                         ->whereHas('user.hospitals', function ($query) use ($hospitalId) {
                             $query->where('hospital_id', $hospitalId);
                         })
+                        ->when(request()->has('gender'), function ($query) {
+                            $query->whereHas('user', function ($query) {
+                                $query->where('gender', request('gender'));
+                            });
+                        })
+                        ->when(request()->has('languages'), function ($query) {
+                            $query->whereHas('user.languages', function ($query) {
+                                $query->whereIn('languages.id', request('languages'));
+                            });
+                        })
                         ->with('user.ratings') // Load the user ratings relationship
                         ->get();
 
