@@ -80,7 +80,7 @@ class CareTakerProfileController extends Controller
             'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            //'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf|max:2048',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
             'hospital_id' => 'required|array',
             // 'description' => 'required'
@@ -98,6 +98,10 @@ class CareTakerProfileController extends Controller
             'id_front.required' => 'The ID front field is required.',
             'id_front.image' => 'The ID front must be an image.',
             // Add similar messages for other fields
+            'proof.required' => 'The proof field is required.',
+            'proof.image' => 'The proof must be an image.',
+            'proof.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif.',
+            'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'hospital_id.required' => 'Hospital ID is required.',
@@ -132,9 +136,9 @@ class CareTakerProfileController extends Controller
             File::makeDirectory($idsDirectory, 0777, true, true);
         }
 
-        // if (!File::isDirectory($banksDirectory)) {
-        //     File::makeDirectory($banksDirectory, 0777, true, true);
-        // }
+        if (!File::isDirectory($proofDirectory)) {
+            File::makeDirectory($proofDirectory, 0777, true, true);
+        }
 
         // Generate a unique filename for the uploaded filepath
         $extPersonalPhotos = $request->file('personal_photo')->extension();
@@ -161,12 +165,12 @@ class CareTakerProfileController extends Controller
         $request->file('id_back')->move($idsDirectory, $fileIdBack);
 
 
-        // // Generate a unique filename for the uploaded filepath
-        // $extBank = $request->file('bank')->extension();
-        // $fileBank = $request->user_id.'.'.$extBank;
+        // Generate a unique filename for the uploaded filepath
+        $extProof = $request->file('proof')->extension();
+        $fileProof = $request->user_id.'.'.$extProof;
 
-        // // Move the uploaded file to the destination
-        // $request->file('bank')->move($banksDirectory, $fileBank);
+        // Move the uploaded file to the destination
+        $request->file('proof')->move($ProofsDirectory, $fileProof);
 
 
         // Sync hospitals
@@ -186,7 +190,7 @@ class CareTakerProfileController extends Controller
             'personal_photo' => '/upload/personalphotos/'.$request->user_id.'/'.$filePersonalPhotos,
             'id_front' => '/upload/ids/'.$request->user_id.'/'.$fileIdFront,
             'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
-            //'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
+            'proof' => '/upload/proof/'.$request->user_id.'/'.$fileProof,
             'user_id' => $request->user_id,
             'description' =>$request->description,
             'agreementstatus' => $request->agreementstatus,
@@ -259,7 +263,7 @@ class CareTakerProfileController extends Controller
             'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            //'bank' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf|max:2048',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
             'description' => 'required',
             'agreementstatus' => 'required',
@@ -275,6 +279,10 @@ class CareTakerProfileController extends Controller
             'id_front.required' => 'The ID front field is required.',
             'id_front.image' => 'The ID front must be an image.',
             // Add similar messages for other fields
+            'proof.required' => 'The proof field is required.',
+            'proof.image' => 'The proof must be an image.',
+            'proof.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif.',
+            'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'description.required' => 'Description is required.',
@@ -296,7 +304,7 @@ class CareTakerProfileController extends Controller
         // Create directories if they don't exist
         $personalPhotosDirectory = public_path('/upload/personalphotos/'.$request->user_id.'/');
         $idsDirectory = public_path('/upload/ids/'.$request->user_id.'/');
-        // $banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
+        $proofDirectory = public_path('/upload/proof/'.$request->user_id.'/');
 
 
         if (!File::isDirectory($personalPhotosDirectory)) {
@@ -307,9 +315,9 @@ class CareTakerProfileController extends Controller
             File::makeDirectory($idsDirectory, 0777, true, true);
         }
 
-        // if (!File::isDirectory($banksDirectory)) {
-        // //     File::makeDirectory($banksDirectory, 0777, true, true);
-        // }
+        if (!File::isDirectory($proofDirectory)) {
+             File::makeDirectory($proofDirectory, 0777, true, true);
+        }
 
         // Generate a unique filename for the uploaded filepath
         $extPersonalPhotos = $request->file('personal_photo')->extension();
@@ -336,12 +344,12 @@ class CareTakerProfileController extends Controller
         $request->file('id_back')->move($idsDirectory, $fileIdBack);
 
 
-        // // Generate a unique filename for the uploaded filepath
-        // $extBank = $request->file('bank')->extension();
-        // $fileBank = $request->user_id.'.'.$extBank;
+        // Generate a unique filename for the uploaded filepath
+        $extProof = $request->file('proof')->extension();
+        $fileProof = $request->user_id.'.'.$extProof;
 
-        // // Move the uploaded file to the destination
-        // $request->file('bank')->move($banksDirectory, $fileBank);
+        // Move the uploaded file to the destination
+        $request->file('proof')->move($proofDirectory, $fileProof);
 
         // Sync languages
         if ($request->language_id) {
@@ -354,7 +362,7 @@ class CareTakerProfileController extends Controller
             'personal_photo' => '/upload/personalphotos/'.$request->user_id.'/'.$filePersonalPhotos,
             'id_front' => '/upload/ids/'.$request->user_id.'/'.$fileIdFront,
             'id_back' => '/upload/ids/'.$request->user_id.'/'.$fileIdBack,
-            //'bank' => '/upload/banks/'.$request->user_id.'/'.$fileBank,
+            'proof' => '/upload/proof/'.$request->user_id.'/'.$fileProof,
             'user_id' => $request->user_id,
             'description' => $request->description,
             'agreementstatus' => $request->agreementstatus,

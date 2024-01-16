@@ -22,6 +22,7 @@ class CareTakerProfile extends Model
         'relation_id',
         'refree_name',
         'refree_contact_number',
+        'proof',
     ];
 
     public function user()
