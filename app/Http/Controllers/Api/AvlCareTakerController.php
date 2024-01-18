@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -237,6 +238,14 @@ class AvlCareTakerController extends Controller
                             $query->whereHas('user', function ($query) {
                                 $query->where('gender', request('gender'));
                             });
+                        })
+                        ->when(request()->has('user_id'), function ($query) {
+                            $user = User::find(request('user_id'));
+                            if ($user) {
+                                $query->whereHas('user', function ($query) use ($user) {
+                                    $query->where('gender', $user->gender);
+                                });
+                            }
                         })
                         ->when(request()->has('languages'), function ($query) {
                             $query->whereHas('user.languages', function ($query) {
