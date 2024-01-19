@@ -249,7 +249,7 @@ class AvlCareTakerController extends Controller
                         })
                         ->when(request()->has('languages'), function ($query) {
                             $query->whereHas('user.languages', function ($query) {
-                                $query->whereIn('languages.id', request('languages'));
+                                $query->whereIn('languages.id', (array)request('languages'));
                             });
                         })
                         ->with('user.ratings') // Load the user ratings relationship

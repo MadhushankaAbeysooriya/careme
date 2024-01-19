@@ -150,6 +150,7 @@ class PatientRequestController extends Controller
         //select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
                     where('status',0)
                     ->where('care_taker_id',$request->user_id)
+                    ->latest('created_at')
                     ->get();
 
         $transformedResults = $results->map(function ($result) {
@@ -277,6 +278,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                                 ->where('status',1)
+                                ->latest('created_at')
                                 ->get();
             //dd($results);
 
@@ -329,6 +331,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [0,1,2])
+                        ->latest('created_at')
                                 ->get();
             //dd($results);
 
@@ -437,6 +440,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [3,5])
+                        ->latest('created_at')
                         ->get();
             //dd($results);
 
@@ -535,6 +539,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->whereIn('status', [3,4,5])
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields
@@ -582,6 +587,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [3,4,5,6])
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields
@@ -629,6 +635,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->where('status', 6)
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields

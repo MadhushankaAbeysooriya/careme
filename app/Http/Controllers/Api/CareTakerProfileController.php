@@ -77,10 +77,10 @@ class CareTakerProfileController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+            'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'id_front' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'id_back' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
             'hospital_id' => 'required|array',
             // 'description' => 'required'
@@ -94,14 +94,16 @@ class CareTakerProfileController extends Controller
             'personal_photo.required' => 'The personal photo field is required.',
             'personal_photo.image' => 'The personal photo must be an image.',
             'personal_photo.mimes' => 'The personal photo must be a file of type: jpeg, png, jpg, gif.',
-            'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
+            //'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
             'id_front.required' => 'The ID front field is required.',
             'id_front.image' => 'The ID front must be an image.',
+            'id_back.required' => 'The ID back field is required.',
+            'id_back.image' => 'The ID back must be an image.',
             // Add similar messages for other fields
             'proof.required' => 'The proof field is required.',
             'proof.image' => 'The proof must be an image.',
             'proof.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif.',
-            'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
+            //'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'hospital_id.required' => 'Hospital ID is required.',
@@ -260,10 +262,10 @@ class CareTakerProfileController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'id_front' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'id_back' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+            'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'id_front' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'id_back' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'proof' => 'required|image|mimes:jpeg,png,jpg,gif,pdf',
             'user_id' => 'required|unique:care_taker_profiles,user_id',
             'description' => 'required',
             'agreementstatus' => 'required',
@@ -275,14 +277,16 @@ class CareTakerProfileController extends Controller
             'personal_photo.required' => 'The personal photo field is required.',
             'personal_photo.image' => 'The personal photo must be an image.',
             'personal_photo.mimes' => 'The personal photo must be a file of type: jpeg, png, jpg, gif.',
-            'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
+            //'personal_photo.max' => 'The personal photo may not be greater than 2048 kilobytes.',
             'id_front.required' => 'The ID front field is required.',
             'id_front.image' => 'The ID front must be an image.',
+            'id_back.required' => 'The ID back field is required.',
+            'id_back.image' => 'The ID back must be an image.',
             // Add similar messages for other fields
             'proof.required' => 'The proof field is required.',
             'proof.image' => 'The proof must be an image.',
             'proof.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif.',
-            'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
+            //'proof.max' => 'The proof may not be greater than 2048 kilobytes.',
             'user_id.required' => 'User is required.',
             'user_id.unique' => 'Only one profile can have',
             'description.required' => 'Description is required.',
