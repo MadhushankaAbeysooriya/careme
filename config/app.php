@@ -18,6 +18,13 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    //change charges
+    'svc_charge' => 400.00,
+    '12hr_charge' => 2100.00,
+    'more_than_24hr_charge' => 3300.00,
+    '12-24hr_rate' => 100.00,
+    'more_than_24hr_rate' => 130.00,
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

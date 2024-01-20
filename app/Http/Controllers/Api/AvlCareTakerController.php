@@ -249,7 +249,7 @@ class AvlCareTakerController extends Controller
                         })
                         ->when(request()->has('languages'), function ($query) {
                             $query->whereHas('user.languages', function ($query) {
-                                $query->whereIn('languages.id', (array)request('languages'));
+                                $query->whereIn('languages.id', request('languages'));
                             });
                         })
                         ->with('user.ratings') // Load the user ratings relationship
@@ -283,7 +283,14 @@ class AvlCareTakerController extends Controller
                 ];
             });
 
-            return response()->json(['data' => $transformedResults]);
+            return response()->json([
+                                    'data' => $transformedResults,
+                                    'svc_charge' => config('app.svc_charge'),
+                                    '12hr_charge' => config('app.12hr_charge'),
+                                    'more_than_24hr_charge' => config('app.more_than_24hr_charge'),
+                                    '12-24hr_rate' => config('app.12-24hr_rate'),
+                                    'more_than_24hr_rate' => config('app.more_than_24hr_rate'),
+                                    ]);
         } catch (Exception $e) {
             // Handle unexpected exceptions or errors
             if ($e instanceof QueryException) {

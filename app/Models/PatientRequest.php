@@ -25,6 +25,7 @@ class PatientRequest extends Model
         'patient_id',
         'hrs',
         'total_price',
+        'svc_charge',
     ];
 
     public function patientrequeststatus()

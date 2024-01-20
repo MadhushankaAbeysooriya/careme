@@ -33,7 +33,7 @@ class NotificationController extends Controller
 
            // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {
-                
+
                 return [
                     'job_id' => $result->patient_request_id,
                     // 'patient_first_name' => $result->patient->fname,
@@ -41,8 +41,8 @@ class NotificationController extends Controller
                     // 'patient_gender' => $result->patient->gender,
                     'hospital' => $result->patientrequest->hospital->name,
                     'starting_date' => $result->patientrequest->from,
-                    'ending_date' => $result->patientrequest->to,                    
-                    'total_price' => $result->patientrequest->total_price,
+                    'ending_date' => $result->patientrequest->to,
+                    'total_price' => $result->patientrequest->total_price - $result->patientrequest->svc_charge,
                     'status' => $result->status,
                 ];
             });
@@ -81,7 +81,7 @@ class NotificationController extends Controller
 
            // Map and transform the results to include only specific fields
             $transformedResults = $results->map(function ($result) {
-                
+
                 return [
                     'job_id' => $result->patient_request_id,
                     // 'patient_first_name' => $result->patient->fname,
@@ -89,8 +89,8 @@ class NotificationController extends Controller
                     // 'patient_gender' => $result->patient->gender,
                     'hospital' => $result->patientrequest->hospital->name,
                     'starting_date' => $result->patientrequest->from,
-                    'ending_date' => $result->patientrequest->to,                    
-                    'total_price' => $result->patientrequest->total_price,
+                    'ending_date' => $result->patientrequest->to,
+                    'total_price' => $result->patientrequest->total_price - $result->patientrequest->svc_charge,
                     'status' => $result->status,
                 ];
             });

@@ -47,6 +47,7 @@ class PatientRequestController extends Controller
             'patient_id' => $request->patient_id,
             'hrs' =>  $request->hrs,
             'total_price' => $request->total_price,
+            'svc_charge' => config('app.svc_charge'),
         ]);
 
         return response()->json([
@@ -111,6 +112,7 @@ class PatientRequestController extends Controller
                     'patient_id' => $patientId,
                     'hrs' =>  $hrs,
                     'total_price' => $totalPrice,
+                    'svc_charge' => config('app.svc_charge'),
                 ]);
                 $successCount++;
             } catch (Exception $e) {
@@ -166,7 +168,8 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)
                     //                     : null,
@@ -301,6 +304,7 @@ class PatientRequestController extends Controller
                     // 'description' => optional($result->caretaker->caretakerprofile)->description,
                     'status' => $result->status,
                     'total_price' => $result->total_price,
+                    'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -348,7 +352,8 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -451,13 +456,15 @@ class PatientRequestController extends Controller
                 $age = $dob->diffInYears(Carbon::now());
                 return [
                     'job_id' => $result->id,
-                    'care_taker_id' => $result->user_id,
+                    'care_taker_id' => $result->care_taker_id,
                     'care_taker_first_name' => $result->caretaker->fname,
                     'care_taker_last_name' => $result->caretaker->lname,
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
+                    'care_taker_phone' => $result->caretaker->phone,
                 ];
             });
 
@@ -556,7 +563,8 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -604,7 +612,8 @@ class PatientRequestController extends Controller
                     'status' => $result->status,
                     'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
                     'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -653,7 +662,8 @@ class PatientRequestController extends Controller
                     'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
                     'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
                     'deposited_date' => optional($result->patientrequeststatus->where('status', 6)->first())->date,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price  - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 

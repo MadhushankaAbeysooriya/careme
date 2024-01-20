@@ -6,7 +6,7 @@
     </a>
 </li>
 
-<li class="nav-item {{ request()->routeIs('patient_requests.pendingapprove','patient_requests.pendingDeposit')?'menu-open':'' }}">
+<li class="nav-item {{ request()->routeIs('patient_requests.pendingapprove','patient_requests.pendingDeposit','patient_requests.pending_service')?'menu-open':'' }}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-briefcase text-green"></i>
         <p>
