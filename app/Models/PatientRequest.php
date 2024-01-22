@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Hospital;
+use App\Models\PaymentMethod;
 use App\Models\PatientRequestStatus;
 use App\Models\PatientRequestDeposit;
 use App\Models\PatientRequestPayment;
@@ -26,6 +27,7 @@ class PatientRequest extends Model
         'hrs',
         'total_price',
         'svc_charge',
+        'payment_method_id',
     ];
 
     public function patientrequeststatus()
@@ -56,5 +58,10 @@ class PatientRequest extends Model
     public function patientrequestdeposit()
     {
         return $this->hasOne(PatientRequestDeposit::class);
+    }
+
+    public function paymentmethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
 }

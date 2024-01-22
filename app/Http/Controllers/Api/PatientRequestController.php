@@ -22,6 +22,7 @@ class PatientRequestController extends Controller
             'hospital_id' => 'required',
             'patient_id' => 'required',
             'hrs' => 'required',
+            'payment_method_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -31,6 +32,7 @@ class PatientRequestController extends Controller
             'hospital_id.required' => 'Hospital is required.',
             'patient_id.required' => 'Hospital is required.',
             'hrs.required' => 'The hrs feild is required.',
+            'payment_method_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -48,6 +50,7 @@ class PatientRequestController extends Controller
             'hrs' =>  $request->hrs,
             'total_price' => $request->total_price,
             'svc_charge' => config('app.svc_charge'),
+            'payment_method_id' => $request->payment_method_id,
         ]);
 
         return response()->json([
@@ -67,6 +70,7 @@ class PatientRequestController extends Controller
             'patient_id' => 'required',
             'total_price' => 'required',
             'hrs' => 'required',
+            'payment_method_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -78,6 +82,7 @@ class PatientRequestController extends Controller
             'patient_id.required' => 'Hospital is required.',
             'hrs.required' => 'The hrs feild is required.',
             'total_price.required' => 'Total Price is required.',
+            'payment_method_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -97,6 +102,7 @@ class PatientRequestController extends Controller
         $patientId = $request->input('patient_id');
         $hrs = $request->input('hrs');
         $totalPrice = $request->input('total_price');
+        $paymentMethod = $request->input('payment_method_id');
 
         $successCount = 0;
         $errorMessages = [];
@@ -113,6 +119,7 @@ class PatientRequestController extends Controller
                     'hrs' =>  $hrs,
                     'total_price' => $totalPrice,
                     'svc_charge' => config('app.svc_charge'),
+                    'payment_method_id' => $paymentMethod,
                 ]);
                 $successCount++;
             } catch (Exception $e) {
@@ -169,6 +176,7 @@ class PatientRequestController extends Controller
                     'ending_date' => $result->to,
                     'status' => $result->status,
                     'total_price' => $result->total_price - $result->svc_charge,
+                    'payment_method' => $result->paymentmethod->name,
                     //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)
