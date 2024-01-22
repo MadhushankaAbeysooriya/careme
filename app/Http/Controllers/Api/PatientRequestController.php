@@ -22,6 +22,7 @@ class PatientRequestController extends Controller
             'hospital_id' => 'required',
             'patient_id' => 'required',
             'hrs' => 'required',
+            'payment_method_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -31,6 +32,7 @@ class PatientRequestController extends Controller
             'hospital_id.required' => 'Hospital is required.',
             'patient_id.required' => 'Hospital is required.',
             'hrs.required' => 'The hrs feild is required.',
+            'payment_method_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -47,6 +49,8 @@ class PatientRequestController extends Controller
             'patient_id' => $request->patient_id,
             'hrs' =>  $request->hrs,
             'total_price' => $request->total_price,
+            'svc_charge' => config('app.svc_charge'),
+            'payment_method_id' => $request->payment_method_id,
         ]);
 
         return response()->json([
@@ -66,6 +70,7 @@ class PatientRequestController extends Controller
             'patient_id' => 'required',
             'total_price' => 'required',
             'hrs' => 'required',
+            'payment_method_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -77,6 +82,7 @@ class PatientRequestController extends Controller
             'patient_id.required' => 'Hospital is required.',
             'hrs.required' => 'The hrs feild is required.',
             'total_price.required' => 'Total Price is required.',
+            'payment_method_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -96,6 +102,7 @@ class PatientRequestController extends Controller
         $patientId = $request->input('patient_id');
         $hrs = $request->input('hrs');
         $totalPrice = $request->input('total_price');
+        $paymentMethod = $request->input('payment_method_id');
 
         $successCount = 0;
         $errorMessages = [];
@@ -111,6 +118,8 @@ class PatientRequestController extends Controller
                     'patient_id' => $patientId,
                     'hrs' =>  $hrs,
                     'total_price' => $totalPrice,
+                    'svc_charge' => config('app.svc_charge'),
+                    'payment_method_id' => $paymentMethod,
                 ]);
                 $successCount++;
             } catch (Exception $e) {
@@ -150,6 +159,7 @@ class PatientRequestController extends Controller
         //select('id', 'user_id', 'from', 'to', 'status', 'shift_id', 'hospital_id', 'patient_id', 'rate', 'total_price')
                     where('status',0)
                     ->where('care_taker_id',$request->user_id)
+                    ->latest('created_at')
                     ->get();
 
         $transformedResults = $results->map(function ($result) {
@@ -165,7 +175,9 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    'payment_method' => $result->paymentmethod->name,
+                    //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)
                     //                     : null,
@@ -277,6 +289,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                                 ->where('status',1)
+                                ->latest('created_at')
                                 ->get();
             //dd($results);
 
@@ -299,6 +312,7 @@ class PatientRequestController extends Controller
                     // 'description' => optional($result->caretaker->caretakerprofile)->description,
                     'status' => $result->status,
                     'total_price' => $result->total_price,
+                    'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -329,6 +343,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [0,1,2])
+                        ->latest('created_at')
                                 ->get();
             //dd($results);
 
@@ -345,7 +360,8 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -437,6 +453,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [3,5])
+                        ->latest('created_at')
                         ->get();
             //dd($results);
 
@@ -447,13 +464,15 @@ class PatientRequestController extends Controller
                 $age = $dob->diffInYears(Carbon::now());
                 return [
                     'job_id' => $result->id,
-                    'care_taker_id' => $result->user_id,
+                    'care_taker_id' => $result->care_taker_id,
                     'care_taker_first_name' => $result->caretaker->fname,
                     'care_taker_last_name' => $result->caretaker->lname,
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
+                    'care_taker_phone' => $result->caretaker->phone,
                 ];
             });
 
@@ -535,6 +554,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->whereIn('status', [3,4,5])
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields
@@ -551,7 +571,8 @@ class PatientRequestController extends Controller
                     'starting_date' => $result->from,
                     'ending_date' => $result->to,
                     'status' => $result->status,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -582,6 +603,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('patient_id', $request->patient_id)
                         ->whereIn('status', [3,4,5,6])
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields
@@ -598,7 +620,8 @@ class PatientRequestController extends Controller
                     'status' => $result->status,
                     'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
                     'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 
@@ -629,6 +652,7 @@ class PatientRequestController extends Controller
         try {
             $results = PatientRequest::where('care_taker_id', $request->care_taker_id)
                         ->where('status', 6)
+                        ->latest('created_at')
                         ->get();
 
            // Map and transform the results to include only specific fields
@@ -646,7 +670,8 @@ class PatientRequestController extends Controller
                     'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
                     'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
                     'deposited_date' => optional($result->patientrequeststatus->where('status', 6)->first())->date,
-                    'total_price' => $result->total_price,
+                    'total_price' => $result->total_price  - $result->svc_charge,
+                    //'svc_charge' => $result->svc_charge,
                 ];
             });
 

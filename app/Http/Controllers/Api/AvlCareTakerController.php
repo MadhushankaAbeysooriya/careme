@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\AvlCareTaker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -238,6 +239,14 @@ class AvlCareTakerController extends Controller
                                 $query->where('gender', request('gender'));
                             });
                         })
+                        ->when(request()->has('user_id'), function ($query) {
+                            $user = User::find(request('user_id'));
+                            if ($user) {
+                                $query->whereHas('user', function ($query) use ($user) {
+                                    $query->where('gender', $user->gender);
+                                });
+                            }
+                        })
                         ->when(request()->has('languages'), function ($query) {
                             $query->whereHas('user.languages', function ($query) {
                                 $query->whereIn('languages.id', request('languages'));
@@ -274,7 +283,14 @@ class AvlCareTakerController extends Controller
                 ];
             });
 
-            return response()->json(['data' => $transformedResults]);
+            return response()->json([
+                                    'data' => $transformedResults,
+                                    'svc_charge' => config('app.svc_charge'),
+                                    '12hr_charge' => config('app.12hr_charge'),
+                                    'more_than_24hr_charge' => config('app.more_than_24hr_charge'),
+                                    '12-24hr_rate' => config('app.12-24hr_rate'),
+                                    'more_than_24hr_rate' => config('app.more_than_24hr_rate'),
+                                    ]);
         } catch (Exception $e) {
             // Handle unexpected exceptions or errors
             if ($e instanceof QueryException) {
