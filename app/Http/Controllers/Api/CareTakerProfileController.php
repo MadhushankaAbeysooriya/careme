@@ -381,6 +381,87 @@ class CareTakerProfileController extends Controller
         ], 200);
     }
 
+    // public function storewithouthospital(Request $request)
+    // {
+    //     // Validate the request data
+    //     $validator = Validator::make($request->all(), [
+    //         'personal_photo' => 'required|image|mimes:jpeg,png,jpg,gif',
+    //         'id_front' => 'required|image|mimes:jpeg,png,jpg,gif',
+    //         'id_back' => 'required|image|mimes:jpeg,png,jpg,gif',
+    //         'proof' => 'required|mimes:jpeg,png,jpg,gif,pdf',
+    //         'user_id' => 'required|unique:care_taker_profiles,user_id',
+    //         'description' => 'required',
+    //         'agreementstatus' => 'required',
+    //         'language_id' => 'required|array',
+    //         'relation_id' => 'required',
+    //         'refree_name' => 'required',
+    //         'refree_contact_number' => 'required',
+    //     ], [
+    //         'personal_photo.required' => 'The personal photo field is required.',
+    //         'personal_photo.image' => 'The personal photo must be an image.',
+    //         'personal_photo.mimes' => 'The personal photo must be a file of type: jpeg, png, jpg, gif.',
+    //         'id_front.required' => 'The ID front field is required.',
+    //         'id_front.image' => 'The ID front must be an image.',
+    //         'id_back.required' => 'The ID back field is required.',
+    //         'id_back.image' => 'The ID back must be an image.',
+    //         'proof.required' => 'The proof field is required.',
+    //         'proof.mimes' => 'The proof must be a file of type: jpeg, png, jpg, gif, pdf.',
+    //         'user_id.required' => 'User is required.',
+    //         'user_id.unique' => 'Only one profile can have this user ID.',
+    //         'description.required' => 'Description is required.',
+    //         'agreementstatus.required' => 'Agreement Status is required.',
+    //         'language_id.required' => 'Language ID is required.',
+    //         'language_id.array' => 'Language ID must be an array.',
+    //         'relation_id.required' => 'Relation of referee is required.',
+    //         'refree_name.required' => 'Referee Name is required.',
+    //         'refree_contact_number.required' => 'Referee Contact Number is required.',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors(), 'status' => 0], 422);
+    //     }
+
+    //     // Handle image uploads and save paths in the database
+    //     try {
+    //         $this->handleFileUpload($request);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => $e->getMessage(), 'status' => 0], 500);
+    //     }
+
+    //     // Find or create user
+    //     $user = User::findOrNew($request->user_id);
+
+    //     // ... (rest of your code)
+
+    //     return response()->json(['message' => 'Success', 'status' => 1], 201);
+    // }
+
+    // private function handleFileUpload(Request $request)
+    // {
+    //     $userId = $request->user_id;
+
+    //     // Create directories if they don't exist
+    //     $personalPhotosDirectory = public_path("/upload/personalphotos/{$userId}/");
+    //     $idsDirectory = public_path("/upload/ids/{$userId}/");
+    //     $proofDirectory = public_path("/upload/proof/{$userId}/");
+
+    //     foreach ([$personalPhotosDirectory, $idsDirectory, $proofDirectory] as $directory) {
+    //         if (!File::isDirectory($directory)) {
+    //             File::makeDirectory($directory, 0777, true, true);
+    //         }
+    //     }
+
+    //     $this->moveUploadedFile($request->file('personal_photo'), $personalPhotosDirectory, "{$userId}.{$request->file('personal_photo')->extension()}");
+    //     $this->moveUploadedFile($request->file('id_front'), $idsDirectory, "{$userId}_front.{$request->file('id_front')->extension()}");
+    //     $this->moveUploadedFile($request->file('id_back'), $idsDirectory, "{$userId}_back.{$request->file('id_back')->extension()}");
+    //     $this->moveUploadedFile($request->file('proof'), $proofDirectory, "{$userId}.{$request->file('proof')->extension()}");
+    // }
+
+    // private function moveUploadedFile($file, $destination, $filename)
+    // {
+    //     $file->move($destination, $filename);
+    // }
+
     public function storehospital(Request $request)
     {
         $validator = Validator::make($request->all(), [
