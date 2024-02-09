@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\PatientRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class PatientRequestController extends Controller
 {
@@ -41,7 +42,16 @@ class PatientRequestController extends Controller
             return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
         }
 
-        //dd($request);
+        // Fetch the patient record based on the provided patient_id
+        $patient = User::findOrFail($request->patient_id);
+
+        if (!$patient) {
+            // If patient record is not found, return an error response
+            return response()->json(['errors' => 'Patient not available', 'status' => 0], 200);
+        }
+
+        // Check if gender is provided in the request, if not use the gender from the patient record
+        $gender = $request->has('gender') ? $request->gender : $patient->gender;
 
         PatientRequest::create([
             'from' => $request->from,
@@ -54,6 +64,7 @@ class PatientRequestController extends Controller
             'svc_charge' => config('app.svc_charge'),
             'payment_method_id' => $request->payment_method_id,
             'description' => $request->description,
+            'gender' => $gender,
         ]);
 
         return response()->json([
@@ -94,6 +105,17 @@ class PatientRequestController extends Controller
             return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
         }
 
+        // Fetch the patient record based on the provided patient_id
+        $patient = User::findOrFail($request->patient_id);
+
+        if (!$patient) {
+            // If patient record is not found, return an error response
+            return response()->json(['errors' => 'Patient not available', 'status' => 0], 200);
+        }
+
+        // Check if gender is provided in the request, if not use the gender from the patient record
+        $gender = $request->has('gender') ? $request->gender : $patient->gender;
+
         $from = $request->input('from');
         $to = $request->input('to');
 
@@ -127,6 +149,7 @@ class PatientRequestController extends Controller
                     'svc_charge' => config('app.svc_charge'),
                     'payment_method_id' => $paymentMethod,
                     'description' => $description,
+                    'gender' => $gender,
                 ]);
                 $successCount++;
             } catch (Exception $e) {
@@ -185,6 +208,7 @@ class PatientRequestController extends Controller
                     'total_price' => $result->total_price - $result->svc_charge,
                     'payment_method' => $result->paymentmethod->name,
                     'description' => $result->description,
+                    'gender' => $result->gender,
                     //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)

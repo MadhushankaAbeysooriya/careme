@@ -29,6 +29,7 @@ class PatientRequest extends Model
         'svc_charge',
         'payment_method_id',
         'description',
+        'gender',
     ];
 
     public function patientrequeststatus()
