@@ -24,7 +24,7 @@ class PatientRequestController extends Controller
             'patient_id' => 'required',
             'hrs' => 'required',
             'payment_method_id' => 'required',
-            'description' => 'required',
+            'patient_request_description_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -35,7 +35,7 @@ class PatientRequestController extends Controller
             'patient_id.required' => 'Hospital is required.',
             'hrs.required' => 'The hrs feild is required.',
             'payment_method_id.required' => 'The payment method feild is required.',
-            'description.required' => 'The payment method feild is required.',
+            'patient_request_description_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -63,7 +63,7 @@ class PatientRequestController extends Controller
             'total_price' => $request->total_price,
             'svc_charge' => config('app.svc_charge'),
             'payment_method_id' => $request->payment_method_id,
-            'description' => $request->description,
+            'patient_request_description_id' => $request->description,
             'gender' => $gender,
         ]);
 
@@ -85,7 +85,7 @@ class PatientRequestController extends Controller
             'total_price' => 'required',
             'hrs' => 'required',
             'payment_method_id' => 'required',
-            'description' => 'required',
+            'patient_request_description_id' => 'required',
         ], [
             'from.required' => 'The from date field is required.',
             'from.date_format' => 'The from date field must be in the format YYYY-MM-DD HH:MM:SS.',
@@ -98,7 +98,7 @@ class PatientRequestController extends Controller
             'hrs.required' => 'The hrs feild is required.',
             'total_price.required' => 'Total Price is required.',
             'payment_method_id.required' => 'The payment method feild is required.',
-            'description.required' => 'The payment method feild is required.',
+            'patient_request_description_id.required' => 'The payment method feild is required.',
         ]);
 
         if ($validator->fails()) {
@@ -130,7 +130,7 @@ class PatientRequestController extends Controller
         $hrs = $request->input('hrs');
         $totalPrice = $request->input('total_price');
         $paymentMethod = $request->input('payment_method_id');
-        $description = $request->input('description');
+        $patient_request_description_id = $request->input('patient_request_description_id');
 
         $successCount = 0;
         $errorMessages = [];
@@ -148,7 +148,7 @@ class PatientRequestController extends Controller
                     'total_price' => $totalPrice,
                     'svc_charge' => config('app.svc_charge'),
                     'payment_method_id' => $paymentMethod,
-                    'description' => $description,
+                    'patient_request_description_id' => $patient_request_description_id,
                     'gender' => $gender,
                 ]);
                 $successCount++;
@@ -207,7 +207,7 @@ class PatientRequestController extends Controller
                     'status' => $result->status,
                     'total_price' => $result->total_price - $result->svc_charge,
                     'payment_method' => $result->paymentmethod->name,
-                    'description' => $result->description,
+                    'description' => $result->description->name,
                     'gender' => $result->gender,
                     //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
@@ -606,7 +606,7 @@ class PatientRequestController extends Controller
                     'total_price' => $result->total_price - $result->svc_charge,
                     'patient_mobile_no' => $result->caretaker->phone,
                     'payment_method' => $result->paymentmethod->name,
-                    'description' => $result->description,
+                    'description' => $result->description->name,
                 ];
             });
 

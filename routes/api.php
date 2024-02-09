@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\PatientRequestController;
 use App\Http\Controllers\Api\CareTakerProfileController;
+use App\Http\Controllers\Api\PatientRequestDescriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +161,8 @@ Route::middleware('auth:sanctum')->get('/get-relations', [RelationController::cl
 Route::middleware('auth:sanctum')->post('/store-user-language', [CareTakerProfileController::class, 'storeLanguage']);
 
 Route::middleware('auth:sanctum')->put('/update-user-language', [CareTakerProfileController::class, 'updateLanguage']);
+
+Route::middleware('auth:sanctum')->get('/descriptions', [PatientRequestDescriptionController::class, 'index']);
 
 
 

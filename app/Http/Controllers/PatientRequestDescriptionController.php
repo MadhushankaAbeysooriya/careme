@@ -48,7 +48,7 @@ class PatientRequestDescriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PatientRequestDescription $patientRequestDescription)
+    public function edit($id)
     {
         $patientRequestDescription = PatientRequestDescription::find($id);
 

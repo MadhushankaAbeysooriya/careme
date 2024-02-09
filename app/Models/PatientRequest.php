@@ -9,6 +9,7 @@ use App\Models\PatientRequestStatus;
 use App\Models\PatientRequestDeposit;
 use App\Models\PatientRequestPayment;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PatientRequestDescription;
 use App\Models\PatientRequestPaymentStatusUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,6 +31,7 @@ class PatientRequest extends Model
         'payment_method_id',
         'description',
         'gender',
+        'patient_request_description_id',
     ];
 
     public function patientrequeststatus()
@@ -65,5 +67,10 @@ class PatientRequest extends Model
     public function paymentmethod()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
+    }
+
+    public function description()
+    {
+        return $this->belongsTo(PatientRequestDescription::class, 'patient_request_description_id', 'id');
     }
 }
