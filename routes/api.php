@@ -164,6 +164,8 @@ Route::middleware('auth:sanctum')->put('/update-user-language', [CareTakerProfil
 
 Route::middleware('auth:sanctum')->get('/descriptions', [PatientRequestDescriptionController::class, 'index']);
 
+Route::middleware('auth:sanctum')->post('/complain-patient-request', [PatientRequestController::class, 'complainPatientRequest']);
+
 
 
 

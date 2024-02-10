@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Complain;
 use App\Models\Hospital;
 use App\Models\PaymentMethod;
 use App\Models\PatientRequestStatus;
@@ -72,5 +73,10 @@ class PatientRequest extends Model
     public function description()
     {
         return $this->belongsTo(PatientRequestDescription::class, 'patient_request_description_id', 'id');
+    }
+
+    public function complains()
+    {
+        return $this->hasMany(Complain::class);
     }
 }

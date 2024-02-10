@@ -38,6 +38,7 @@ class PatientRequestController extends Controller
             'patient_request_description_id.required' => 'The payment method feild is required.',
         ]);
 
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
         }
@@ -131,6 +132,7 @@ class PatientRequestController extends Controller
         $totalPrice = $request->input('total_price');
         $paymentMethod = $request->input('payment_method_id');
         $patient_request_description_id = $request->input('patient_request_description_id');
+        //dd($gender);
 
         $successCount = 0;
         $errorMessages = [];
@@ -199,7 +201,7 @@ class PatientRequestController extends Controller
                     'job_id' => $result->id,
                     'patient_first_name' => $result->patient->fname,
                     'patient_last_name' => $result->patient->lname,
-                    'patient_gender' => $result->patient->gender,
+                    'patient_gender' => $result->gender,
                     'patient_age' => $age,
                     'hospital' => $result->hospital->name,
                     'starting_date' => $result->from,
@@ -208,7 +210,6 @@ class PatientRequestController extends Controller
                     'total_price' => $result->total_price - $result->svc_charge,
                     'payment_method' => $result->paymentmethod->name,
                     'description' => $result->description->name,
-                    'gender' => $result->gender,
                     //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)
@@ -710,6 +711,58 @@ class PatientRequestController extends Controller
             });
 
             return response()->json(['data' => $transformedResults]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e . 'Error updating patient request status.',
+                'status' => 0,
+            ], 500);
+        }
+
+    }
+
+    public function complainPatientRequest(Request $request)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'patient_request_id' => 'required',
+            'topic' => 'required',
+            'complain' => 'required',
+        ], [
+            'patient_request_id.required' => 'The patient request id is required.',
+            'topic.required' => 'The topic is required.',
+            'complain.required' => 'The complain body is required.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors(), 'status' => 0], 200);
+        }
+
+        try {
+            $patientRequest = PatientRequest::findOrFail($request->patient_request_id);
+
+            if($patientRequest)
+            {
+                $patientRequest->update([
+                    'status' => 8,
+                ]);
+
+                $patientRequest->patientrequeststatus()->create([
+                    'status' => 8,
+                    'date' => Carbon::now(),
+                ]);
+
+                $patientRequest->complains()->create([
+                    'user_id' => $patientRequest->patient_id,
+                    'topic' => $request->topic,
+                    'complain' => $request->complain,
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Success',
+                'status' => 1,
+            ], 200);
 
         } catch (Exception $e) {
             return response()->json([

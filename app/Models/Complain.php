@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\PatientRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Complain extends Model
 {
@@ -15,5 +16,11 @@ class Complain extends Model
         'status',
         'topic',
         'complain',
+        'patient_request_id',
     ];
+
+    public function patientrequest()
+    {
+        return $this->belongsTo(PatientRequest::class, 'patient_request_id', 'id');
+    }
 }
