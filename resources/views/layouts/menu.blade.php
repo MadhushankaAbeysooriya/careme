@@ -50,7 +50,7 @@
 
 <li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*',
                     'dsdivisions*','hospitals*','advertisements*','shifts*','languages*','payment_methods*',
-                    'relations*','patient_request_descriptions*')?'menu-open':'' }}">
+                    'relations*','patient_request_descriptions*','advertisement_categories*')?'menu-open':'' }}">
     <a href="#" class="nav-link">
         <i class="nav-icon fas fa-cogs text-blue"></i>
         <p>
@@ -105,6 +105,16 @@
             {{ request()->routeIs('hospitals*')?'active':'' }}">
                 <i class="far fa-circle nav-icon text-blue"></i>
                 <p>Hospital</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('advertisement_categories.index')}}" class="nav-link
+            {{ request()->routeIs('advertisement_categories*')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-blue"></i>
+                <p>Advertisement Categories</p>
             </a>
         </li>
     </ul>

@@ -17,6 +17,7 @@ use App\Http\Controllers\GNDivisionController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\PatientRequestController;
+use App\Http\Controllers\AdvertisementCategoryController;
 use App\Http\Controllers\PatientRequestDescriptionController;
 
 /*
@@ -96,6 +97,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/patient_request_descriptions/inactive/{id}',[PatientRequestDescriptionController::class,'inactive'])->name('patient_request_descriptions.inactive');
     Route::get('/patient_request_descriptions/activate/{id}',[PatientRequestDescriptionController::class,'activate'])->name('patient_request_descriptions.activate');
     Route::resource('patient_request_descriptions', PatientRequestDescriptionController::class);
+
+    Route::get('/advertisement_categories/inactive/{id}',[AdvertisementCategoryController::class,'inactive'])->name('advertisement_categories.inactive');
+    Route::get('/advertisement_categories/activate/{id}',[AdvertisementCategoryController::class,'activate'])->name('advertisement_categories.activate');
+    Route::resource('advertisement_categories', AdvertisementCategoryController::class);
 
     Route::get('/patient-request/pending/approve',[PatientRequestController::class,'index'])->name('patient_requests.pendingapprove');
 
