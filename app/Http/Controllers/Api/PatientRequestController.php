@@ -64,7 +64,7 @@ class PatientRequestController extends Controller
             'total_price' => $request->total_price,
             'svc_charge' => config('app.svc_charge'),
             'payment_method_id' => $request->payment_method_id,
-            'patient_request_description_id' => $request->description,
+            'patient_request_description_id' => $request->patient_request_description_id,
             'gender' => $gender,
         ]);
 
@@ -209,7 +209,7 @@ class PatientRequestController extends Controller
                     'status' => $result->status,
                     'total_price' => $result->total_price - $result->svc_charge,
                     'payment_method' => $result->paymentmethod->name,
-                    'description' => $result->description->name,
+                    'description' => optional( $result->description)->name,
                     //'svc_charge' => $result->svc_charge,
                     // 'personaPhoto' => optional($result->patient->patientprofile)->personal_photo
                     //                     ? asset($result->patient->patientprofile->personal_photo)
@@ -607,7 +607,7 @@ class PatientRequestController extends Controller
                     'total_price' => $result->total_price - $result->svc_charge,
                     'patient_mobile_no' => $result->caretaker->phone,
                     'payment_method' => $result->paymentmethod->name,
-                    'description' => $result->description->name,
+                    'description' => optional( $result->description)->name,
                 ];
             });
 

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use App\Models\AdvertisementCategory;
 use App\DataTables\AdvertisementDataTable;
 use App\Http\Requests\StoreAdvertisementRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class AdvertisementController extends Controller
 {
@@ -25,7 +27,8 @@ class AdvertisementController extends Controller
      */
     public function create()
     {
-        return view('advertisements.create');
+        $advertisementCategories = AdvertisementCategory::where('status',1)->get();
+        return view('advertisements.create',compact('advertisementCategories'));
     }
 
     /**
@@ -59,7 +62,7 @@ class AdvertisementController extends Controller
                 // Update the person record with the filepath
                 $advertisement->update([
                     'filepath' => '/upload/advertisements/'.$advertisement->id.'/'.$filePersonal,
-                    'user_id' => auth()->user()->id, // Use auth() helper
+                    'user_id' => Auth::user()->id, // Use auth() helper
                     //'person_status_id' => $person_status->id,
                 ]);
             }
@@ -73,7 +76,7 @@ class AdvertisementController extends Controller
             DB::rollback();
 
             // Handle any exceptions that occur during the process
-            return redirect()->route('advertisements.index')->with('error', 'An error occurred while creating the person.');
+            return redirect()->route('advertisements.create')->with('danger', 'An error occurred while creating the advertisement.');
         }
     }
 

@@ -121,4 +121,6 @@ Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('a
 
 Route::get('/ajax/getDSDivisions',[AjaxController::class,'getDSDivisions'])->name('ajax.getDSDivisions');
 
+Route::get('/ajax/getAdvertisementTotal',[AjaxController::class,'getAdvertisementTotal'])->name('ajax.getAdvertisementTotal');
+
 
