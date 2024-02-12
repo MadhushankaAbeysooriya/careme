@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\PaymentMethodController;
 use App\Http\Controllers\Api\PatientRequestController;
 use App\Http\Controllers\Api\CareTakerProfileController;
+use App\Http\Controllers\Api\AdvertisementCategoryController;
 use App\Http\Controllers\Api\PatientRequestDescriptionController;
 
 /*
@@ -82,7 +83,11 @@ Route::post('/register',[RegisterController::class,'register']);
 
 Route::middleware('auth:sanctum')->put('/update-user-profile',[RegisterController::class,'update']);
 
+Route::middleware('auth:sanctum')->get('/advertisement-categories', [AdvertisementCategoryController::class, 'index']);
+
 Route::middleware('auth:sanctum')->get('/advertisements', [AdvertisementController::class, 'index']);
+
+Route::middleware('auth:sanctum')->post('/advertisements-by-category', [AdvertisementController::class, 'advertisementbyCategory']);
 
 Route::middleware('auth:sanctum')->get('/shifts', [ShiftController::class, 'index']);
 
