@@ -46,6 +46,46 @@
     </ul>
 </li>
 
+<li class="nav-item {{ request()->routeIs('complains.index','complains.caretaker_index','complains.patient_index')?'menu-open':'' }}">
+    <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-file text-yellow"></i>
+        <p>
+            Complain Mgt
+            <i class="right fas fa-angle-left text-yellow"></i>
+        </p>
+    </a>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('complains.index')}}" class="nav-link
+            {{ request()->routeIs('complains.index')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-yellow"></i>
+                <p>All Complains</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('complains.caretaker_index')}}" class="nav-link
+            {{ request()->routeIs('complains.caretaker_index')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-yellow"></i>
+                <p>Caretaker Complains</p>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{route('complains.patient_index')}}" class="nav-link
+            {{ request()->routeIs('complains.patient_index')?'active':'' }}">
+                <i class="far fa-circle nav-icon text-yellow"></i>
+                <p>Patient Complains</p>
+            </a>
+        </li>
+    </ul>
+</li>
+
 
 
 <li class="nav-item {{ request()->routeIs('gndivisions*','district*','province*',

@@ -3,16 +3,17 @@
 namespace App\DataTables;
 
 use App\Models\Complain;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\PatientComplain;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class ComplainDataTable extends DataTable
+class PatientComplainDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -57,7 +58,11 @@ class ComplainDataTable extends DataTable
      */
     public function query(Complain $model): QueryBuilder
     {
-        return $model->newQuery()->with('user');
+        return $model->newQuery()
+        ->whereHas('user', function ($query) {
+            $query->where('user_type', 1);
+        })
+        ->with('user');
     }
 
     /**
@@ -66,7 +71,7 @@ class ComplainDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('complain-table')
+                    ->setTableId('patientcomplain-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -106,6 +111,6 @@ class ComplainDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Complain_' . date('YmdHis');
+        return 'PatientComplain_' . date('YmdHis');
     }
 }

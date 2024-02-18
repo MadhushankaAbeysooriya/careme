@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Complain;
 use Illuminate\Http\Request;
+use App\DataTables\ComplainDataTable;
+use App\DataTables\PatientComplainDataTable;
+use App\DataTables\CaretakerComplainDataTable;
 
 class ComplainController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ComplainDataTable $dataTable)
     {
-        //
+        return $dataTable->render('complains.index');
+    }
+
+    public function patientIndex(PatientComplainDataTable $dataTable)
+    {
+        return $dataTable->render('complains.patient_index');
+    }
+
+    public function caretakerIndex(CaretakerComplainDataTable $dataTable)
+    {
+        return $dataTable->render('complains.caretaker_index');
     }
 
     /**
@@ -34,9 +47,11 @@ class ComplainController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Complain $complain)
+    public function show($id)
     {
-        //
+        $complain = Complain::find($id);
+
+        return view('complains.show', compact('complain'));
     }
 
     /**

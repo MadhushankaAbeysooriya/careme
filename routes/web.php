@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\LanguageController;
@@ -115,6 +116,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/patient-request/deposit/{id}',[PatientRequestController::class,'deposit'])->name('patient_requests.deposit');
 
     Route::get('/patient-request/pending/service',[PatientRequestController::class,'pendingService'])->name('patient_requests.pending_service');
+
+
+    Route::get('/complains/patient',[ComplainController::class,'patientIndex'])->name('complains.patient_index');
+
+    Route::get('/complains/caretaker',[ComplainController::class,'caretakerIndex'])->name('complains.caretaker_index');
+
+    Route::resource('complains', ComplainController::class);
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');

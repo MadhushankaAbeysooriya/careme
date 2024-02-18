@@ -3,16 +3,17 @@
 namespace App\DataTables;
 
 use App\Models\Complain;
-use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use App\Models\CaretakerComplain;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 
-class ComplainDataTable extends DataTable
+class CaretakerComplainDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -57,7 +58,11 @@ class ComplainDataTable extends DataTable
      */
     public function query(Complain $model): QueryBuilder
     {
-        return $model->newQuery()->with('user');
+        return $model->newQuery()
+        ->whereHas('user', function ($query) {
+            $query->where('user_type', 2);
+        })
+        ->with('user','patientrequest');
     }
 
     /**
@@ -66,7 +71,7 @@ class ComplainDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('complain-table')
+                    ->setTableId('caretakercomplain-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -96,7 +101,7 @@ class ComplainDataTable extends DataTable
             Column::make('topic')->data('topic')->title('Topic'),
             Column::make('complain')->data('complain')->title('Complain'),
             Column::make('user.name')->data('user.name')->title('User'),
-            Column::make('patient_request_id')->data('patient_request_id')->title('Job Ref'),
+            Column::make('patientrequest.id')->data('patientrequest.id')->title('Job Ref'),
             Column::computed('status'),
         ];
     }
@@ -106,6 +111,6 @@ class ComplainDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Complain_' . date('YmdHis');
+        return 'CaretakerComplain_' . date('YmdHis');
     }
 }
