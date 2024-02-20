@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BillProof;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RelationController;
+use App\Http\Controllers\BillProofController;
 use App\Http\Controllers\DSDivisionController;
 use App\Http\Controllers\GNDivisionController;
 use App\Http\Controllers\AdvertisementController;
@@ -123,6 +125,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/complains/caretaker',[ComplainController::class,'caretakerIndex'])->name('complains.caretaker_index');
 
     Route::resource('complains', ComplainController::class);
+
+    Route::get('/bill_proof/inactive/{id}',[BillProofController::class,'inactive'])->name('bill_proofs.inactive');
+    Route::get('/bill_proof/activate/{id}',[BillProofController::class,'activate'])->name('bill_proofs.activate');
+    Route::resource('bill_proofs', BillProofController::class);
 });
 
 Route::get('/ajax/getDistricts',[AjaxController::class,'getDistricts'])->name('ajax.getDistricts');
