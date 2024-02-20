@@ -66,6 +66,7 @@ class PatientRequestController extends Controller
             'payment_method_id' => $request->payment_method_id,
             'patient_request_description_id' => $request->patient_request_description_id,
             'gender' => $gender,
+            'emergency_contact_no' => $request->emergency_contact_no,
         ]);
 
         return response()->json([
@@ -131,8 +132,9 @@ class PatientRequestController extends Controller
         $hrs = $request->input('hrs');
         $totalPrice = $request->input('total_price');
         $paymentMethod = $request->input('payment_method_id');
+        $emergencyContactNo = $request->input('emergency_contact_no');
         $patient_request_description_id = $request->input('patient_request_description_id');
-        //dd($gender);
+        //dd($emergencyContactNo);
 
         $successCount = 0;
         $errorMessages = [];
@@ -152,6 +154,7 @@ class PatientRequestController extends Controller
                     'payment_method_id' => $paymentMethod,
                     'patient_request_description_id' => $patient_request_description_id,
                     'gender' => $gender,
+                    'emergency_contact_no' => $emergencyContactNo,
                 ]);
                 $successCount++;
             } catch (Exception $e) {
@@ -656,7 +659,7 @@ class PatientRequestController extends Controller
                     'paid_date' => optional($result->patientrequeststatus->where('status', 3)->first())->date,
                     'approved_date' => optional($result->patientrequeststatus->where('status', 5)->first())->date,
                     'total_price' => $result->total_price - $result->svc_charge,
-                    //'svc_charge' => $result->svc_charge,
+                    'svc_charge' => $result->svc_charge,
                 ];
             });
 

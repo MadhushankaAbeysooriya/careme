@@ -33,6 +33,7 @@ class PatientRequest extends Model
         'description',
         'gender',
         'patient_request_description_id',
+        'emergency_contact_no',
     ];
 
     public function patientrequeststatus()
