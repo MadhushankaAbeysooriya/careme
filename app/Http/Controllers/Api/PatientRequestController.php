@@ -608,7 +608,7 @@ class PatientRequestController extends Controller
                     'ending_date' => $result->to,
                     'status' => $result->status,
                     'total_price' => $result->total_price - $result->svc_charge,
-                    'patient_mobile_no' => $result->caretaker->phone,
+                    'patient_mobile_no' => $result->patient->phone,
                     'payment_method' => $result->paymentmethod->name,
                     'description' => optional( $result->description)->name,
                 ];

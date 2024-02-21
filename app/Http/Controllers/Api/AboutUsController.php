@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,7 @@ class AboutUsController extends Controller
         if(Auth::check())
         {
             try {
-                $about_us = AboutUs::select('content', 'phone', 'email', 'address')->get();
+                $about_us = AboutUs::get();
 
                 return response()->json(['about_us' => $about_us, 'status' => 1],200);
 
