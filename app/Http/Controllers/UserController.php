@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use App\DataTables\UserPatientDataTable;
@@ -204,5 +205,25 @@ class UserController extends Controller
         $id = Crypt::decrypt($encryptedId);
         User::where('id',$id)->update(['validated'=>'0']);
         return redirect()->back()->with( 'success',' Account Not-Validated');
+    }
+
+    public function blackList($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+
+        $user = User::find($id);
+
+        $user->update([
+            'black_list' => 1,
+        ]);
+
+        $user->userblacklist()->create([
+            'created_by'=> Auth::user()->id,
+            'black_listed_date' => Carbon::now(),
+            'activating_date'=> Carbon::now()->addDays(30),
+            'remarks' => 'Black Listed',
+        ]);
+
+        return redirect()->back()->with( 'success','Black Listed');
     }
 }

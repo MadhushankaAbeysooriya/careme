@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BillProof;
+use App\Http\Controllers\Cron;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
@@ -50,6 +51,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/users/inactive/{id}',[UserController::class,'inactive'])->name('users.inactive');
     Route::get('/users/activate/{id}',[UserController::class,'activate'])->name('users.activate');
     Route::get('/users/resetpass/{id}',[UserController::class,'resetpass'])->name('users.resetpass');
+    Route::get('/users/blacklist/{id}',[UserController::class,'blackList'])->name('users.blacklist');
+
     Route::resource('users', UserController::class);
 
     Route::get('/province/inactive/{id}',[ProvinceController::class,'inactive'])->name('province.inactive');
@@ -137,4 +140,5 @@ Route::get('/ajax/getDSDivisions',[AjaxController::class,'getDSDivisions'])->nam
 
 Route::get('/ajax/getAdvertisementTotal',[AjaxController::class,'getAdvertisementTotal'])->name('ajax.getAdvertisementTotal');
 
+Route::get('/cron/blacklist-activate',[Cron::class,'activateBlackList'])->name('cron.black_list_activate');
 

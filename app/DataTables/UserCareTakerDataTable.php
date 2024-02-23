@@ -48,6 +48,11 @@ class UserCareTakerDataTable extends DataTable
                     class="btn btn-xs btn-warning" data-toggle="tooltip" title="reset Password">
                     <i class="fa fa-redo"></i> </a> ';
 
+                    $btn .= '<a href="'.route('users.blacklist',$encryptedId).'"
+                    class="btn btn-xs btn-danger blacklist-btn" data-toggle="tooltip" title="Black List"
+                    onclick="return confirm(\'Are you sure you want to blacklist this user?\')">
+                    <i class="fa fa-ban"></i></a> ';
+
                     if($user->status==1)
                     {
                         $btn .='<a href="'.route('users.inactive',$encryptedId).'"
@@ -118,7 +123,7 @@ class UserCareTakerDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(115)
+                  ->width(150)
                   ->addClass('text-center'),
             Column::make('name')->data('name')->title('Name'),
             Column::make('phone')->data('phone')->title('Mobile'),

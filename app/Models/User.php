@@ -10,6 +10,7 @@ use App\Models\Language;
 use App\Models\Usertype;
 use App\Models\UserRating;
 use App\Models\UserHospital;
+use App\Models\UserBlackList;
 use App\Models\CareTakerProfile;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -39,6 +40,7 @@ class User extends Authenticatable
         'deviceId',
         'dob',
         'login_status',
+        'black_list',
     ];
 
     /**
@@ -81,5 +83,10 @@ class User extends Authenticatable
     public function languages()
     {
         return $this->belongsToMany(Language::class,'user_languages');
+    }
+
+    public function userblacklist()
+    {
+        return $this->hasMany(UserBlackList::class);
     }
 }

@@ -89,6 +89,7 @@ class CareTakerProfileController extends Controller
             'relation_id' => 'required',
             'refree_name' => 'required',
             'refree_contact_number' => 'required',
+            'bill_proof_id' => 'required|exists:bill_proofs,id',
 
         ], [
             'personal_photo.required' => 'The personal photo field is required.',
@@ -115,6 +116,8 @@ class CareTakerProfileController extends Controller
             'relation_id.required' => 'Relation of referee is required.',
             'refree_name.required' => 'Refree Name is required.',
             'refree_contact_number.required' => 'Referee Contact Number is required.',
+            'bill_proof_id.required' => 'Bill Proof is required.',
+            'bill_proof_id.exists' => 'Bill Proof not Available.',
         ]);
 
         if ($validator->fails()) {
@@ -127,7 +130,7 @@ class CareTakerProfileController extends Controller
         // Create directories if they don't exist
         $personalPhotosDirectory = public_path('/upload/personalphotos/'.$request->user_id.'/');
         $idsDirectory = public_path('/upload/ids/'.$request->user_id.'/');
-        //$banksDirectory = public_path('/upload/banks/'.$request->user_id.'/');
+        $proofDirectory = public_path('/upload/proof/'.$request->proof.'/');
 
 
         if (!File::isDirectory($personalPhotosDirectory)) {
@@ -172,7 +175,7 @@ class CareTakerProfileController extends Controller
         $fileProof = $request->user_id.'.'.$extProof;
 
         // Move the uploaded file to the destination
-        $request->file('proof')->move($ProofsDirectory, $fileProof);
+        $request->file('proof')->move($proofDirectory, $fileProof);
 
 
         // Sync hospitals
@@ -199,6 +202,7 @@ class CareTakerProfileController extends Controller
             'relation_id' => $request->relation_id,
             'refree_name' => $request->refree_name,
             'refree_contact_number' => $request->refree_contact_number,
+            'bill_proof_id' => $request->bill_proof_id,
         ]);
 
         return response()->json([
@@ -273,6 +277,7 @@ class CareTakerProfileController extends Controller
             'relation_id' => 'required',
             'refree_name' => 'required',
             'refree_contact_number' => 'required',
+            'bill_proof_id' => 'required|exists:bill_proofs,id',
         ], [
             'personal_photo.required' => 'The personal photo field is required.',
             'personal_photo.image' => 'The personal photo must be an image.',
@@ -296,6 +301,8 @@ class CareTakerProfileController extends Controller
             'relation_id.required' => 'Relation of referee is required.',
             'refree_name.required' => 'Refree Name is required.',
             'refree_contact_number.required' => 'Referee Contact Number is required.',
+            'bill_proof_id.required' => 'Bill Proof is required.',
+            'bill_proof_id.exists' => 'Bill Proof not Available.',
         ]);
 
         if ($validator->fails()) {
@@ -373,6 +380,7 @@ class CareTakerProfileController extends Controller
             'relation_id' => $request->relation_id,
             'refree_name' => $request->refree_name,
             'refree_contact_number' => $request->refree_contact_number,
+            'bill_proof_id' => $request->bill_proof_id,
         ]);
 
         return response()->json([
