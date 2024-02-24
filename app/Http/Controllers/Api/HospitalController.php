@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use App\Models\Hospital;
 use App\Models\UserHospital;
 use Illuminate\Http\Request;

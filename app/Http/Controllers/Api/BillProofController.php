@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
-use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\BillProof;
 use Illuminate\Support\Facades\Auth;
 
-class AboutUsController extends Controller
+class BillProofController extends Controller
 {
     public function index()
     {
         if(Auth::check())
         {
             try {
-                $about_us = AboutUs::all();
+                $billProofs = BillProof::select('id', 'name')->get();
 
-                return response()->json(['about_us' => $about_us, 'status' => 1],200);
+                return response()->json(['billProofs' => $billProofs, 'status' => 1],200);
 
             } catch (Exception $e) {
 

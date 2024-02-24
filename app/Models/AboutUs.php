@@ -9,7 +9,7 @@ class AboutUs extends Model
 {
     use HasFactory;
 
-    protected $table = 'advertisements';
+    protected $table = 'about_us';
     protected $fillable = [
         'content',
         'phone',

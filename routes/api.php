@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\BillProof;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\ComplainController;
 use App\Http\Controllers\Api\HospitalController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\RelationController;
+use App\Http\Controllers\Api\BillProofController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\AvlCareTakerController;
 use App\Http\Controllers\Api\NotificationController;
@@ -171,7 +173,7 @@ Route::middleware('auth:sanctum')->get('/descriptions', [PatientRequestDescripti
 
 Route::middleware('auth:sanctum')->post('/complain-patient-request', [PatientRequestController::class, 'complainPatientRequest']);
 
-
+Route::middleware('auth:sanctum')->get('/billproofs', [BillProofController::class, 'index']);
 
 
 
