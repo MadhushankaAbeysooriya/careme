@@ -32,9 +32,9 @@ class CaretakerComplainDataTable extends DataTable
                     case 1:
                         return '<h5><span class="badge badge-primary">Action Taken</span></h5>';
                         break;
-                    case 2:
-                        return '<h5><span class="badge badge-success">Refunded</span></h5>';
-                        break;
+                    // case 2:
+                    //     return '<h5><span class="badge badge-success">Refunded</span></h5>';
+                    //     break;
                     default:
                         return '<h5><span class="badge badge-danger">Error</span></h5>';
                         break;
@@ -62,7 +62,7 @@ class CaretakerComplainDataTable extends DataTable
         ->whereHas('user', function ($query) {
             $query->where('user_type', 2);
         })
-        ->with('user','patientrequest');
+        ->with('user','patientrequest')->orderBy('status', 'asc');
     }
 
     /**

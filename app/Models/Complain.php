@@ -18,6 +18,9 @@ class Complain extends Model
         'topic',
         'complain',
         'patient_request_id',
+        'remarks',
+        'resolved_by',
+        'resolved_at',
     ];
 
     public function patientrequest()

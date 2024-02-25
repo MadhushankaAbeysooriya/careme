@@ -31,9 +31,9 @@ class ComplainDataTable extends DataTable
                     case 1:
                         return '<h5><span class="badge badge-primary">Action Taken</span></h5>';
                         break;
-                    case 2:
-                        return '<h5><span class="badge badge-success">Refunded</span></h5>';
-                        break;
+                    // case 2:
+                    //     return '<h5><span class="badge badge-success">Refunded</span></h5>';
+                    //     break;
                     default:
                         return '<h5><span class="badge badge-danger">Error</span></h5>';
                         break;
@@ -57,7 +57,7 @@ class ComplainDataTable extends DataTable
      */
     public function query(Complain $model): QueryBuilder
     {
-        return $model->newQuery()->with('user');
+        return $model->newQuery()->with('user')->orderBy('status', 'asc');
     }
 
     /**

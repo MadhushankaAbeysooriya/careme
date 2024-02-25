@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Complain;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\DataTables\ComplainDataTable;
 use App\DataTables\PatientComplainDataTable;
 use App\DataTables\CaretakerComplainDataTable;
+use Carbon\Carbon;
 
 class ComplainController extends Controller
 {
@@ -67,7 +69,14 @@ class ComplainController extends Controller
      */
     public function update(Request $request, Complain $complain)
     {
-        //
+        $complain->update([
+            'remarks' => $request->remarks,
+            'resolved_by' =>  Auth::user()->id,
+            'resolved_at' => Carbon::now(),
+            'status' => 1,
+        ]);
+
+        return redirect()->back()->with('message', 'Resolved');
     }
 
     /**

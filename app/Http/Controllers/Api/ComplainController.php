@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use App\Models\Complain;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
