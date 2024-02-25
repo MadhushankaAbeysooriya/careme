@@ -253,6 +253,7 @@ class AvlCareTakerController extends Controller
                             });
                         })
                         ->with('user.ratings') // Load the user ratings relationship
+                        //->groupBy('user_id') // Group by user_id
                         ->get();
 
 

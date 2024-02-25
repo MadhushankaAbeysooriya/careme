@@ -21,7 +21,7 @@ class PatientRequestController extends Controller
             'to' => 'required|date_format:Y-m-d H:i:s',
             'care_taker_id' => 'required',
             'hospital_id' => 'required',
-            'patient_id' => 'required',
+            'patient_id' => 'required|exists:users,id',
             'hrs' => 'required',
             'payment_method_id' => 'required',
             'patient_request_description_id' => 'required',
@@ -32,7 +32,8 @@ class PatientRequestController extends Controller
             'to.date_format' => 'The to date field must be in the format YYYY-MM-DD HH:MM:SS.',
             'care_taker_id.required' => 'User is required.',
             'hospital_id.required' => 'Hospital is required.',
-            'patient_id.required' => 'Hospital is required.',
+            'patient_id.required' => 'Patient is required.',
+            'patient_id.exists' => 'Patient not available',
             'hrs.required' => 'The hrs feild is required.',
             'payment_method_id.required' => 'The payment method feild is required.',
             'patient_request_description_id.required' => 'The payment method feild is required.',
@@ -53,6 +54,18 @@ class PatientRequestController extends Controller
 
         // Check if gender is provided in the request, if not use the gender from the patient record
         $gender = $request->has('gender') ? $request->gender : $patient->gender;
+
+        $result = PatientRequest::where('care_taker_id',$request->care_taker_id)
+                ->where('patient_id',$request->patient_id)
+                ->where('from',$request->from)
+                ->where('to',$request->to)
+                ->where('hospital_id',$request->hospital_id)
+                ->get();
+
+        if (count($result) > 0) {
+            // If patient record is not found, return an error response
+            return response()->json(['errors' => 'Request Already Created', 'status' => 0], 200);
+        }
 
         PatientRequest::create([
             'from' => $request->from,
@@ -141,6 +154,18 @@ class PatientRequestController extends Controller
 
         foreach ($careTakerIds as $careTakerId) {
             try {
+
+                $result = PatientRequest::where('care_taker_id',$careTakerId)
+                        ->where('patient_id',$patientId)
+                        ->where('from', $from)
+                        ->where('to', $to)
+                        ->where('hospital_id',$hospitalId)
+                        ->get();
+
+                if (count($result) > 0) {
+                    continue;
+                }
+
                 //dd($careTakerId);
                 PatientRequest::create([
                     'from' => $from,
