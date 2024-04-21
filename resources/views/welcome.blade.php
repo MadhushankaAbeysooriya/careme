@@ -50,7 +50,7 @@
           <li><a href="#hero" class="active">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
+          {{-- <li><a href="#portfolio">Portfolio</a></li> --}}
           <li><a href="#team">Team</a></li>
           <li><a href="#contact">Contact</a></li>
           @if (Route::has('login'))
@@ -65,7 +65,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav><!-- End Nav Menu -->
 
-      <a class="btn-getstarted" href="#about">Get Started</a>
+      {{-- <a class="btn-getstarted" href="#about">Get Started</a> --}}
 
     </div>
   </header><!-- End Header -->
@@ -81,21 +81,21 @@
         <div class="row">
           <div class="col-lg-10">
             <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
-            <p data-aos="fade-up" data-aos-delay="200">We are team of talented designers making websites with Bootstrap</p>
+            <p data-aos="fade-up" data-aos-delay="200">find caretakers for your loved ones</p>
           </div>
-          <div class="col-lg-5">
+          {{-- <div class="col-lg-5">
             <form action="#" class="sign-up-form d-flex" data-aos="fade-up" data-aos-delay="300">
               <input type="text" class="form-control" placeholder="Enter email address">
               <input type="submit" class="btn btn-primary" value="Sign up">
             </form>
-          </div>
+          </div> --}}
         </div>
       </div>
 
     </section><!-- End Hero Section -->
 
     <!-- Clients Section - Home Page -->
-    <section id="clients" class="clients">
+    {{-- <section id="clients" class="clients">
 
       <div class="container-fluid" data-aos="fade-up">
 
@@ -129,7 +129,7 @@
 
       </div>
 
-    </section><!-- End Clients Section -->
+    </section><!-- End Clients Section --> --}}
 
     <!-- About Section - Home Page -->
     <section id="about" class="about">
@@ -137,14 +137,23 @@
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row align-items-xl-center gy-5">
 
-          <div class="col-xl-5 content">
+          <div class="col-xl-6 content">
             <h3>About Us</h3>
-            <h2>Ducimus rerum libero reprehenderit cumque</h2>
-            <p>Ipsa sint sit. Quis ducimus tempore dolores impedit et dolor cumque alias maxime. Enim reiciendis minus et rerum hic non. Dicta quas cum quia maiores iure. Quidem nulla qui assumenda incidunt voluptatem tempora deleniti soluta.</p>
-            <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+            <h2>Vision</h2>
+            <p>"Our vision is to provide ideal and efficient platform connecting patients with compassionate and dedicated caretakers, ensuring patients receive the highest standard of personalized care during their hospital stay."</p>
+
+            </div>
+
+          <div class="col-xl-6 content">
+
+
+            <h2>Mission</h2>
+            <p>"Our mission is to match hospitalized patients with dedicated caretakers, ensuring compassionate and reliable support throughout their recovery journey."</p>
+            {{-- <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a> --}}
           </div>
 
-          <div class="col-xl-7">
+          {{-- <div class="col-xl-7">
             <div class="row gy-4 icon-boxes">
 
               <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
@@ -180,7 +189,7 @@
               </div> <!-- End Icon Box -->
 
             </div>
-          </div>
+          </div> --}}
 
         </div>
       </div>
@@ -188,7 +197,7 @@
     </section><!-- End About Section -->
 
     <!-- Stats Section - Home Page -->
-    <section id="stats" class="stats">
+    {{-- <section id="stats" class="stats">
 
       <img src="{{ asset('plugins/img/stats-bg.jpg')}}" alt="" data-aos="fade-in">
 
@@ -228,15 +237,15 @@
 
       </div>
 
-    </section><!-- End Stats Section -->
+    </section><!-- End Stats Section --> --}}
 
     <!-- Services Section - Home Page -->
     <section id="services" class="services">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Services</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <h2>Special features</h2>
+        {{-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> --}}
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -245,10 +254,10 @@
 
           <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="100">
             <div class="service-item d-flex">
-              <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+              <div class="icon flex-shrink-0"><i class="bi bi-clock"></i></div>
               <div>
-                <h4 class="title"><a href="services-details.html" class="stretched-link">Lorem Ipsum</a></h4>
-                <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                <h4 class="title"><a href="#" class="stretched-link">No need to waste time for finding caretakers</a></h4>
+                {{-- <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p> --}}
               </div>
             </div>
           </div>
@@ -256,20 +265,20 @@
 
           <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="200">
             <div class="service-item d-flex">
-              <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+              <div class="icon flex-shrink-0"><i class="bi bi-search"></i></div>
               <div>
-                <h4 class="title"><a href="services-details.html" class="stretched-link">Dolor Sitema</a></h4>
-                <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Find caretakers for yourself and your loved ones within few seconds.</a></h4>
+                {{-- <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p> --}}
               </div>
             </div>
           </div><!-- End Service Item -->
 
           <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="300">
             <div class="service-item d-flex">
-              <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+              <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
               <div>
-                <h4 class="title"><a href="services-details.html" class="stretched-link">Sed ut perspiciatis</a></h4>
-                <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">You can choose the best caretaker as your wish.</a></h4>
+                {{-- <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p> --}}
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -278,8 +287,8 @@
             <div class="service-item d-flex">
               <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
               <div>
-                <h4 class="title"><a href="services-details.html" class="stretched-link">Magni Dolores</a></h4>
-                <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Good transparency.</a></h4>
+                {{-- <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p> --}}
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -288,8 +297,8 @@
             <div class="service-item d-flex">
               <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
               <div>
-                <h4 class="title"><a href="services-details.html" class="stretched-link">Nemo Enim</a></h4>
-                <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">No need to pay commission for every day.</a></h4>
+                {{-- <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p> --}}
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -311,7 +320,7 @@
     </section><!-- End Services Section -->
 
     <!-- Features Section - Home Page -->
-    <section id="features" class="features">
+    {{-- <section id="features" class="features">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -356,10 +365,10 @@
 
       </div>
 
-    </section><!-- End Features Section -->
+    </section><!-- End Features Section --> --}}
 
     <!-- Portfolio Section - Home Page -->
-    <section id="portfolio" class="portfolio">
+    {{-- <section id="portfolio" class="portfolio">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -476,10 +485,10 @@
 
       </div>
 
-    </section><!-- End Portfolio Section -->
+    </section><!-- End Portfolio Section --> --}}
 
     <!-- Pricing Section - Home Page -->
-    <section id="pricing" class="pricing">
+    {{-- <section id="pricing" class="pricing">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -550,10 +559,10 @@
 
       </div>
 
-    </section><!-- End Pricing Section -->
+    </section><!-- End Pricing Section --> --}}
 
     <!-- Faq Section - Home Page -->
-    <section id="faq" class="faq">
+    {{-- <section id="faq" class="faq">
 
       <div class="container">
 
@@ -618,10 +627,10 @@
 
       </div>
 
-    </section><!-- End Faq Section -->
+    </section><!-- End Faq Section --> --}}
 
     <!-- Team Section - Home Page -->
-    <section id="team" class="team">
+    {{-- <section id="team" class="team">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -739,10 +748,10 @@
 
       </div>
 
-    </section><!-- End Team Section -->
+    </section><!-- End Team Section --> --}}
 
     <!-- Call-to-action Section - Home Page -->
-    <section id="call-to-action" class="call-to-action">
+    {{-- <section id="call-to-action" class="call-to-action">
 
       <img src="{{ asset('plugins/img/cta-bg.jpg')}}" alt="">
 
@@ -758,10 +767,10 @@
         </div>
       </div>
 
-    </section><!-- End Call-to-action Section -->
+    </section><!-- End Call-to-action Section --> --}}
 
     <!-- Testimonials Section - Home Page -->
-    <section id="testimonials" class="testimonials">
+    {{-- <section id="testimonials" class="testimonials">
 
       <div class="container">
 
@@ -905,10 +914,10 @@
 
       </div>
 
-    </section><!-- End Testimonials Section -->
+    </section><!-- End Testimonials Section --> --}}
 
     <!-- Recent-posts Section - Home Page -->
-    <section id="recent-posts" class="recent-posts">
+    {{-- <section id="recent-posts" class="recent-posts">
 
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -1002,7 +1011,7 @@
 
       </div>
 
-    </section><!-- End Recent-posts Section -->
+    </section><!-- End Recent-posts Section --> --}}
 
     <!-- Contact Section - Home Page -->
     <section id="contact" class="contact">
@@ -1010,7 +1019,7 @@
       <!--  Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Contact</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        {{-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> --}}
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -1024,8 +1033,8 @@
                 <div class="info-item" data-aos="fade" data-aos-delay="200">
                   <i class="bi bi-geo-alt"></i>
                   <h3>Address</h3>
-                  <p>A108 Adam Street</p>
-                  <p>New York, NY 535022</p>
+                  <p>No 7A/666, Yatihena,Malwana</p>
+                  <p>Sri Lanka</p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -1033,8 +1042,8 @@
                 <div class="info-item" data-aos="fade" data-aos-delay="300">
                   <i class="bi bi-telephone"></i>
                   <h3>Call Us</h3>
-                  <p>+1 5589 55488 55</p>
-                  <p>+1 6678 254445 41</p>
+                  <p>+94 71-6261261</p>
+                  {{-- <p>+1 6678 254445 41</p> --}}
                 </div>
               </div><!-- End Info Item -->
 
@@ -1042,8 +1051,8 @@
                 <div class="info-item" data-aos="fade" data-aos-delay="400">
                   <i class="bi bi-envelope"></i>
                   <h3>Email Us</h3>
-                  <p>info@example.com</p>
-                  <p>contact@example.com</p>
+                  <p>caremelanka@gmail.com</p>
+                  {{-- <p>contact@example.com</p> --}}
                 </div>
               </div><!-- End Info Item -->
 
@@ -1052,7 +1061,7 @@
                   <i class="bi bi-clock"></i>
                   <h3>Open Hours</h3>
                   <p>Monday - Friday</p>
-                  <p>9:00AM - 05:00PM</p>
+                  <p>08:30AM - 05:30PM</p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -1060,7 +1069,7 @@
 
           </div>
 
-          <div class="col-lg-6">
+          {{-- <div class="col-lg-6">
             <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
               <div class="row gy-4">
 
@@ -1090,7 +1099,7 @@
 
               </div>
             </form>
-          </div><!-- End Contact Form -->
+          </div><!-- End Contact Form --> --}}
 
         </div>
 
@@ -1109,7 +1118,7 @@
           <a href="index.html" class="logo d-flex align-items-center">
             <span>Careme</span>
           </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
+          <p>find caretakers for your loved ones.</p>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter"></i></a>
             <a href=""><i class="bi bi-facebook"></i></a>
@@ -1119,34 +1128,34 @@
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
+          <h4></h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
+          <h4></h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"> </a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
           <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
+          <p>No 7A/666,</p>
+          <p>Yatihena,Malwana</p>
+          <p>Sri Lanka</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+94 71-6261261</span></p>
+          <p><strong>Email:</strong> <span>caremelanka@gmail.com</span></p>
         </div>
 
       </div>
@@ -1159,7 +1168,7 @@
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        Designed by Careme Team
       </div>
     </div>
 
